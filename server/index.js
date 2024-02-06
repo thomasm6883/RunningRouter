@@ -1,5 +1,7 @@
 import Express from 'express'
 
+
+//TODO create a rest API to connect
 const app = new Express()
 
 app.use((req, res, next) => {
