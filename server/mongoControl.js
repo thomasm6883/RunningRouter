@@ -1,6 +1,8 @@
 import Mongo from 'mongodb'
 import Dotenv from 'dotenv'
 
+//testing
+
 Dotenv.config()
 
 const DB_USER = process.env.DB_USER ?? 'unknown'
