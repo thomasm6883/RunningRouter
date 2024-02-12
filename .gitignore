@@ -1,5 +1,9 @@
 # public directory functioning as the dist folder
-public/
+
+client/public/*.js
+client/public/*.css
+client/public/*.js.map
+client/public/*.css.map
 
 # Logs
 logs

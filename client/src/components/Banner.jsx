@@ -1,15 +1,17 @@
 import React from 'react';
-import logo from '../assets/logo.svg';
 import BannerMenu from './BannerMenu.jsx';
+import Logo from './svgComponents/Logo.jsx';
+import '../styles/Banner.css';
 
-const Banner = () => {
-    return (
-        <div className="banner">
-            <img src={logo} alt="Website Icon"/>
-            <h1>Running Route App</h1>
-            <BannerMenu />
-        </div>
-    );
+const Banner = (props) => {
+  const loggedIn = props.loggedIn;
+  return (
+    <div className="banner">
+      <Logo />
+      <h1>Running Route App</h1>
+      <BannerMenu loggedIn={loggedIn}/>
+    </div>
+  );
 };
 
 export default Banner;
