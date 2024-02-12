@@ -1,9 +1,10 @@
 import React from 'react';
 
-const BannerMenu = () => {
+const BannerMenu = (props) => {
+    const loggedIn = props.loggedIn;
     return (
         <div className="bannerMenu">
-            { (loggedIn) ? (<><button>Login</button> <button>Register</button></>) : (<><button></button><button className='logoutButton'>Logout</button></>) }
+            { (loggedIn) ? (<><a aria-label='Your Account'>profile</a></>) : (<><button>Login</button> <button>Register</button></>) }
         </div>
     );
 };
