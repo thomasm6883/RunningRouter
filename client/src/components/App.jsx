@@ -1,13 +1,13 @@
 import React from 'react'
 import Banner from './Banner.jsx'
-import Map from './Map.jsx'
+import MapOl from './MapOl.jsx'
 
 const App = () => {
   const [loggedIn, setLoggedIn] = React.useState(false)
   return (
     <>
     <Banner loggedIn={loggedIn} />
-    <Map />
+    <MapOl />
     </>
 
   )
