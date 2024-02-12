@@ -64,10 +64,11 @@ navigator.geolocation.getCurrentPosition((position) => {
     })
   }))
   mapObject.addLayer(marker);
-});
+
   mapObject.setTarget(mapRef.current);
   setMap(mapObject);
   return () => mapObject.setTarget(undefined);
+});
   }, []);
 
     return (
