@@ -9,7 +9,7 @@ const Banner = (props) => {
     <div className="banner">
       <Logo />
       <h1>Running Route App</h1>
-      <BannerMenu loggedIn={loggedIn}/>
+      <BannerMenu {...props} />
     </div>
   );
 };
