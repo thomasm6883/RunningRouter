@@ -33,7 +33,7 @@ dataRouter.get('/logout', logout);
 dataRouter.post('/forgotPassword', forgotPassword);
 dataRouter.post('/resetPassword', resetPassword);
 
-dataRouter.get('/user', isAuthenticated, getUser);
+dataRouter.get('/user', getUser); // re add isAuthenticated
 dataRouter.post('/user', isAuthenticated, updateUser);
 dataRouter.delete('/user', isAuthenticated, deleteUser);
 

@@ -6,7 +6,8 @@ const DB_USER = (process.env.DB_USER) ? process.env.DB_USER : 'unknown'
 const DB_PASS = process.env.DB_PASS ?? 'unknown'
 // const apiKey = 'b4j3Sx7dSOst3JMj4P5tddrvKgFbwunvsnsi039rxf3PllmCSwYA129X9GWO1lqt'
 
-const url = `mongodb+srv://${DB_USER}:${DB_PASS}@monkeybusinesscluster.bkutl1e.mongodb.net/?retryWrites=true&w=majority`
+const url2 = `mongodb+srv://${DB_USER}:${DB_PASS}@monkeybusinesscluster.bkutl1e.mongodb.net/?retryWrites=true&w=majority`
+const url = `mongodb+srv://${DB_USER}:${DB_PASS}@cluster0.ej6o2hm.mongodb.net/?retryWrites=true&w=majority`
 
 export const Mongo = new MongoClient(url, {
   serverApi:
@@ -24,6 +25,10 @@ export default function queryMongoDatabase (queryCallback, databaseName) {
     })
 }
 //------------------MongoDB Atlas Connection Test --------------------
+
+// const databaseName = "main"
+// const collectionName = "user"
+// const collectionList = ['user', 'routes', 'favoriteRoutes', 'location', 'specificLocation']
 
 // async function run(databaseName, collectionName) {
 //   try {
