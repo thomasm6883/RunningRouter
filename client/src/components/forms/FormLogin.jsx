@@ -3,24 +3,36 @@ import { login } from '../../requests/authenticationRequests.js'
 import { Button, Checkbox, Label, Modal, TextInput } from 'flowbite-react';
 import PropTypes from 'prop-types'
 
-
 const FormLogin = (props) => {
   const handleClose = props.handleClose;
   const emailInputRef = props.emailInputRef
   const [username, setUsername] = React.useState('')
   const [password, setPassword] = React.useState('')
+  const [errors, setErrors] = React.useState({})
 
   const handleLogin = (e) => {
     e.preventDefault()
-    const wrapper = async () => {
-    const loginSuccess = await login(username, password)
-    if (loginSuccess) {
-      handleClose()
-    } else{
-      alert('Login failed')
+    let errors = validate(username, password)
+    if (Object.keys(errors).length === 0) {
+      const wrapper = async () => {
+        const loginSuccess = await login(username, password)
+        if (loginSuccess) {
+          handleClose()
+        } else {
+          alert('Login failed')
+        }
+      }
+      wrapper()
+    } else {
+      setErrors(errors)
     }
   }
-  wrapper()
+
+  const validate = (username, password) => {
+    let errors = {}
+    if (!username) errors.username = "Username is required"
+    if (!password) errors.password = "Password is required"
+    return errors
   }
 
   return (
@@ -33,12 +45,14 @@ const FormLogin = (props) => {
             <div>
               <div className="mb-2 block">
                 <Label htmlFor="email" value="Your email" />
+                {errors.username && <p>{errors.username}</p>}
               </div>
               <TextInput id="email" ref={emailInputRef} placeholder="name@company.com" required onChange={(e) => setUsername(e.target.value)} />
             </div>
             <div>
               <div className="mb-2 block">
                 <Label htmlFor="password" value="Your password" />
+                {errors.password && <p>{errors.password}</p>}
               </div>
               <TextInput id="password" type="password" required onChange={(e) => setPassword(e.target.value)}/>
             </div>

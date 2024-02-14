@@ -3,7 +3,6 @@ import { register } from '../../requests/authenticationRequests.js'
 import { Button, Checkbox, Label, Modal, TextInput } from 'flowbite-react';
 import PropTypes from 'prop-types'
 
-
 const FormRegister = (props) => {
   const handleClose = props.handleClose;
   const emailInputRef = props.emailInputRef
