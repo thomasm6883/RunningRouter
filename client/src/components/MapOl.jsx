@@ -12,14 +12,14 @@ import * as olSource from 'ol/source'
 import * as olStyle from 'ol/style'
 import MapContext from './MapContext';
 
-const MapOl = () => {
+const MapOl = ({ children }) => {
   const mapRef = useRef();
   const [map, setMap] = useState(null);
   // on component mount
   useEffect(() => {
     let options = {
       view: new ol.View({
-        center: [0, 0],
+        center: [-10076532.406576514, 5571695.929704119],
         zoom: 5,
         }),
       layers: [
@@ -30,53 +30,19 @@ const MapOl = () => {
     };
     let mapObject = new ol.Map(options);
 
+      mapObject.setTarget(mapRef.current);
 
-
-navigator.geolocation.getCurrentPosition((position) => {
-  const latitude = position.coords.latitude;
-  const longitude = position.coords.longitude;
-  console.log(position.coords.latitude);
-  console.log(position.coords.longitude);
-  mapObject.getView().setCenter(olProj.transform([longitude, latitude], 'EPSG:4326', 'EPSG:3857'));
-  mapObject.getView().setZoom(15);
-  console.log("Center point",olProj.transform(mapObject.getView().getCenter(),
-  mapObject.getView().getProjection(),
-  'EPSG:4326'));
-
-  const marker = new olLayer.Vector({
-    source: new olSource.Vector({
-      features: [
-        new ol.Feature({
-          geometry: new olGeom.Point(
-            olProj.fromLonLat([longitude, latitude])
-          )
-        })
-      ]
-    })
-  })
-  marker.setStyle(new olStyle.Style({
-    image: new olStyle.Circle({
-      radius: 3,
-      fill: new olStyle.Fill({color: 'red'}),
-      stroke: new olStyle.Stroke({
-        color: [255,0,0], width: 2
-      })
-    })
-  }))
-  mapObject.addLayer(marker);
-
-  mapObject.setTarget(mapRef.current);
-  setMap(mapObject);
-  return () => mapObject.setTarget(undefined);
-});
+      setMap(mapObject);
+      return () => mapObject.setTarget(undefined);
   }, []);
 
     return (
       <MapContext.Provider value={{ map }}>
         <div ref={mapRef} className="ol-map">
-
+        { children }
+        { children }
         </div>
-    </MapContext.Provider>
+      </MapContext.Provider>
     );
 };
 
