@@ -6,7 +6,8 @@ import PropTypes from 'prop-types'
 
 const FormRegister = (props) => {
   const handleClose = props.handleClose;
-  const emailInputRef = props.emailInputRef
+  const setLoggedIn = props.setLoggedIn;
+  const emailInputRef = props.emailInputRef // cannot pass ref through props must use forwardRef
   const [username, setUsername] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [passwordConfirm, setPasswordConfirm] = React.useState('')
@@ -18,6 +19,7 @@ const FormRegister = (props) => {
     const registerSuccess = await register(username, password, passwordConfirm, email)
     if (registerSuccess) {
       handleClose()
+      setLoggedIn(true)
     } else{
       alert('Login failed')
     }
@@ -30,8 +32,7 @@ const FormRegister = (props) => {
     <Modal.Header />
         <Modal.Body>
           <div className="space-y-6">
-            <h3 className="text-xl font-medium text-gray-900 dark:text-white">Sign in to our platform</h3>
-            <button onClick={handleClose} className="absolute top-2 right-2 text-gray-400 hover:text-gray-500 dark:text-gray-300 dark:hover:text-gray-200">Close</button>
+            <h3 className="text-xl font-medium text-gray-900 dark:text-white">Register with our platform</h3>
             <div>
               <div className="mb-2 block">
                 <Label htmlFor="email" value="Your email" />
@@ -62,6 +63,7 @@ const FormRegister = (props) => {
 };
 FormRegister.propTypes = {
   handleClose: PropTypes.func.isRequired,
+  setLoggedIn: PropTypes.func.isRequired,
   emailInputRef: PropTypes.object.isRequired,
 }
 

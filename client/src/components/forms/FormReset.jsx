@@ -1,6 +1,6 @@
 import React from 'react';
-import { register } from '../../requests/authenticationRequests.js'
-import { Button, Checkbox, Label, Modal, TextInput } from 'flowbite-react';
+import { resetPassword } from '../../requests/authenticationRequests.js'
+import { Button, Label, Modal, TextInput } from 'flowbite-react';
 import PropTypes from 'prop-types'
 
 
@@ -14,7 +14,7 @@ const FormReset = (props) => {
   const handleReset = (e) => {
     e.preventDefault()
     const wrapper = async () => {
-    const registerSuccess = await register(pin, password, passwordConfirm)
+    const registerSuccess = await resetPassword(pin, password, passwordConfirm)
     if (registerSuccess) {
       handleClose()
     } else{
@@ -29,11 +29,10 @@ const FormReset = (props) => {
     <Modal.Header />
         <Modal.Body>
           <div className="space-y-6">
-            <h3 className="text-xl font-medium text-gray-900 dark:text-white">Sign in to our platform</h3>
-            <button onClick={handleClose} className="absolute top-2 right-2 text-gray-400 hover:text-gray-500 dark:text-gray-300 dark:hover:text-gray-200">Close</button>
+            <h3 className="text-xl font-medium text-gray-900 dark:text-white">Reset Password</h3>
             <div>
               <div className="mb-2 block">
-                <Label htmlFor="email" value="Your email" />
+                <Label htmlFor="pin" value="Your Access Key" />
               </div>
               <TextInput id="pin" ref={emailInputRef} placeholder="Enter your security pin" required onChange={(e) => setPin(e.target.value)} />
             </div>
