@@ -12,7 +12,7 @@ import * as olSource from 'ol/source'
 import * as olStyle from 'ol/style'
 import MapContext from './MapContext';
 
-const MapOl = ({ children }) => {
+const MapCreate = ({ children }) => {
   const mapRef = useRef();
   const [map, setMap] = useState(null);
   // on component mount
@@ -45,4 +45,4 @@ const MapOl = ({ children }) => {
     );
 };
 
-export default MapOl;
+export default MapCreate;
