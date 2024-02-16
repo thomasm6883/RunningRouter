@@ -11,12 +11,9 @@ const App = () => {
   const [modalContent, setModalContent] = React.useState('login');
   return (
     <>
-    <Banner loggedIn={loggedIn} />
     <Banner loggedIn={loggedIn} setLoggedIn={setLoggedIn} setModalContent={setModalContent} setShowModal={setShowModal} />
     <MapOl>
-      <MapCenter>
-        <MapDraw />
-      </MapCenter>
+      <MapCenter />
     </ MapOl>
     <CustomModal showModal={showModal} setShowModal={setShowModal} modalContent={modalContent} />
     </>
