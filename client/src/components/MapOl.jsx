@@ -40,7 +40,6 @@ const MapOl = ({ children }) => {
       <MapContext.Provider value={{ map }}>
         <div ref={mapRef} className="ol-map">
         { children }
-        { children }
         </div>
       </MapContext.Provider>
     );

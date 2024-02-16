@@ -10,8 +10,9 @@ const App = () => {
     <>
     <Banner loggedIn={loggedIn} />
     <MapOl>
-      <MapCenter />
+      <MapCenter>
         <MapDraw />
+      </MapCenter>
     </ MapOl>
     </>
 
