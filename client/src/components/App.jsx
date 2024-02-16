@@ -2,7 +2,6 @@ import React from 'react'
 import Banner from './Banner.jsx'
 import MapCreate from './MapCreate.jsx'
 import MapCenter from './MapCenter.jsx'
-import MapDraw from './MapDraw.jsx'
 import CustomModal from './Modal.jsx'
 
 const App = () => {
