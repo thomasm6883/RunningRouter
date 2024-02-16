@@ -1,15 +1,9 @@
 import React from 'react';
 import { useState, useRef, useEffect } from 'react';
 import "../styles/Map.css";
-import {Map, View, } from 'ol';
 import * as ol from 'ol';
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
-import * as olProj from 'ol/proj'
-import * as olGeom from 'ol/geom'
-import * as olLayer from 'ol/layer'
-import * as olSource from 'ol/source'
-import * as olStyle from 'ol/style'
 import MapContext from './MapContext';
 
 const MapCreate = ({ children }) => {
@@ -33,7 +27,7 @@ const MapCreate = ({ children }) => {
       mapObject.setTarget(mapRef.current);
 
       setMap(mapObject);
-      return () => mapObject.setTarget(undefined);
+      //return () => mapObject.setTarget(undefined);
   }, []);
 
     return (
