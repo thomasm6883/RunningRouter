@@ -1,6 +1,8 @@
 import React from 'react'
 import Banner from './Banner.jsx'
-import Map from './Map.jsx'
+import MapCreate from './MapCreate.jsx'
+import MapCenter from './MapCenter.jsx'
+import MapDraw from './MapDraw.jsx'
 import CustomModal from './Modal.jsx'
 
 const App = () => {
@@ -10,7 +12,9 @@ const App = () => {
   return (
     <>
     <Banner loggedIn={loggedIn} setLoggedIn={setLoggedIn} setModalContent={setModalContent} setShowModal={setShowModal} />
-    <Map />
+    <MapCreate>
+      <MapCenter />
+    </ MapCreate>
     <CustomModal showModal={showModal} setShowModal={setShowModal} modalContent={modalContent} />
     </>
 
