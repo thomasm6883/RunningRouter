@@ -10,11 +10,13 @@ const App = () => {
   const [modalContent, setModalContent] = React.useState('login');
   return (
     <>
+    <main className="dark text-foreground bg-background">
     <Banner loggedIn={loggedIn} setLoggedIn={setLoggedIn} setModalContent={setModalContent} setShowModal={setShowModal} />
     <MapCreate>
       <MapCenter />
     </ MapCreate>
     <CustomModal showModal={showModal} setShowModal={setShowModal} modalContent={modalContent} />
+    </main>
     </>
 
   )

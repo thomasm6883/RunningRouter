@@ -1,8 +1,12 @@
 /* @import "node_modules/ol/ol.css"; */
 
 html, body {
-  margin: 0;
-  height: 100%;
+  background: url('https://www.solidbackgrounds.com/images/2560x1600/2560x1600-dark-slate-gray-solid-color-background.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+
 }
 #map {
   position: absolute;
@@ -17,3 +21,4 @@ html, body {
   height: 500px;
   width: "100%";
 }
+

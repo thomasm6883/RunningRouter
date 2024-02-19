@@ -27,6 +27,7 @@ const Banner = (props) => {
         <Navbar.Link href="#">Routes</Navbar.Link>
         <Navbar.Link href="#">Get PRO</Navbar.Link>
         <Navbar.Link href="#">Contact</Navbar.Link>
+
       </Navbar.Collapse>
     </Navbar>
   );
