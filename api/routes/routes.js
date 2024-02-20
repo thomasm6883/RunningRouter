@@ -29,7 +29,7 @@ dataRouter.delete('/routes', isAuthenticated, deleteRoute);
 
 dataRouter.post('/login', login);
 dataRouter.post('/register', register);
-dataRouter.get('/logout', logout);
+dataRouter.get('/logout', logout);// could be protected
 dataRouter.post('/forgotPassword', forgotPassword);
 dataRouter.post('/resetPassword', resetPassword);
 

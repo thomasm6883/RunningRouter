@@ -3,18 +3,22 @@ import React from 'react';
 import FormLogin from './forms/FormLogin';
 import FormRegister from './forms/FormRegister';
 import FormForgot from './forms/FormForgot';
-import FormConfirmPin from './forms/FormConfirmPin';
-import FormReset from './forms/FormReset';
+
 
 import PropTypes from 'prop-types';
 
 import { Avatar, Dropdown, Button } from 'flowbite-react';
 
+import { logout } from '../requests/authenticationRequests';
+
 
 const BannerMenu = (props) => {
     const loggedIn = props.loggedIn;
+    const setLoggedIn = props.setLoggedIn;
     const setModalContent = props.setModalContent;
     const setShowModal = props.setShowModal;
+    const userData = props.userData;
+    const setUserData = props.setUserData;
 
 
 
@@ -23,17 +27,28 @@ const BannerMenu = (props) => {
 
     const onClick = (type) => {
         if (type === 'login') {
-          setModalContent(<FormLogin handleClose={handleClose}/>);
+          setModalContent(<FormLogin handleClose={handleClose} setLoggedIn={setLoggedIn} setModalContent={setModalContent} setUserData={setUserData} />);
         } else if (type === 'register') {
-          setModalContent(<FormRegister handleClose={handleClose}/>);
-        } else if (type === 'forgot') {
+          setModalContent(<FormRegister handleClose={handleClose} setLoggedIn={setLoggedIn} setModalContent={setModalContent} setUserData={setUserData} />);
+        } else if (type === 'routes') {
           setModalContent(<FormForgot handleClose={handleClose}/>);
-        } else if (type === 'confirmPin') {
-          setModalContent(<FormConfirmPin handleClose={handleClose}/>);
-        } else if (type === 'reset') {
-          setModalContent(<FormReset handleClose={handleClose}/>);
+        } else if (type === '') {
+          setModalContent();
+        } else if (type === '') {
+          setModalContent();
         }
         handleShow();
+    }
+    const handleLogout = () => {
+      const wrapper = async () => {
+        const logoutSuccess = await logout()
+        if (logoutSuccess) {
+          setLoggedIn(false)
+        } else{
+          alert('Logout failed')
+        }
+      }
+      wrapper()
     }
 
     return (
@@ -46,36 +61,44 @@ const BannerMenu = (props) => {
               label={
                 <Avatar
                   alt="User settings"
-                  img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
                   rounded
-                />
+                ></Avatar>
               }
             >
               <Dropdown.Header>
-                <span className="block text-sm">Bonnie Green</span>
+                <span className="block text-sm">{userData.email}</span>
                 <span className="block truncate text-sm font-medium">
-                  name@flowbite.com
+                  {userData.email}
                 </span>
               </Dropdown.Header>
               <Dropdown.Item>Dashboard</Dropdown.Item>
               <Dropdown.Item>Settings</Dropdown.Item>
-              <Dropdown.Item>Earnings</Dropdown.Item>
+              <Dropdown.Item>My Routes</Dropdown.Item>
               <Dropdown.Divider />
-              <Dropdown.Item>Sign out</Dropdown.Item>
+              <Dropdown.Item onClick={handleLogout}>Sign out</Dropdown.Item>
             </Dropdown>
           </>
         ) : (
           <>
-          <div className="flex flex-wrap gap-2">
-            <Button outline gradientDuoTone="purpleToBlue" className="loginButton" onClick={() => onClick("login")}>
-              Login
-            </Button>{" "}
-            <Button outline gradientDuoTone="purpleToBlue"
-              className="registerButton"
-              onClick={() => onClick("register")}
-            >
-              Register
-            </Button>
+            <div className="flex flex-wrap gap-2">
+              <Button
+              pill
+                outline
+                gradientDuoTone="purpleToBlue"
+                size="lg"
+                onClick={() => onClick("login")}
+              >
+                Login
+              </Button>
+              <Button
+              pill
+                outline
+                gradientDuoTone="purpleToBlue"
+                size="lg"
+                onClick={() => onClick("register")}
+              >
+                Register
+              </Button>
             </div>
           </>
         )}
@@ -84,6 +107,7 @@ const BannerMenu = (props) => {
 };
 BannerMenu.propTypes = {
     loggedIn: PropTypes.bool.isRequired,
+    setLoggedIn: PropTypes.func.isRequired,
     setModalContent: PropTypes.func.isRequired,
     setShowModal: PropTypes.func.isRequired,
 }
