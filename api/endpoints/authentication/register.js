@@ -1,7 +1,6 @@
 import queryMongoDatabase from '../../mongo/mongoClient.js'
 import { hashPassword } from '../sharedFunctions/hashingFunctions.js'
 import validateEmail from '../sharedFunctions/emailFunctions.js'
-import ObjectId from 'mongodb'
 
 export default async function register (req, res) { // working without authentication ------------------TO DO --------------------
     const password = req.body.password

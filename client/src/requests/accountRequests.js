@@ -1,13 +1,13 @@
 import { API_URL } from "./API_URL";
 
-export const changePassword = async (passwords) => {
+export const changePassword = async (password, passwordConfirm) => {
   try{
     const response = await fetch(`${API_URL}/account/change-password`, {
         method: "POST",
         headers: {
         "Content-Type": "application/json",
         },
-        body: JSON.stringify(passwords),
+        body: JSON.stringify(password, passwordConfirm),
     });
     if (response.status >= 400) {
       throw new Error(`Request failed with response code ${response.status}`)
