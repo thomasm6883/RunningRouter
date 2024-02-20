@@ -3,6 +3,7 @@ import { login } from '../../requests/authenticationRequests.js'
 import { Button, Checkbox, Label, Modal, TextInput } from 'flowbite-react';
 import PropTypes from 'prop-types'
 import FormForgot from './FormForgot.jsx'
+import FormRegister from './FormRegister.jsx';
 
 
 const FormLogin = (props) => {
@@ -60,7 +61,7 @@ const FormLogin = (props) => {
             </div>
             <div className="flex justify-between text-sm font-medium text-gray-500 dark:text-gray-300">
               Not registered?&nbsp;
-              <a href="#" className="text-cyan-700 hover:underline dark:text-cyan-500">
+              <a className="text-cyan-700 hover:underline dark:text-cyan-500" onClick={()=>setModalContent(<FormRegister handleClose={handleClose} setLoggedIn={setLoggedIn} setModalContent={setModalContent} />)}>
                 Create account
               </a>
             </div>

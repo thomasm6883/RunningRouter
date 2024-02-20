@@ -3,8 +3,7 @@ import React from 'react';
 import FormLogin from './forms/FormLogin';
 import FormRegister from './forms/FormRegister';
 import FormForgot from './forms/FormForgot';
-import FormConfirmPin from './forms/FormConfirmPin';
-import FormReset from './forms/FormReset';
+
 
 import PropTypes from 'prop-types';
 
@@ -30,13 +29,13 @@ const BannerMenu = (props) => {
         if (type === 'login') {
           setModalContent(<FormLogin handleClose={handleClose} setLoggedIn={setLoggedIn} setModalContent={setModalContent} setUserData={setUserData} />);
         } else if (type === 'register') {
-          setModalContent(<FormRegister handleClose={handleClose} setLoggedIn={setLoggedIn} />);
-        } else if (type === 'forgot') {
+          setModalContent(<FormRegister handleClose={handleClose} setLoggedIn={setLoggedIn} setModalContent={setModalContent} setUserData={setUserData} />);
+        } else if (type === 'routes') {
           setModalContent(<FormForgot handleClose={handleClose}/>);
-        } else if (type === 'confirmPin') {
-          setModalContent(<FormConfirmPin handleClose={handleClose}/>);
-        } else if (type === 'reset') {
-          setModalContent(<FormReset handleClose={handleClose}/>);
+        } else if (type === '') {
+          setModalContent();
+        } else if (type === '') {
+          setModalContent();
         }
         handleShow();
     }
@@ -62,36 +61,44 @@ const BannerMenu = (props) => {
               label={
                 <Avatar
                   alt="User settings"
-                  img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
                   rounded
-                />
+                ></Avatar>
               }
             >
               <Dropdown.Header>
                 <span className="block text-sm">{userData.email}</span>
                 <span className="block truncate text-sm font-medium">
-                {userData.email}
+                  {userData.email}
                 </span>
               </Dropdown.Header>
               <Dropdown.Item>Dashboard</Dropdown.Item>
               <Dropdown.Item>Settings</Dropdown.Item>
-              <Dropdown.Item>Routes</Dropdown.Item>
+              <Dropdown.Item>My Routes</Dropdown.Item>
               <Dropdown.Divider />
-              <Dropdown.Item onClick={handleLogout} >Sign out</Dropdown.Item>
+              <Dropdown.Item onClick={handleLogout}>Sign out</Dropdown.Item>
             </Dropdown>
           </>
         ) : (
           <>
-          <div className="flex flex-wrap gap-2">
-            <Button outline gradientDuoTone="purpleToBlue" className="loginButton" onClick={() => onClick("login")}>
-              Login
-            </Button>
-            <Button outline gradientDuoTone="purpleToBlue"
-              className="registerButton"
-              onClick={() => onClick("register")}
-            >
-              Register
-            </Button>
+            <div className="flex flex-wrap gap-2">
+              <Button
+              pill
+                outline
+                gradientDuoTone="purpleToBlue"
+                size="lg"
+                onClick={() => onClick("login")}
+              >
+                Login
+              </Button>
+              <Button
+              pill
+                outline
+                gradientDuoTone="purpleToBlue"
+                size="lg"
+                onClick={() => onClick("register")}
+              >
+                Register
+              </Button>
             </div>
           </>
         )}

@@ -7,6 +7,7 @@ import PropTypes from 'prop-types'
 const FormReset = (props) => {
   const handleClose = props.handleClose;
   const emailInputRef = props.emailInputRef
+  const email = props.email
   const [pin, setPin] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [passwordConfirm, setPasswordConfirm] = React.useState('')
@@ -14,11 +15,11 @@ const FormReset = (props) => {
   const handleReset = (e) => {
     e.preventDefault()
     const wrapper = async () => {
-    const registerSuccess = await resetPassword(pin, password, passwordConfirm)
-    if (registerSuccess) {
+    const resetSuccess = await resetPassword(email, pin, password, passwordConfirm)
+    if (resetSuccess) {
       handleClose()
     } else{
-      alert('Login failed')
+      alert('Reset failed')
     }
   }
   wrapper()
@@ -51,7 +52,7 @@ const FormReset = (props) => {
             <div className="flex justify-between">
             </div>
             <div className="w-full">
-              <Button onClick={handleReset}>Create an account</Button>
+              <Button onClick={handleReset}>Reset Password</Button>
             </div>
           </div>
         </Modal.Body>

@@ -54,14 +54,14 @@ export async function logout () {
   }
 }
 
-export async function resetPassword (accessKey, password, confirmPassword) {
+export async function resetPassword (email, accessKey, password, confirmPassword) {
   try {
     const response = await fetch(`${API_URL}/resetPassword`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ accessKey, password, confirmPassword })
+      body: JSON.stringify({ email, accessKey, password, confirmPassword })
     })
     if (response.status >= 400) {
       throw new Error(`Request failed with response code ${response.status}`)

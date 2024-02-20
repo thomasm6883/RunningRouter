@@ -16,7 +16,7 @@ const FormForgot = (props) => {
     const wrapper = async () => {
     const loginSuccess = await forgotPassword(email)
     if (loginSuccess) {
-      setModalContent(<FormReset handleClose={handleClose}/>)
+      setModalContent(<FormReset handleClose={handleClose} email={email} />)
     } else{
       alert('Login failed')
     }
