@@ -12,7 +12,7 @@ function CustomModal(props) {
 
   return (
     <>
-      <Modal dismissible show={showModal} size="md" popup onClose={handleClose} initialFocus={emailInputRef}>
+      <Modal show={showModal} size="md" popup onClose={handleClose} initialFocus={emailInputRef}>
         {modalContent}
       </Modal>
     </>

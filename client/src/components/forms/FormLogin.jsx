@@ -2,9 +2,13 @@ import React from 'react';
 import { login } from '../../requests/authenticationRequests.js'
 import { Button, Checkbox, Label, Modal, TextInput } from 'flowbite-react';
 import PropTypes from 'prop-types'
+import FormForgot from './FormForgot.jsx'
+import FormRegister from './FormRegister.jsx';
 
 
 const FormLogin = (props) => {
+  const setLoggedIn = props.setLoggedIn;
+  const setModalContent = props.setModalContent;
   const handleClose = props.handleClose;
   const emailInputRef = props.emailInputRef
   const [username, setUsername] = React.useState('')
@@ -16,6 +20,8 @@ const FormLogin = (props) => {
     const loginSuccess = await login(username, password)
     if (loginSuccess) {
       handleClose()
+      setLoggedIn(true)
+
     } else{
       alert('Login failed')
     }
@@ -29,7 +35,6 @@ const FormLogin = (props) => {
         <Modal.Body>
           <div className="space-y-6">
             <h3 className="text-xl font-medium text-gray-900 dark:text-white">Sign in to our platform</h3>
-            <button onClick={handleClose} className="absolute top-2 right-2 text-gray-400 hover:text-gray-500 dark:text-gray-300 dark:hover:text-gray-200">Close</button>
             <div>
               <div className="mb-2 block">
                 <Label htmlFor="email" value="Your email" />
@@ -47,7 +52,7 @@ const FormLogin = (props) => {
                 <Checkbox id="remember" />
                 <Label htmlFor="remember">Remember me</Label>
               </div>
-              <a href="#" className="text-sm text-cyan-700 hover:underline dark:text-cyan-500">
+              <a className="text-sm text-cyan-700 hover:underline dark:text-cyan-500" onClick={()=>setModalContent(<FormForgot handleClose={handleClose} setModalContent={setModalContent} />)}>
                 Lost Password?
               </a>
             </div>
@@ -56,7 +61,7 @@ const FormLogin = (props) => {
             </div>
             <div className="flex justify-between text-sm font-medium text-gray-500 dark:text-gray-300">
               Not registered?&nbsp;
-              <a href="#" className="text-cyan-700 hover:underline dark:text-cyan-500">
+              <a className="text-cyan-700 hover:underline dark:text-cyan-500" onClick={()=>setModalContent(<FormRegister handleClose={handleClose} setLoggedIn={setLoggedIn} setModalContent={setModalContent} />)}>
                 Create account
               </a>
             </div>
@@ -67,6 +72,8 @@ const FormLogin = (props) => {
 };
 FormLogin.propTypes = {
   handleClose: PropTypes.func.isRequired,
+  setModalContent: PropTypes.func.isRequired,
+  setLoggedIn: PropTypes.func.isRequired,
   emailInputRef: PropTypes.object.isRequired,
 }
 
