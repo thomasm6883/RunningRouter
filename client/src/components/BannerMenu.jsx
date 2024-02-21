@@ -3,6 +3,7 @@ import React from 'react';
 import FormLogin from './forms/FormLogin';
 import FormRegister from './forms/FormRegister';
 import FormForgot from './forms/FormForgot';
+import '../styles/Banner.css'
 
 
 import PropTypes from 'prop-types';
@@ -85,7 +86,7 @@ const BannerMenu = (props) => {
               pill
                 outline
                 gradientDuoTone="purpleToBlue"
-                size="lg"
+                className='login'
                 onClick={() => onClick("login")}
               >
                 Login
@@ -94,7 +95,7 @@ const BannerMenu = (props) => {
               pill
                 outline
                 gradientDuoTone="purpleToBlue"
-                size="lg"
+                className='register'
                 onClick={() => onClick("register")}
               >
                 Register
