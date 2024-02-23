@@ -47,7 +47,9 @@ const MapCenter = () => {
     var points = [ [-91.8190679, 44.9387964], [-91.8216535, 44.9370465], [-91.8231998, 44.9359751], [-91.8254536,44.9359751], [-91.83548664,44.9180967], [-91.8459916,44.9077989] ];
 
     for (var i = 0; i < points.length; i++) {
+      console.log("Lat/Lng: " + points[i]);
         points[i] = olProj.transform(points[i], 'EPSG:4326', 'EPSG:3857');
+        console.log("EPS: " + points[i]);
     }
 
     var featureLine = new ol.Feature({

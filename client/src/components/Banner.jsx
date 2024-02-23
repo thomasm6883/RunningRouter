@@ -9,7 +9,7 @@ import { Navbar } from 'flowbite-react';
 const Banner = (props) => {
   const loggedIn = props.loggedIn;
   return (
-    <Navbar fluid rounded >
+    <Navbar className="banner" fluid rounded >
       <Navbar.Brand>
         <Logo className="pr-1 sm:smallLogo md:largeLogo"/>
         <span className="self-center whitespace-nowrap ml-2 md:text-3xl font-semibold dark:text-white">
