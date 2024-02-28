@@ -38,7 +38,7 @@ const sessionOptions = {
     saveUninitialized: false,
     store : MongoStore.create({ client: Mongo, dbName: 'Sessions' }),
     cookie: {
-      maxAge: 1000 * 60 // temp test for 1 minute// * 60 * 24 // 1 day
+      maxAge: 1000 * 60 * 60 * 24 // 1 day
     }
   }
 
