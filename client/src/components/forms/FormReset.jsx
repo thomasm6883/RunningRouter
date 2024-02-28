@@ -50,9 +50,9 @@ const FormReset = (props) => {
             </div>
             <div>
               <div className="mb-2 block">
-                <Label htmlFor="password" value="Your password" />
+                <Label htmlFor="password" value="Confirm your password" />
               </div>
-              <TextInput id="password" type="password" required onChange={(e) => setPasswordConfirm(e.target.value)}/>
+              <TextInput id="passwordConfirm" type="password" required onChange={(e) => setPasswordConfirm(e.target.value)}/>
             </div>
             <div className="flex justify-between">
             </div>

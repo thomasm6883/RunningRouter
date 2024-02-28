@@ -2,7 +2,8 @@ import Express from 'express'
 import dataRouter from './routes/routes.js'
 import path from 'path'
 import session from 'express-session'
-
+import { Mongo } from './mongo/mongoClient.js'
+import MongoStore from 'connect-mongo'
 const store = new session.MemoryStore()
 path.__dirname = path.resolve(path.dirname('./client/public/index.html'))
 
@@ -11,6 +12,18 @@ const app = new Express();
 
 app.use(Express.json());
 
+// -- Function for initializing a connection to the MongoDB Atlas database, so that sessions work (timing error) --
+async function connectToMongoDB() {
+    try {
+        await Mongo.connect()
+        console.log('Connected to MongoDB Atlas')
+    } catch (err) {
+        console.error('Failed to connect to MongoDB Atlas')
+        console.error(err)
+    }
+    return Mongo
+}
+connectToMongoDB()
 // -- For testing, REMOVE before deployment --
 app.use((req, res, next) => {
     console.log(`${req.method} request at ${req.url}`)
@@ -22,10 +35,10 @@ const sessionOptions = {
     name: 'connect.sid', // default name is 'connect.sid
     secret: 'your-secret-key',
     resave: false,
-    saveUninitialized: true,
-    store, // : MongoStore.create({ client: Mongo, dbName: 'MonkeyBusinessWebApp' }), // store: new MongoStore.Session({ mongooseConnection: mongoose.connection }),
+    saveUninitialized: false,
+    store : MongoStore.create({ client: Mongo, dbName: 'Sessions' }),
     cookie: {
-      maxAge: 1000 * 60 * 60 * 24 // 1 day
+      maxAge: 1000 * 60 // temp test for 1 minute// * 60 * 24 // 1 day
     }
   }
 

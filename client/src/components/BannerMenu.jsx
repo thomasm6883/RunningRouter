@@ -21,8 +21,6 @@ const BannerMenu = (props) => {
     const userData = props.userData;
     const setUserData = props.setUserData;
     const setShowBar = props.setShowBar;
-    console.log(userData)
-    console.log(userData.email)
 
     const handleClose = () => setShowModal(false);
     const handleShow = () => setShowModal(true);
