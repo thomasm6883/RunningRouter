@@ -6,22 +6,28 @@ import FormForgot from './FormForgot.jsx'
 import FormRegister from './FormRegister.jsx';
 
 
-const FormLogin = (props) => {
+const FormLogin =(props) => {
   const setLoggedIn = props.setLoggedIn;
+  const setUserData = props.setUserData;
   const setModalContent = props.setModalContent;
   const handleClose = props.handleClose;
-  const emailInputRef = props.emailInputRef
-  const [username, setUsername] = React.useState('')
+
+  const emailRef = React.useRef(null)
+  React.useEffect(() => {
+    emailRef.current.focus()
+  }, [])
+
+  const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
 
   const handleLogin = (e) => {
     e.preventDefault()
     const wrapper = async () => {
-    const loginSuccess = await login(username, password)
+    const loginSuccess = await login(email, password)
     if (loginSuccess) {
       handleClose()
       setLoggedIn(true)
-
+      setUserData({ email })
     } else{
       alert('Login failed')
     }
@@ -34,12 +40,12 @@ const FormLogin = (props) => {
     <Modal.Header />
         <Modal.Body>
           <div className="space-y-6">
-            <h3 className="text-xl font-medium text-gray-900 dark:text-white">Sign in to our platform</h3>
+            <h3 className="text-xl font-medium text-gray-900 dark:text-white">Login to our platform</h3>
             <div>
               <div className="mb-2 block">
                 <Label htmlFor="email" value="Your email" />
               </div>
-              <TextInput id="email" ref={emailInputRef} placeholder="name@company.com" required onChange={(e) => setUsername(e.target.value)} />
+              <TextInput id="email" type="email" ref={emailRef} placeholder="name@company.com" required onChange={(e) => setEmail(e.target.value)} />
             </div>
             <div>
               <div className="mb-2 block">
@@ -73,8 +79,7 @@ const FormLogin = (props) => {
 FormLogin.propTypes = {
   handleClose: PropTypes.func.isRequired,
   setModalContent: PropTypes.func.isRequired,
-  setLoggedIn: PropTypes.func.isRequired,
-  emailInputRef: PropTypes.object.isRequired,
+  setLoggedIn: PropTypes.func.isRequired
 }
 
 export default FormLogin;

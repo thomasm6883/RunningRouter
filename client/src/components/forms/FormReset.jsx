@@ -12,6 +12,11 @@ const FormReset = (props) => {
   const [password, setPassword] = React.useState('')
   const [passwordConfirm, setPasswordConfirm] = React.useState('')
 
+  const pinRef = React.useRef(null)
+  React.useEffect(() => {
+    pinRef.current.focus()
+  }, [])
+
   const handleReset = (e) => {
     e.preventDefault()
     const wrapper = async () => {
@@ -35,7 +40,7 @@ const FormReset = (props) => {
               <div className="mb-2 block">
                 <Label htmlFor="pin" value="Your Access Key" />
               </div>
-              <TextInput id="pin" ref={emailInputRef} placeholder="Enter your security pin" required onChange={(e) => setPin(e.target.value)} />
+              <TextInput id="pin" ref={pinRef} placeholder="Enter your security pin" required onChange={(e) => setPin(e.target.value)} />
             </div>
             <div>
               <div className="mb-2 block">

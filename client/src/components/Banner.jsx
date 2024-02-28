@@ -7,7 +7,6 @@ import { Navbar } from 'flowbite-react';
 //import '../styles/Logo.css';
 
 const Banner = (props) => {
-  const loggedIn = props.loggedIn;
   return (
     <Navbar className="banner" fluid rounded >
       <Navbar.Brand>

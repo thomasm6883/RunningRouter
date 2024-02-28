@@ -20,6 +20,26 @@ export async function login (email, password) {
   }
 }
 
+export async function checkCookie () {
+  try {
+    const response = await fetch(`${API_URL}/cookie`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include'
+    })
+    if (response.status >= 400) {
+      throw new Error(`Request failed with response code ${response.status}`)
+    }
+    return true
+  } catch (err) {
+    console.error('Failed to check cookie')
+    console.error(err)
+    return false
+  }
+}
+
 export async function register ( email, password, passwordConfirm ) {
   try {
     const response = await fetch(`${API_URL}/register`, {

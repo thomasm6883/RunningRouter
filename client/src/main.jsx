@@ -4,7 +4,7 @@ import { createRoot } from 'react-dom/client';
 import './main.css';
 const root = createRoot(document.getElementById('root'))
 root.render(
-    <>
-    <App />
-    </>
+    <div className='h-screen w-screen'>
+    <App className="App"/>
+    </div>
 );

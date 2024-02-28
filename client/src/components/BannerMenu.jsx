@@ -20,8 +20,9 @@ const BannerMenu = (props) => {
     const setShowModal = props.setShowModal;
     const userData = props.userData;
     const setUserData = props.setUserData;
-
-
+    const setShowBar = props.setShowBar;
+    console.log(userData)
+    console.log(userData.email)
 
     const handleClose = () => setShowModal(false);
     const handleShow = () => setShowModal(true);
@@ -31,12 +32,6 @@ const BannerMenu = (props) => {
           setModalContent(<FormLogin handleClose={handleClose} setLoggedIn={setLoggedIn} setModalContent={setModalContent} setUserData={setUserData} />);
         } else if (type === 'register') {
           setModalContent(<FormRegister handleClose={handleClose} setLoggedIn={setLoggedIn} setModalContent={setModalContent} setUserData={setUserData} />);
-        } else if (type === 'routes') {
-          setModalContent(<FormForgot handleClose={handleClose}/>);
-        } else if (type === '') {
-          setModalContent();
-        } else if (type === '') {
-          setModalContent();
         }
         handleShow();
     }
@@ -67,14 +62,12 @@ const BannerMenu = (props) => {
               }
             >
               <Dropdown.Header>
-                <span className="block text-sm">{userData.email}</span>
-                <span className="block truncate text-sm font-medium">
-                  {userData.email}
-                </span>
+                <span className="block text-sm font-medium">{userData.email}</span>
+
               </Dropdown.Header>
               <Dropdown.Item>Dashboard</Dropdown.Item>
               <Dropdown.Item>Settings</Dropdown.Item>
-              <Dropdown.Item>My Routes</Dropdown.Item>
+              <Dropdown.Item onClick={() => {setShowBar(true)}}>My Routes</Dropdown.Item>
               <Dropdown.Divider />
               <Dropdown.Item onClick={handleLogout}>Sign out</Dropdown.Item>
             </Dropdown>

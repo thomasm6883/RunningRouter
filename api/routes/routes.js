@@ -37,5 +37,8 @@ dataRouter.get('/user', isAuthenticated, getUser);
 dataRouter.post('/user', isAuthenticated, updateUser);
 dataRouter.delete('/user', isAuthenticated, deleteUser);
 
+dataRouter.get('/cookie', isAuthenticated, (req, res) => {
+  res.json({ message: 'Cookie is present' })
+})
 
 export default dataRouter
