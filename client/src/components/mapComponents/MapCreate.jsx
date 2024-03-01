@@ -1,14 +1,14 @@
 import React from 'react';
 import { useState, useRef, useEffect } from 'react';
-import "../styles/Map.css";
+import "../../styles/Map.css";
 import * as ol from 'ol';
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
 import MapContext from './MapContext';
 
-const MapCreate = ({ children }) => {
+const MapCreate = (props) => {
   const mapRef = useRef();
-  const [map, setMap] = useState(null);
+
   // on component mount
   useEffect(() => {
     let options = {
@@ -26,17 +26,15 @@ const MapCreate = ({ children }) => {
 
       mapObject.setTarget(mapRef.current);
 
-      setMap(mapObject);
-      //return () => mapObject.setTarget(undefined);
-  }, []);
+      props.setMap(mapObject);
 
-    return (
-      <MapContext.Provider value={{ map }}>
-        <div ref={mapRef} className="ol-map">
-        { children }
-        </div>
-      </MapContext.Provider>
-    );
+      return () => mapObject.setTarget(undefined);
+  }, []);
+  return (
+    <div ref={mapRef} className="ol-map">
+
+    </div>
+  )
 };
 
 export default MapCreate;

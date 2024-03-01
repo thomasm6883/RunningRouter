@@ -28,7 +28,7 @@ const sessionOptions = {
       maxAge: 1000 * 60 * 60 * 24 // 1 day
     }
   }
-  
+
 app.use(session(sessionOptions))
 
 app.use(Express.static(path.join('./client/public')));
