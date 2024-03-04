@@ -16,7 +16,7 @@ const App = () => {
     <>
     <Banner loggedIn={loggedIn} setLoggedIn={setLoggedIn} setModalContent={setModalContent} setShowModal={setShowModal} />
     <MapCreate map={map} setMap={setMap} />
-    <MapDraw map={map} setMap={setMap}/>
+    {/* <MapDraw map={map} setMap={setMap}/> */}
     <MapCenter map={map} setMap={setMap}/>
     <MapInsertPoint map={map} coordinate={null}/>
     <StartRoute map={map} setMap={setMap}/>
