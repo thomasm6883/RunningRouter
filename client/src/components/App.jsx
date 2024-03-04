@@ -4,9 +4,11 @@ import CustomModal from './Modal.jsx'
 import MapContainer from './MapContainer.jsx'
 import SelectRouteBar from './SelectRouteBar.jsx'
 import DropdownMenu from './DropdownMenu.jsx'
-import TestCookies from './TestCookies.jsx'
 import { getUser } from '../requests/accountRequests.js'
 import { checkCookie } from '../requests/authenticationRequests.js'
+import { GoogleOAuthProvider } from '@react-oauth/google'
+import MapContext from './MapContext.jsx'
+export const GlobalContext = React.createContext(null)
 
 const App = () => {
   const [loggedIn, setLoggedIn] = React.useState(false)
@@ -16,6 +18,8 @@ const App = () => {
   const [showBar, setShowBar] = React.useState(false)
   const [routes, setRoutes] = React.useState([])
   const [routesType, setRoutesType] = React.useState('My Routes')
+  const [map, setMap] = React.useState(null)
+
 
   const initialize = async () => {
     const cookie = await checkCookie()
@@ -35,12 +39,17 @@ const App = () => {
 
   return (
     <>
+    <MapContext.Provider value={{ map, setMap }}>
+    <GoogleOAuthProvider clientId="954079927112-48qrn73bql7ma5c6qc7t8mddhsagr39v.apps.googleusercontent.com" >
+    <GlobalContext.Provider value={{ loggedIn, setLoggedIn, userData, setUserData, showModal, setShowModal, modalContent, setModalContent, showBar, setShowBar, routes, setRoutes, routesType, setRoutesType }}>
     <Banner loggedIn={loggedIn} setLoggedIn={setLoggedIn} setModalContent={setModalContent} setShowModal={setShowModal} userData={userData} setUserData={setUserData} setShowBar={setShowBar} />
     <DropdownMenu setRoutes={setRoutes} />
-    <TestCookies />
     <MapContainer />
     <SelectRouteBar showBar={showBar} setShowBar={setShowBar} routes={routes} setRoutes={setRoutes} routesType={routesType} setRoutesType={setRoutesType} setShowModal={setShowModal} setModalContent={setModalContent} />
     <CustomModal showModal={showModal} setShowModal={setShowModal} modalContent={modalContent} />
+    </GlobalContext.Provider>
+    </GoogleOAuthProvider>
+    </MapContext.Provider>
     </>
 
   )

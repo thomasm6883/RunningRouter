@@ -4,6 +4,7 @@ import path from 'path'
 import session from 'express-session'
 import { Mongo } from './mongo/mongoClient.js'
 import MongoStore from 'connect-mongo'
+import cors from 'cors'
 const store = new session.MemoryStore()
 path.__dirname = path.resolve(path.dirname('./client/public/index.html'))
 
@@ -11,7 +12,7 @@ const PORT = 3000;
 const app = new Express();
 
 app.use(Express.json());
-
+app.use(cors())
 // -- Function for initializing a connection to the MongoDB Atlas database, so that sessions work (timing error) --
 async function connectToMongoDB() {
     try {

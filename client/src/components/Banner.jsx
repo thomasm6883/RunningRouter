@@ -1,12 +1,10 @@
 import React from 'react';
-//import logo from '../assets/logo.svg';
 import BannerMenu from './BannerMenu.jsx';
 import Logo from './svgComponents/Logo.jsx';
 import '../styles/Banner.css';
 import { Navbar } from 'flowbite-react';
-//import '../styles/Logo.css';
 
-const Banner = (props) => {
+const Banner = () => {
   return (
     <Navbar className="banner" fluid rounded >
       <Navbar.Brand>
@@ -16,7 +14,7 @@ const Banner = (props) => {
         </span>
       </Navbar.Brand>
       <div className="flex md:order-2">
-        <BannerMenu {...props} />
+        <BannerMenu />
       </div>
     </Navbar>
   );

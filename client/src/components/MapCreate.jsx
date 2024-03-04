@@ -18,17 +18,7 @@ import { boundingExtent } from 'ol/extent';
 
 const MapCreate = ({ children }) => {
   const mapRef = useRef();
-  const [map, setMap] = useState(null);
-  const [userLocation, setUserLocation] = useState([0, 0]);
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      setUserLocation(olProj.transform([position.coords.longitude, position.coords.latitude], 'EPSG:4326', 'EPSG:3857'));
-      //olProj.transform([longitude, latitude], 'EPSG:4326', 'EPSG:3857')
-      console.log("User Location: ", userLocation);
-    });
-
-  }, []);
-  //setUserLocation([0, 0]);
+  const { map, setMap } = React.useContext(MapContext);
   // on component mount
   useEffect(() => {
     let options = {
@@ -43,13 +33,6 @@ const MapCreate = ({ children }) => {
       ],
       controls: [
         new OlZoom({ className: 'custom-zoom' }),
-        new ZoomToExtent({
-          extent: [userLocation[0], userLocation[1], userLocation[0]+500000, userLocation[1]+500000],//boundingExtent(userLocation),
-          className: 'custom-zoom-extent',
-          tipLabel: 'Re-center',
-          label: 'Re-center',
-
-        }),
         new Attribution({ collapsible: false }),
       ],
     };
@@ -62,11 +45,9 @@ const MapCreate = ({ children }) => {
   }, []);
 
     return (
-      <MapContext.Provider value={{ map }}>
         <div ref={mapRef} className="ol-map">
         { children }
         </div>
-      </MapContext.Provider>
     );
 };
 

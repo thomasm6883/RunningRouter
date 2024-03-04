@@ -32,10 +32,14 @@ export async function checkCookie () {
     if (response.status >= 400) {
       throw new Error(`Request failed with response code ${response.status}`)
     }
-    return true
+    const data = await response.json()
+    console.log(data)
+    if(data.loggedIn === false){
+      return false
+    } else if (data.loggedIn === true){
+      return true
+    }
   } catch (err) {
-    console.error('Failed to check cookie')
-    console.error(err)
     return false
   }
 }
@@ -108,6 +112,26 @@ export async function forgotPassword (email) {
     return true
   } catch (err) {
     console.error('Failed to reset password')
+    console.error(err)
+    return false
+  }
+}
+
+export async function googleOAuth (authCode) {
+  try {
+    const response = await fetch(`${API_URL}/auth/google`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(authCode)
+    })
+    if (response.status >= 400) {
+      throw new Error(`Request failed with response code ${response.status}`)
+    }
+    return response.json()
+  } catch (err) {
+    console.error('Failed to authenticate with Google')
     console.error(err)
     return false
   }

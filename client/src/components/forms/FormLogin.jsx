@@ -4,6 +4,9 @@ import { Button, Checkbox, Label, Modal, TextInput } from 'flowbite-react';
 import PropTypes from 'prop-types'
 import FormForgot from './FormForgot.jsx'
 import FormRegister from './FormRegister.jsx';
+import { GoogleLogin } from '@react-oauth/google'
+import { googleOAuth } from '../../requests/authenticationRequests.js';
+import { jwtDecode } from 'jwt-decode'
 
 
 const FormLogin =(props) => {
@@ -11,6 +14,27 @@ const FormLogin =(props) => {
   const setUserData = props.setUserData;
   const setModalContent = props.setModalContent;
   const handleClose = props.handleClose;
+
+  const handleGoogleSuccess = (credentialResponse) => {
+    const authorizationCode = credentialResponse;
+    const wrapper = async () => {
+      const googleLoginSuccess = await googleOAuth(authorizationCode)
+      if (googleLoginSuccess) {
+        console.log('Google login success', googleLoginSuccess)
+
+        setUserData(googleLoginSuccess.user)
+        setLoggedIn(true)
+        handleClose()
+      } else {
+        alert('Google login failed')
+      }
+    }
+    wrapper()
+  };
+
+  const handleGoogleError = (errorResponse) => {
+    console.log('Login Failed', errorResponse);
+  };
 
   const emailRef = React.useRef(null)
   React.useEffect(() => {
@@ -65,6 +89,7 @@ const FormLogin =(props) => {
             <div className="w-full">
               <Button onClick={handleLogin}>Log in to your account</Button>
             </div>
+            <GoogleLogin onSuccess={handleGoogleSuccess} onError={handleGoogleError} useOneTap flow="auth-code" />
             <div className="flex justify-between text-sm font-medium text-gray-500 dark:text-gray-300">
               Not registered?&nbsp;
               <a className="text-cyan-700 hover:underline dark:text-cyan-500" onClick={()=>setModalContent(<FormRegister handleClose={handleClose} setLoggedIn={setLoggedIn} setModalContent={setModalContent} />)}>

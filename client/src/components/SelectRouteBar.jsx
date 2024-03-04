@@ -3,6 +3,14 @@ import { Button, Card } from 'flowbite-react';
 import Drawer from './Drawer.jsx';
 import FormDeleteRoute from './routeForms/FormDeleteRoute.jsx';
 import FormSaveRoute from './routeForms/FormSaveRoute.jsx';
+import MapContext from './MapContext.jsx';
+
+import * as ol from 'ol';
+import * as olProj from 'ol/proj'
+import * as olGeom from 'ol/geom'
+import * as olLayer from 'ol/layer'
+import * as olSource from 'ol/source'
+import * as olStyle from 'ol/style'
 
 const customTheme = {
     "root": {
@@ -33,6 +41,9 @@ function SelectRouteBar(props) {
   const setShowModal = props.setShowModal;
   const setModalContent = props.setModalContent;
 
+  const [showRoute, setShowRoute] = React.useState(null);
+
+  const { map } = React.useContext(MapContext);
   const tempRoutes = [
     {
       name: "Route 1",
@@ -79,7 +90,42 @@ function SelectRouteBar(props) {
 
   const handlePreview = (routeIndex) => {
     console.log(routes[routeIndex]);
+    console.log("OL Route Draw State: ", showRoute);
     // Show the route on the map and erase the previous route
+    if (showRoute) {
+      map.removeLayer(showRoute);
+    }
+    const route = routes[routeIndex].route;
+    const points = []; // Convert each point object with lat and lng to an array
+    for (let i = 0; i < route.length; i++) {
+      console.log("Route Point: ", route[i]);
+      console.log("Route Point Lat: ", route[i].Lat);
+      console.log("Route Point Lng: ", route[i].Lng);
+      points.push([route[i].Lat, route[i].Lng]);
+    }
+
+    console.log("Points: ", points);
+
+    for (let i = 0; i < points.length; i++) {
+        points[i] = olProj.transform(points[i], 'EPSG:4326', 'EPSG:3857');
+    }
+    console.log("Points: ", points);
+    const featureLine = new ol.Feature({
+        geometry: new olGeom.LineString(points)
+    });
+
+    const vectorLine = new olSource.Vector({});
+    vectorLine.addFeature(featureLine);
+
+    const Route = new olLayer.Vector({
+        source: vectorLine,
+        style: new olStyle.Style({
+            fill: new olStyle.Fill({ color: 'red', weight: 4 }),
+            stroke: new olStyle.Stroke({ color: 'red', width: 2 })
+        })
+    });
+    map.addLayer(Route);
+    setShowRoute(Route);
   }
   const handleStart = (routeIndex) => {
     console.log("Start "+routes[routeIndex].name);
@@ -104,12 +150,14 @@ function SelectRouteBar(props) {
     }
   }
 
-  handleOpenRoutes = () => {
-    setShowBar(true);setRoutes(tempRoutes2);setRoutesType('Generated Routes')
+  handleCloseBar = () => {
+    map.removeLayer(showRoute);
+    setShowBar(false)
+
   }
   return (
     <>
-      <Drawer show={showBar} onClose={() => setShowBar(false)} routesType={routesType} >
+      <Drawer show={showBar} onClose={handleCloseBar} routesType={routesType} >
         {routes.map((route, index) => {
           return (
             <Card
@@ -127,7 +175,7 @@ function SelectRouteBar(props) {
               </div>
               <div className="flex flex-row space-x-1 p-0 m-0">
               <Button onClick={()=>handleStart(index)} color="success" size="xs" className="m-0">Start</Button>
-              <Button onClick={()=>handleSave(index)} color="blue" size="xs" className="m-0">Save</Button>
+              {(routesType === "Generated Routes") ? <Button onClick={()=>handleSave(index)} color="blue" size="xs" className="m-0">Save</Button> : null}
               <Button onClick={()=>handleDelete(index)} color="failure" size="xs" className="m-0">Delete</Button>
               </div>
             </Card>
