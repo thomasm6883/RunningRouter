@@ -9,6 +9,7 @@ import { checkCookie } from '../requests/authenticationRequests.js'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import MapContext from './MapContext.jsx'
 export const GlobalContext = React.createContext(null)
+import StartRoute from './StartRoute.jsx'
 
 const App = () => {
   const [loggedIn, setLoggedIn] = React.useState(false)
