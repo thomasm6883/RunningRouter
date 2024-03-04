@@ -8,20 +8,19 @@ function CustomModal(props) {
     const modalContent = props.modalContent;
 
   const handleClose = () => setShowModal(false);
-    const emailInputRef = React.useRef(null);
 
   return (
     <>
-      <Modal dismissible show={showModal} size="md" popup onClose={handleClose} initialFocus={emailInputRef}>
+      <Modal show={showModal} size="md" popup onClose={handleClose}>
         {modalContent}
       </Modal>
     </>
   );
-}
+};
 CustomModal.propTypes = {
   showModal: PropTypes.bool.isRequired,
   setShowModal: PropTypes.func.isRequired,
-  modalContent: PropTypes.string.isRequired,
+  modalContent: PropTypes.object.isRequired,
 }
 
 

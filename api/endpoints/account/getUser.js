@@ -1,11 +1,11 @@
 import queryMongoDatabase from "../../mongo/mongoClient.js";
 
 export default async function getUser (req, res) {
-    const username = req.body.username;
-    const databaseName = "runningDB";
-    const collectionName = "users";
+    const email = req.session.email;
+    const databaseName = "main";
+    const collectionName = "user";
     queryMongoDatabase(async db => {
-        const user = await db.collection(collectionName).findOne({ username });
+        const user = await db.collection(collectionName).findOne({ email }, { projection: { password: 0, _id: 0 }});
         if (!user) {
             res.status(404).json({ message: "User not found" });
         } else {

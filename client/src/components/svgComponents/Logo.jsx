@@ -1,5 +1,7 @@
 import * as React from "react"
+import '../../styles/Logo.css'
 const Logo = (props) => (
+  <div className="svgContainer">
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xmlSpace="preserve"
@@ -23,5 +25,6 @@ const Logo = (props) => (
       }}
     />
   </svg>
+  </div>
 )
 export default Logo

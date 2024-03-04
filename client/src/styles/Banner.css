@@ -1,26 +1,18 @@
 .banner{
+  height: 10vh;
 
 }
-svg{
-
-}
-.loginButton{
-
-}
-.loginButton:hover{
-
-}
-.registerButton{
-
-}
-.registerButton:hover{
-
-}
-.bannerMenu{
+.login{
   display: flex;
-  margin-left: auto;
-  justify-content: right;
+  justify-content: center;
   align-items: center;
-  width: 100%;
-  padding: 0 2rem;
+  height: 100%;
+  width: 40%;
+}
+.register{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 50%;
 }
