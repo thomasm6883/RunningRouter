@@ -7,7 +7,7 @@ import DropdownMenu from './DropdownMenu.jsx'
 import { getUser } from '../requests/accountRequests.js'
 import { checkCookie } from '../requests/authenticationRequests.js'
 import { GoogleOAuthProvider } from '@react-oauth/google'
-import MapContext from './MapContext.jsx'
+import MapContext from './mapComponents/MapContext.jsx'
 export const GlobalContext = React.createContext(null)
 import StartRoute from './StartRoute.jsx'
 
@@ -48,6 +48,7 @@ const App = () => {
     <MapContainer />
     <SelectRouteBar showBar={showBar} setShowBar={setShowBar} routes={routes} setRoutes={setRoutes} routesType={routesType} setRoutesType={setRoutesType} setShowModal={setShowModal} setModalContent={setModalContent} />
     <CustomModal showModal={showModal} setShowModal={setShowModal} modalContent={modalContent} />
+    <StartRoute />
     </GlobalContext.Provider>
     </GoogleOAuthProvider>
     </MapContext.Provider>

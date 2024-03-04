@@ -1,6 +1,6 @@
 import React from 'react'
-import MapCreate from './MapCreate.jsx'
-import MapCenter from './MapCenter.jsx'
+import MapCreate from './mapComponents/MapCreate.jsx'
+import MapCenter from './mapComponents/MapCenter.jsx'
 import '../styles/Map.css'
 
 const MapContainer = () => {

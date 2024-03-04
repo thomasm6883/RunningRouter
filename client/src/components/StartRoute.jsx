@@ -6,20 +6,21 @@ import * as olLayer from 'ol/layer'
 import * as olSource from 'ol/source'
 import * as olStyle from 'ol/style'
 import { TextInput } from 'flowbite-react';
+import MapContext  from './mapComponents/MapContext';
 
-const StartRoute = (props) => {
+const StartRoute = () => {
     [start, setStart] = React.useState(null);
     [oldLayer, setOldLayer] = React.useState(null);
     [transStart, setTransStart] = React.useState(null);
     [doStart, setDoStart] = React.useState(false);
     [address, setAddress] = React.useState(null);
     [coordinateFromFlask, setCoordinateFromFlask] = React.useState(null);
-
+    const { map } = React.useContext(MapContext);
 
     function getStart(start) {
     setDoStart(true)
-    if(props.map != null) {
-      props.map.on('click', function(e) {
+    if(map != null) {
+      map.on('click', function(e) {
       if(doStart != false) {
         points = olProj.transform(e.coordinate, 'EPSG:3857', 'EPSG:4326');
         setTransStart(points)
@@ -33,7 +34,7 @@ const StartRoute = (props) => {
       if(doStart != false) {
         if(start != null) {
           if(oldLayer != null) {
-            props.map.removeLayer(oldLayer)
+            map.removeLayer(oldLayer)
           }
         const marker = new olLayer.Vector({
           source: new olSource.Vector({
@@ -56,7 +57,7 @@ const StartRoute = (props) => {
           })
         }))
         setOldLayer(marker)
-        props.map.addLayer(marker)
+        map.addLayer(marker)
         setDoStart(false)
       }
     }
@@ -126,7 +127,7 @@ async function sendStart(e) {
   }
 }
 function clearStart() {
-  props.map.removeLayer(oldLayer)
+  map.removeLayer(oldLayer)
   setStart(null)
 }
 
