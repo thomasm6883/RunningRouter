@@ -88,7 +88,7 @@ async function sendStart(e) {
     console.error('Error:', error);
   }
   }
-  else if (start == null && address != null) {
+  else if (start == null && address != null && address.length != 0) {
     console.log("Address being sent", address)
     try {
       let result = new FormData()
@@ -105,6 +105,7 @@ async function sendStart(e) {
     result2.append('lat', dataBack[1])
     result2.append('direction', null)
     result2.append('mileage', 2)
+    result2.append('address', null)
       const dataBack2 = await fetch("http://127.0.0.1:5000/overpassGather", {
       method: "POST", // or 'PUT'
       body: result2,
