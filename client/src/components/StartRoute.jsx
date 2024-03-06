@@ -62,15 +62,17 @@ const StartRoute = (props) => {
             ]
           })
         })
-        marker.setStyle(new olStyle.Style({
-          image: new olStyle.Circle({
-            radius: 3,
-            fill: new olStyle.Fill({color: 'red'}),
-            stroke: new olStyle.Stroke({
-              color: [255,0,0], width: 2
-            })
-          })
-        }))
+        const styles = {
+          'icon': new olStyle.Style({
+            image: new olStyle.Icon({
+              anchor: [0.5, 1],
+              scale: 0.03,
+              src: 'marker.png',
+            }),
+          }),
+
+        };
+        marker.setStyle(styles.icon)
         setOldLayer(marker)
         map.addLayer(marker)
         setDoStart(false)
