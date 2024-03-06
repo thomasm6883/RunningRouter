@@ -21,8 +21,6 @@ const App = () => {
   const [routesType, setRoutesType] = React.useState('My Routes')
   const [map, setMap] = React.useState(null)
   const [startLoc, setStartLoc] = React.useState(null)
-  const [startAddress, setStartAddress] = React.useState(null)
-
 
   const initialize = async () => {
     const cookie = await checkCookie()
@@ -50,7 +48,7 @@ const App = () => {
     <MapContainer />
     <SelectRouteBar showBar={showBar} setShowBar={setShowBar} routes={routes} setRoutes={setRoutes} routesType={routesType} setRoutesType={setRoutesType} setShowModal={setShowModal} setModalContent={setModalContent} />
     <CustomModal showModal={showModal} setShowModal={setShowModal} modalContent={modalContent} />
-    <StartRoute startLoc = {startLoc} setStartLoc = {setStartLoc} startAddress = {startAddress} setStartAddress = {setStartAddress}/>
+    <StartRoute startLoc = {startLoc} setStartLoc = {setStartLoc}/>
     </GlobalContext.Provider>
     </GoogleOAuthProvider>
     </MapContext.Provider>
