@@ -16,19 +16,33 @@ const StartRoute = () => {
     [address, setAddress] = React.useState(null);
     [coordinateFromFlask, setCoordinateFromFlask] = React.useState(null);
     const { map } = React.useContext(MapContext);
+    const [clicked, setClicked] = React.useState(false);
 
-    function getStart(start) {
+    // Added functionality to fix the side effect of not removing the on 'click' event listener
+    // Now callback is called once per click
+    var callback = function(evt) {
+      if(doStart != false) {
+        points = olProj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
+        setTransStart(points)
+        setStart(evt.coordinate)
+        console.log("Start position", points)
+        if(clicked == false) {
+          setClicked(true)
+        } else {
+          setClicked(false)
+        }
+      }
+    }
+    const getStart = () => {
     setDoStart(true)
     if(map != null) {
-      map.on('click', function(e) {
-      if(doStart != false) {
-        points = olProj.transform(e.coordinate, 'EPSG:3857', 'EPSG:4326');
-        setTransStart(points)
-        setStart(e.coordinate)
+      map.on('click', callback);
+      if(clicked == true) {
+      map.un('click', callback);
       }
-    });
     }
     }
+
 
     React.useEffect(() => {
       if(doStart != false) {
