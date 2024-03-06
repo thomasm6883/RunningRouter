@@ -8,7 +8,7 @@ import * as olStyle from 'ol/style'
 import { TextInput } from 'flowbite-react';
 import MapContext  from './mapComponents/MapContext';
 
-const StartRoute = () => {
+const StartRoute = (props) => {
     [start, setStart] = React.useState(null);
     [oldLayer, setOldLayer] = React.useState(null);
     [transStart, setTransStart] = React.useState(null);
@@ -16,6 +16,10 @@ const StartRoute = () => {
     [address, setAddress] = React.useState(null);
     [coordinateFromFlask, setCoordinateFromFlask] = React.useState(null);
     const { map } = React.useContext(MapContext);
+    const startLoc = props.startLoc
+    const setStartLoc = props.setStartLoc
+    const startAddress = props.startAddress
+    const setStartAddress =props.setStartAddress
 
     function getStart(start) {
     setDoStart(true)
@@ -24,6 +28,7 @@ const StartRoute = () => {
       if(doStart != false) {
         points = olProj.transform(e.coordinate, 'EPSG:3857', 'EPSG:4326');
         setTransStart(points)
+        setStartLoc(points)
         setStart(e.coordinate)
       }
     });
@@ -105,7 +110,6 @@ async function sendStart(e) {
     result2.append('lat', dataBack[1])
     result2.append('direction', null)
     result2.append('mileage', 2)
-    result2.append('address', null)
       const dataBack2 = await fetch("http://127.0.0.1:5000/overpassGather", {
       method: "POST", // or 'PUT'
       body: result2,
@@ -132,13 +136,29 @@ function clearStart() {
   setStart(null)
 }
 
+async function OutsideTextbox() {
+  try {
+    let result = new FormData()
+    result.append('address', address)
+    const dataBack = await fetch("http://127.0.0.1:5000/getCoordinates", {
+    method: "POST", // or 'PUT'
+    body: result,
+  }).then(response => response.json())
+  setStartAddress(dataBack)
+  console.log(dataBack)
+  setTransStart(dataBack)
+} catch (error) {
+  console.error('Error:', error);
+}
+}
+
 
   return (
      <div>
     <button onClick={getStart}>Select a Start Position</button>
     <button onClick={clearStart}>Clear Start Position</button> <br />
     <p>Or enter an address for starting location</p>
-    <TextInput id="address" type="address" required onChange={(e) => setAddress(e.target.value)}/>
+    <TextInput id="address" type="address" required onChange={(e) => setAddress(e.target.value) /*setStartAddress(e.target.value)*/} onBlur={OutsideTextbox}/>
     <button onClick={sendStart}>Generate Route</button> <br />
     </div>
 
