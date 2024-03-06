@@ -17,14 +17,14 @@ export const getRoutes = async () => {
   }
 };
 
-export const saveRoute = async (route) => {
+export const saveRoute = async (newRoute) => {
   try {
     const response = await fetch(`${API_URL}/routes`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(route),
+        body: JSON.stringify(newRoute),
     });
     if (response.status >= 400) {
       throw new Error(`Request failed with response code ${response.status}`)

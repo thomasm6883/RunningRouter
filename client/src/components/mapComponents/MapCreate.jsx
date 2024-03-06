@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useRef, useEffect } from 'react';
-import "../styles/Map.css";
+import "../../styles/Map.css";
 import {Map, View, } from 'ol';
 import * as ol from 'ol';
 import TileLayer from 'ol/layer/Tile';
@@ -11,10 +11,15 @@ import * as olLayer from 'ol/layer'
 import * as olSource from 'ol/source'
 import * as olStyle from 'ol/style'
 import MapContext from './MapContext';
+import OlZoom from 'ol/control/Zoom';
+import ZoomToExtent from 'ol/control/ZoomToExtent';
+import { Attribution } from 'ol/control.js';
+import { boundingExtent } from 'ol/extent';
+import MapControlRecenter from './MapControlRecenter';
 
 const MapCreate = ({ children }) => {
   const mapRef = useRef();
-  const [map, setMap] = useState(null);
+  const { map, setMap } = React.useContext(MapContext);
   // on component mount
   useEffect(() => {
     let options = {
@@ -27,6 +32,11 @@ const MapCreate = ({ children }) => {
           source: new OSM()
         })
       ],
+      controls: [
+        new OlZoom({ className: 'custom-zoom' }),
+        new Attribution({ collapsible: false }),
+        new MapControlRecenter()
+      ],
     };
     let mapObject = new ol.Map(options);
 
@@ -37,11 +47,9 @@ const MapCreate = ({ children }) => {
   }, []);
 
     return (
-      <MapContext.Provider value={{ map }}>
         <div ref={mapRef} className="ol-map">
         { children }
         </div>
-      </MapContext.Provider>
     );
 };
 
