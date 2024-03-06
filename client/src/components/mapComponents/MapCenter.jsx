@@ -12,7 +12,7 @@ import * as olStyle from 'ol/style'
 const MapCenter = () => {
   const { map } = React.useContext(MapContext);
   React.useEffect(() => {
-
+if (map === null) return;
   navigator.geolocation.getCurrentPosition((position) => {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;

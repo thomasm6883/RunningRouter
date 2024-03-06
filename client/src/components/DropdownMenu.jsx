@@ -1,6 +1,5 @@
-import React, { forwardRef } from 'react';
-
-const DropdownMenu = (props) => {
+import React from 'react';
+const DropdownMenu = () => {
   return (
     <div>
 

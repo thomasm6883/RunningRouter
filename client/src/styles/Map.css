@@ -43,7 +43,7 @@ button.custom-zoom-in {
   padding: auto;
   width: 2em;
   height: 2em;
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.4);
   border: 1px solid black;
   border-radius: 5px;
   font-weight: bold;
@@ -55,7 +55,7 @@ button.custom-zoom-out {
   padding: auto;
   width: 2em;
   height: 2em;
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.4);
   border: 1px solid black;
   border-radius: 5px;
   font-weight: bold;
@@ -73,7 +73,7 @@ div.ol-attribution {
   right: auto;
   height: auto;
   width: auto;
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.4);
   border: 1px solid black;
   border-radius: 5px;
 
@@ -81,4 +81,20 @@ div.ol-attribution {
 }
 .ol-attribution-expand {
 display: none;
+}
+.recenter {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  flex-direction: column;
+  height: auto;
+  width:auto;
+  padding: 5px;
+  z-index: 5;
+  gap: 2px;
+  background-color: rgba(255, 255, 255, 0.4);
+  border: 1px solid black;
+  border-radius: 5px;
+  font-size: 16px;
+
 }

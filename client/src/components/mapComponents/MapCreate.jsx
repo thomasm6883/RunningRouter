@@ -15,6 +15,7 @@ import OlZoom from 'ol/control/Zoom';
 import ZoomToExtent from 'ol/control/ZoomToExtent';
 import { Attribution } from 'ol/control.js';
 import { boundingExtent } from 'ol/extent';
+import MapControlRecenter from './MapControlRecenter';
 
 const MapCreate = ({ children }) => {
   const mapRef = useRef();
@@ -34,6 +35,7 @@ const MapCreate = ({ children }) => {
       controls: [
         new OlZoom({ className: 'custom-zoom' }),
         new Attribution({ collapsible: false }),
+        new MapControlRecenter()
       ],
     };
     let mapObject = new ol.Map(options);
