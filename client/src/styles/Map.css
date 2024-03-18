@@ -29,3 +29,62 @@ html, body {
   height: 90vh;
   width: 100%;
 }
+
+.menu {
+  position: absolute;
+  top: 19vh; /* Adjust this value to position the button beneath the navbar */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 15px 32px; /* Some padding */
+  z-index: 1; /* This ensures the button is above the map */
+  border-radius: 8px; /* Rounded corners */
+  background-color: hsla(91, 87%, 62%, 0.861); /* This will give the menu a clean white background */
+}
+.menuButton {
+  position: absolute;
+  top: 14%; /* Adjust this value to position the button beneath the navbar */
+  left: 95%;
+  transform: translate(-50%, -50%);
+  z-index: 1; /* This ensures the button is above the map */
+}
+.button-style {
+  background-color: #4CAF50; /* Green background */
+  border: none; /* No border */
+  color: white; /* White text */
+  padding: 15px 32px; /* Some padding */
+  text-align: center; /* Centered text */
+  text-decoration: none; /* No underline */
+  display: inline-block; /* Make it inline */
+  font-size: 16px; /* Big text */
+  margin: 4px 2px; /* Some margin */
+  cursor: pointer; /* Pointer/hand cursor on hover */
+  border-radius: 12px; /* Rounded corners */
+}
+.small-input {
+  width: 100px;
+  height: 30px; /* Adjust this value as needed */
+}
+.input-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Adjust this value as needed */
+}
+.menu .map-button {
+  background-color: white; /* Blue background */
+  color: blue; /* White text */
+  border: blue; /* No border */
+  padding: 10px 24px; /* Padding */
+  text-align: center; /* Centered text */
+  text-decoration: none; /* No underline */
+  display: inline-block; /* Inline-block */
+  font-size: 14px; /* Font size */
+  margin: 4px 2px; /* Margin */
+  cursor: pointer; /* Hand cursor */
+  border-radius: 8px; /* Rounded corners */
+  transition-duration: 0.4s; /* Transition */
+}
+
+.map-button:hover {
+  background-color: #4CAF50; /* White background */
+  color: black; /* Black text */
+}
