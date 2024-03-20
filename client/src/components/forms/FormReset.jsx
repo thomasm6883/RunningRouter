@@ -6,13 +6,12 @@ import PropTypes from 'prop-types'
 
 const FormReset = (props) => {
   const handleClose = props.handleClose;
-  const emailInputRef = props.emailInputRef
   const email = props.email
   const [pin, setPin] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [passwordConfirm, setPasswordConfirm] = React.useState('')
 
-  const pinRef = React.useRef(null)
+  const pinRef = React.useRef(null) // Focus the Pin Input Field on Render
   React.useEffect(() => {
     pinRef.current.focus()
   }, [])

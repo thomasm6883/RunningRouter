@@ -3,13 +3,12 @@ import { register } from '../../requests/authenticationRequests.js'
 import { Button, Checkbox, Label, Modal, TextInput } from 'flowbite-react';
 import PropTypes from 'prop-types'
 import FormLogin from './FormLogin.jsx'
+import { GlobalContext } from '../App.jsx';
 
 
 const FormRegister = (props) => {
+  const { setLoggedIn, setModalContent, setUserData } = React.useContext(GlobalContext)
   const handleClose = props.handleClose;
-  const setLoggedIn = props.setLoggedIn;
-  const setModalContent = props.setModalContent;
-  const setUserData = props.setUserData;
 
   const [password, setPassword] = React.useState('')
   const [passwordConfirm, setPasswordConfirm] = React.useState('')
@@ -18,7 +17,7 @@ const FormRegister = (props) => {
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('')
   const [passwordConfirmErrorMessage, setPasswordConfirmErrorMessage] = React.useState('')
 
-  const emailRef = React.useRef(null)
+  const emailRef = React.useRef(null) // Focus the Email Input Field on Render
   React.useEffect(() => {
     emailRef.current.focus()
   }, [])
@@ -104,7 +103,7 @@ const FormRegister = (props) => {
             </div>
             <div className="flex justify-between text-sm font-medium text-gray-500 dark:text-gray-300">
               Have an account?&nbsp;
-              <a className="text-cyan-700 hover:underline dark:text-cyan-500" onClick={()=>setModalContent(<FormLogin handleClose={handleClose} setLoggedIn={setLoggedIn} setModalContent={setModalContent} setUserData={setUserData} />)}>
+              <a className="text-cyan-700 hover:underline dark:text-cyan-500" onClick={()=>setModalContent(<FormLogin handleClose={handleClose} />)}>
                 Login
               </a>
             </div>

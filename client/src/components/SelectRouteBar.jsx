@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Card } from 'flowbite-react';
-import Drawer from './Drawer.jsx';
+import Drawer from './routeBarComponents/Drawer.jsx';
 import FormDeleteRoute from './routeForms/FormDeleteRoute.jsx';
 import FormSaveRoute from './routeForms/FormSaveRoute.jsx';
 import MapContext from './mapComponents/MapContext.jsx';
@@ -13,7 +13,8 @@ import * as olLayer from 'ol/layer'
 import * as olSource from 'ol/source'
 import * as olStyle from 'ol/style'
 import {getVectorContext} from 'ol/render.js';
-import { set } from 'ol/transform.js';
+import RouteBar from './routeBarComponents/RouteBar.jsx';
+
 
 const customTheme = {
     "root": {
@@ -46,6 +47,9 @@ function SelectRouteBar(props) {
   const [showRoutePreview, setShowRoutePreview] = React.useState(null);
   const [animationLayer, setAnimationLayer] = React.useState(null);
   const [startRoute, setStartRoute] = React.useState(false);
+
+  const [showRouteNavBar, setShowRouteNavBar] = React.useState(false);
+  const handleCloseRouteNavBar = () => { setShowRouteNavBar(false); setShowBar(true); }
 
   const { map } = React.useContext(MapContext);
 
@@ -103,14 +107,30 @@ function SelectRouteBar(props) {
     map.addLayer(Route);
     // Set the map zoom
     const extent = olExtent.boundingExtent(points);
-    map.getView().fit(extent, { padding: [90, 75, 170, 75] });
+    map.getView().fit(extent, { padding: [90, 75, 200, 75] });
     setShowRoutePreview(Route);
   }
   const handleStart = (routeIndex) => {
+    // TO DO - ACTIVE NAVIGATION
+    // 1) add dynamic re-centering and rotation based on user location (follow the user, break if screen is changed)
+    // 2) create icon for user location
+    // 3) create logic to prevent a route starting if user location is too far from start (mostly applies to Saved Routes) Another solution would be dynamic route re-calculation, but this is not in scope for project
+    // 4) determine how to deal with route breaks (when a user moves to far away from the path), is dynamic re-calculation necessary?
+    // 5) end route when user is in x distance from end
+    // 6) close routes bar
+    // 7) create thin navigation bar with time, stop route, and stats
+
+    // TO DO - FORMAT
+    // separate this function into at least 1 separate file to clean the code up
+
     setStartRoute(true);
+
+    setShowRouteNavBar(true);
+    setShowBar(false);
 
     if (showRoutePreview) {
       map.removeLayer(showRoutePreview);
+      setShowRoutePreview(null)
     }
     // Get the route points ---------------------------------------------------
     const route = routes[routeIndex].route;
@@ -149,11 +169,11 @@ function SelectRouteBar(props) {
       geometry: lineString,
     });
     const startMarker = new ol.Feature({
-      type: "icon",
+      type: "start",
       geometry: new olGeom.Point(lineString.getFirstCoordinate()),
     });
     const endMarker = new ol.Feature({
-      type: "icon",
+      type: "end",
       geometry: new olGeom.Point(lineString.getLastCoordinate()),
     });
     const position = startMarker.getGeometry().clone();
@@ -169,11 +189,21 @@ function SelectRouteBar(props) {
           color: [50, 50, 200, 0.7],
         }),
       }),
-      'icon': new olStyle.Style({
+      'end': new olStyle.Style({
         image: new olStyle.Icon({
           anchor: [0.5, 1],
           scale: 0.04,
           src: 'marker.png',
+        }),
+      }),
+      'start': new olStyle.Style({
+        image: new olStyle.Circle({
+          radius: 7,
+          fill: new olStyle.Fill({ color: 'grey' }),
+          stroke: new olStyle.Stroke({
+            color: [50, 50, 50, .5],// TO DO change to dark grey
+            width: 1,
+          }),
         }),
       }),
       'geoMarker': new olStyle.Style({
@@ -204,7 +234,7 @@ function SelectRouteBar(props) {
     map.addLayer(routeLayer);
     setAnimationLayer(routeLayer);
     const extent = olExtent.boundingExtent(points);
-    map.getView().fit(extent, { padding: [90, 75, 170, 75] });
+    map.getView().fit(extent, { padding: [90, 75, 200, 75] });
     // Start the route navigation ---------------------------------------------
 
     const speed = 60; // will be input by the user and passed as a state variable
@@ -243,7 +273,7 @@ function SelectRouteBar(props) {
       // set animating boolean variable to true
       routeLayer.on('postrender', moveFeature);
 
-      geoMarker.setGeometry(null); // this is necessary for the openlayers example, but might not be necessary for our implementation
+      geoMarker.setGeometry(null); // this is necessary for the open layers example, but might not be necessary for our implementation
     }
     startAnimation();
 
@@ -254,23 +284,29 @@ function SelectRouteBar(props) {
       //setStartRoute(false);
     }
 
+    // TO DO - ADD NAVIGATION BAR
+    // TO DO - Create loop to start navigation. Separate state variable for the loop control.
+    // In loop track user position, if user is within x distance of the end, stop the loop and the route
+    // Something like if (!startRoute) {   setStartRoute(true); startRunningRoute(); }
+    // function startRunningRoute() { ... }
+    // function stopRunningRoute() { ... }
   };
-  const handleStop = (routeIndex) => {
-    console.log("Stop "+routes[routeIndex].name);
+  const handleCancel = (routeIndex) => {
+    console.log("Cancel "+routes[routeIndex].name);
     // Stop the route navigation
-    console.log(map.getLayers().getArray());
     map.removeLayer(animationLayer);
+    setAnimationLayer(null)
     setStartRoute(false);
   }
   const handleSave = (routeIndex) => {
     console.log("Save "+routes[routeIndex].name);
-    // MongoDB Update and return success
+    // MongoDB FindOneAndUpdate if we are keeping MyRoutes as state, otherwise call for MyRoutes on render
     setModalContent(<FormSaveRoute handleClose={()=>setShowModal(false)} route={routes[routeIndex]} />)
     setShowModal(true)
   }
   const handleDelete = (routeIndex) => {
     console.log("Delete "+routes[routeIndex].name);
-    // MongoDB FindOneAndUpdate
+    // MongoDB FindOneAndUpdate because MyRoutes would be currently displayed. Only change display/React state when the mongoDB/backend state updates.
     if (routesType === 'My Routes') {
     setModalContent(<FormDeleteRoute handleClose={()=>setShowModal(false)} route={routes[routeIndex]} />)
     setShowModal(true)
@@ -281,7 +317,7 @@ function SelectRouteBar(props) {
     }
   }
 
-  handleCloseBar = () => {
+  const handleCloseBar = () => {
     if (animationLayer) {map.removeLayer(animationLayer); setAnimationLayer(null);}
     if (showRoutePreview) {map.removeLayer(showRoutePreview); setShowRoutePreview(null);}
     setStartRoute(false)
@@ -291,7 +327,7 @@ function SelectRouteBar(props) {
   return (
     <>
       <Drawer show={showBar} onClose={handleCloseBar} routesType={routesType} >
-        {routes.map((route, index) => {
+        {(routes.length) ? routes.map((route, index) => {
           return (
             <Card
               key={index}
@@ -299,22 +335,21 @@ function SelectRouteBar(props) {
               className="max-h-sm p-0 m-0"
             >
               <div onClick={() => handlePreview(index)}>
-              <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white p-0 m-0">
+              <h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white p-0 m-0">
                 {route.name ?? "Route " + (index+1)}
               </h5>
-              <p className="font-normal text-gray-700 dark:text-gray-400 p-0 m-0">
-                {route.description ?? "No description"}
-              </p>
               </div>
               <div className="flex flex-row space-x-1 p-0 m-0">
-              {(!startRoute) ? <Button onClick={()=>handleStart(index)} color="success" size="xs" className="m-0">Start</Button> : <Button onClick={()=>handleStop(index)} color="success" size="xs" className="m-0">Stop</Button> }
+              {(!startRoute) ? <Button onClick={()=>handleStart(index)} color="success" size="xs" className="m-0">Start</Button> : <Button onClick={()=>handleCancel(index)} color="success" size="xs" className="m-0">Stop</Button> }
               {(routesType === "Generated Routes") ? <Button onClick={()=>handleSave(index)} color="blue" size="xs" className="m-0">Save</Button> : null}
               <Button onClick={()=>handleDelete(index)} color="failure" size="xs" className="m-0">Delete</Button>
               </div>
             </Card>
           );
-        })}
+        }): <div className="text-red-600" >No Routes Available</div>}
       </Drawer>
+      <RouteBar show={showRouteNavBar} onClose={handleCloseRouteNavBar} />
+
     </>
   );
 }
