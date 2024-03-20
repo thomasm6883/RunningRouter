@@ -4,7 +4,7 @@ export default function Drawer({ children, show, onClose, routesType }) {
   return (
     <div
       className={
-        " fixed overflow-hidden z-10 inset-x-0 bottom-0 h-48" +
+        " fixed overflow-hidden z-10 inset-x-0 bottom-0 h-fit" +
         (show
           ? " transition-opacity opacity-100 duration-500 translate-y-0  "
           : " transition-all delay-500 opacity-0 translate-y-full  ")
@@ -12,7 +12,7 @@ export default function Drawer({ children, show, onClose, routesType }) {
     >
       <section
         className={
-          " w-screen  bottom-0 absolute bg-white w-full delay-400 duration-500 ease-in-out transition-all transform  " +
+          " w-screen  bottom-0 bg-white w-full delay-400 duration-500 ease-in-out transition-all transform  " +
           (show ? " translate-y-0 " : " translate-y-full ")
         }
       >

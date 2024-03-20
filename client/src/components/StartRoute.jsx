@@ -136,14 +136,86 @@ async function OutsideTextbox() {
 }
 
   return (
-     <div>
-    <button onClick={getStart}>Select a Start Position</button>
-    <button onClick={clearStart}>Clear Start Position</button> <br />
-    <p>Or enter an address for starting location</p>
-    <TextInput id="address" type="address" required onChange={(e) => setAddress(e.target.value) /*setStartAddress(e.target.value)*/} onBlur={OutsideTextbox}/>
-    <button onClick={sendStart}>Generate Route</button> <br />
+    <div className="flex flex-col md:flex-row w-full ">
+      <div>
+      <div id="startSelect" className='flex flex-row justify-center items-center space-x-2'>
+        <div className='font-bold py-auto'>Start:</div>
+        <button id="selectStartButton" onClick={getStart}><svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <circle cx="12" cy="12" r="6" />
+          <line x1="22" y1="12" x2="18" y2="12" />
+          <line x1="6" y1="12" x2="2" y2="12" />
+          <line x1="12" y1="6" x2="12" y2="2" />
+          <line x1="12" y1="22" x2="12" y2="18" />
+        </svg>
+        </button>
+        <button id="clearStartButton" onClick={clearStart}>Clear</button>
+        <TextInput
+          id="address"
+          type="address"
+          placeholder='Or enter an address'
+          required
+          onChange={
+            (e) =>
+              setAddress(e.target.value) /*setStartAddress(e.target.value)*/
+          }
+          onBlur={OutsideTextbox}
+        />
+      </div>
+      <div id="startEnd" className='flex flex-row justify-center items-center space-x-2'>
+        <div className='font-bold py-auto'>End:</div>
+        <button id="selectStartButton" onClick={getStart}><svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <circle cx="12" cy="12" r="6" />
+          <line x1="22" y1="12" x2="18" y2="12" />
+          <line x1="6" y1="12" x2="2" y2="12" />
+          <line x1="12" y1="6" x2="12" y2="2" />
+          <line x1="12" y1="22" x2="12" y2="18" />
+        </svg>
+        </button>
+        <button id="clearStartButton" onClick={clearStart}>Clear</button>
+        <TextInput
+          id="address"
+          type="address"
+          placeholder='Or enter an address'
+          required
+          onChange={
+            (e) =>
+              setAddress(e.target.value) /*setStartAddress(e.target.value)*/
+          }
+          onBlur={OutsideTextbox}
+        />
+      </div>
+      </div>
+      <div className='ml-3'>
+        <label>Distance</label>
+        <input type="text" id="distance" name="distance" />
+      </div>
+      <button className="ml-auto justify-right px-2 rounded border-2" onClick={sendStart}>
+        Generate Route
+      </button>{" "}
+      <br />
     </div>
-
-  )
+  );
 }
 export default StartRoute;

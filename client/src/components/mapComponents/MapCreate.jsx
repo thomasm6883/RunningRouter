@@ -1,20 +1,12 @@
 import React from 'react';
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import "../../styles/Map.css";
-import {Map, View, } from 'ol';
 import * as ol from 'ol';
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
-import * as olProj from 'ol/proj'
-import * as olGeom from 'ol/geom'
-import * as olLayer from 'ol/layer'
-import * as olSource from 'ol/source'
-import * as olStyle from 'ol/style'
 import MapContext from './MapContext';
 import OlZoom from 'ol/control/Zoom';
-import ZoomToExtent from 'ol/control/ZoomToExtent';
 import { Attribution } from 'ol/control.js';
-import { boundingExtent } from 'ol/extent';
 import MapControlRecenter from './MapControlRecenter';
 
 const MapCreate = ({ children }) => {

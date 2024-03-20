@@ -7,13 +7,13 @@ import FormRegister from './FormRegister.jsx';
 import { GoogleLogin } from '@react-oauth/google'
 import { googleOAuth } from '../../requests/authenticationRequests.js';
 import { jwtDecode } from 'jwt-decode'
+import { GlobalContext } from '../App.jsx';
 
 
-const FormLogin =(props) => {
-  const setLoggedIn = props.setLoggedIn;
-  const setUserData = props.setUserData;
-  const setModalContent = props.setModalContent;
-  const handleClose = props.handleClose;
+const FormLogin = (props) => {
+
+  const { setLoggedIn, setUserData, setModalContent } = React.useContext(GlobalContext)
+  const handleClose = props.handleClose
 
   const handleGoogleSuccess = (credentialResponse) => {
     const authorizationCode = credentialResponse;
@@ -36,7 +36,7 @@ const FormLogin =(props) => {
     console.log('Login Failed', errorResponse);
   };
 
-  const emailRef = React.useRef(null)
+  const emailRef = React.useRef(null) // Focus the Email Input Field on Render
   React.useEffect(() => {
     emailRef.current.focus()
   }, [])
@@ -92,7 +92,7 @@ const FormLogin =(props) => {
             <GoogleLogin onSuccess={handleGoogleSuccess} onError={handleGoogleError} useOneTap flow="auth-code" />
             <div className="flex justify-between text-sm font-medium text-gray-500 dark:text-gray-300">
               Not registered?&nbsp;
-              <a className="text-cyan-700 hover:underline dark:text-cyan-500" onClick={()=>setModalContent(<FormRegister handleClose={handleClose} setLoggedIn={setLoggedIn} setModalContent={setModalContent} />)}>
+              <a className="text-cyan-700 hover:underline dark:text-cyan-500" onClick={()=>setModalContent(<FormRegister handleClose={handleClose} />)}>
                 Create account
               </a>
             </div>

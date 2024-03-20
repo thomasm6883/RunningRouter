@@ -22,6 +22,8 @@ const App = () => {
   const [map, setMap] = React.useState(null)
   const [startLoc, setStartLoc] = React.useState(null)
 
+  const [showGenerateRouteDrawer, setShowGenerateRouteDrawer] = React.useState(false)
+
   const initialize = async () => {
     const cookie = await checkCookie()
     if (cookie) {
@@ -38,17 +40,18 @@ const App = () => {
     initialize()
   }, [])
 
+  // <StartRoute startLoc = {startLoc} setStartLoc = {setStartLoc}/>
   return (
     <>
     <MapContext.Provider value={{ map, setMap }}>
     <GoogleOAuthProvider clientId="954079927112-48qrn73bql7ma5c6qc7t8mddhsagr39v.apps.googleusercontent.com" >
-    <GlobalContext.Provider value={{ loggedIn, setLoggedIn, userData, setUserData, showModal, setShowModal, modalContent, setModalContent, showBar, setShowBar, routes, setRoutes, routesType, setRoutesType }}>
-    <Banner loggedIn={loggedIn} setLoggedIn={setLoggedIn} setModalContent={setModalContent} setShowModal={setShowModal} userData={userData} setUserData={setUserData} setShowBar={setShowBar} />
+    <GlobalContext.Provider value={{ loggedIn, setLoggedIn, userData, setUserData, setShowModal, modalContent, setModalContent, setShowBar, routes, setRoutes, routesType, setRoutesType, showGenerateRouteDrawer, setShowGenerateRouteDrawer }}>
+    <Banner showGenerateRouteDrawer={showGenerateRouteDrawer} />
     <DropdownMenu setRoutes={setRoutes} />
     <MapContainer />
     <SelectRouteBar showBar={showBar} setShowBar={setShowBar} routes={routes} setRoutes={setRoutes} routesType={routesType} setRoutesType={setRoutesType} setShowModal={setShowModal} setModalContent={setModalContent} />
     <CustomModal showModal={showModal} setShowModal={setShowModal} modalContent={modalContent} />
-    <StartRoute startLoc = {startLoc} setStartLoc = {setStartLoc}/>
+
     </GlobalContext.Provider>
     </GoogleOAuthProvider>
     </MapContext.Provider>
