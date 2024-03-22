@@ -3,10 +3,30 @@ import { GlobalContext } from "../App.jsx";
 import StartRoute from "../StartRoute.jsx";
 
 export default function GenerateRouteDrawer({ showGenerateRouteDrawer }) {
-  const { setShowGenerateRouteDrawer } = React.useContext(GlobalContext);
+  const { setShowGenerateRouteDrawer, setShowBar, setRoutesType, setRoutes } = React.useContext(GlobalContext);
   const onClose = () => {
     setShowGenerateRouteDrawer(false);
   };
+  const routes = [
+    {
+      route: [
+        {
+          Lng: 40.748817,
+          Lat: -73.985428,
+        },
+        {
+          Lng: 41.748817,
+          Lat: -74.985428,
+        },
+      ],
+    }
+      ]
+  const handleGenerateRoutes = () => {
+    setShowGenerateRouteDrawer(false);
+    setShowBar(true);
+    setRoutesType("Generated Routes");
+    setRoutes(routes);
+  }
   return (
     <div
       className={
@@ -24,7 +44,7 @@ export default function GenerateRouteDrawer({ showGenerateRouteDrawer }) {
       >
         <div className="relative w-full flex flex-col space-x-1 y-full">
           <div className="flex justify-left p-2">
-          <header className="p-1 font-bold text-lg w-fit">Generate Route</header>
+          <header className="p-1 font-bold text-lg w-fit" onClick={handleGenerateRoutes}>Generate Route</header>
           <StartRoute />
           </div>
           <div className="w-full flex justify-center">

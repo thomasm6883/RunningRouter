@@ -5,7 +5,7 @@ import '../styles/Map.css'
 
 const MapContainer = () => {
   return (
-    <div className='mapContainer'>
+    <div className='mapContainer grow'>
       <MapCreate>
       <MapCenter />
     </ MapCreate>

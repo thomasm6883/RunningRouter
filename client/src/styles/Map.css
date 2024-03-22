@@ -1,24 +1,3 @@
-/* @import "node_modules/ol/ol.css"; */
-
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-}
-#map {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
-}
-.ol-map {
-  min-width: 100%;
-  min-height: 100%;
-
-  height: 100%;
-  width: 100%;
-}
 .mapContainer {
   display: flex;
   justify-content: center;
@@ -26,7 +5,8 @@ html, body {
   margin: 0;
   padding: 0;
   margin-top: 0vh;
-  height: 85.1vh;
+  min-height: 60%;
+  height:max-content;
   width: 100%;
 }
 div.custom-zoom {
