@@ -5,9 +5,13 @@ import '../styles/Banner.css';
 import { Navbar } from 'flowbite-react';
 import GenerateRouteDrawer from './routeBarComponents/GenerateRouteDrawer.jsx';
 import { GlobalContext } from './App.jsx';
+import StripeDrawer from './formsStripe/StripeDrawer.jsx';
+import TestStripeForm from './formsStripe/TestStripeForm.jsx';
 
 const Banner = () => {
-  const { showGenerateRouteDrawer, setShowGenerateRouteDrawer, userData, setShowBar, setRoutes } = React.useContext(GlobalContext);
+  const [showStripeDrawer, setShowStripeDrawer] = React.useState(false);
+
+  const { showGenerateRouteDrawer, setShowGenerateRouteDrawer, userData, setShowBar, setRoutes, setRoutesType } = React.useContext(GlobalContext);
   const handleOpenGenerateRouteDrawer = () => {
     console.log('open drawer');
     setShowGenerateRouteDrawer(true);
@@ -15,6 +19,7 @@ const Banner = () => {
   }
   const handleOpenRoutes = () => {
     setRoutes(userData.savedRoutes)
+    setRoutesType('My Routes')
     setShowBar(true)
   }
 
@@ -29,7 +34,7 @@ const Banner = () => {
           </span>
         </Navbar.Brand>
         <div className="flex md:order-2">
-          <BannerMenu />
+          <BannerMenu setShowStripeDrawer={setShowStripeDrawer} />
         </div>
       </Navbar>
       </div>
@@ -65,6 +70,7 @@ const Banner = () => {
       </nav>
       </div>
       <GenerateRouteDrawer showGenerateRouteDrawer={showGenerateRouteDrawer} />
+      <StripeDrawer show={showStripeDrawer} onClose={()=>setShowStripeDrawer(false)} >{(showStripeDrawer) ? <TestStripeForm/> : null}</StripeDrawer>
     </div>
   );
 };
