@@ -23,9 +23,20 @@ dataRouter.get('/test', (req, res) => {
     res.send('Hello from the server!')
 })
 
-dataRouter.get('/routes', isAuthenticated, getSavedRoutes);
-dataRouter.post('/routes', isAuthenticated, saveRoute);
-dataRouter.delete('/routes', isAuthenticated, deleteRoute);
+//dataRouter.get('/routes', isAuthenticated, getSavedRoutes); //can remove isAuthenticated for testing
+dataRouter.get('/routes', getSavedRoutes);
+//dataRouter.post('/routes', isAuthenticated, saveRoute);
+dataRouter.post('/routes',  saveRoute);
+//dataRouter.delete('/routes', isAuthenticated, deleteRoute);
+dataRouter.delete('/routes', deleteRoute);
+
+
+//dataRouter.get('/routes', isAuthenticated, getSavedRoutes); //can remove isAuthenticated for testing
+//dataRouter.get('/routes', getSavedRoutes);
+//dataRouter.post('/routes', isAuthenticated, saveRoute);
+dataRouter.post('/locations',  saveLocation);
+//dataRouter.delete('/routes', isAuthenticated, deleteRoute);
+//dataRouter.delete('/routes', deleteRoute);
 
 dataRouter.post('/login', login);
 dataRouter.post('/register', register);
