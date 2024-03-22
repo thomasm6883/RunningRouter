@@ -17,6 +17,10 @@ import updateUser from '../endpoints/account/updateUser.js'
 import deleteUser from '../endpoints/account/deleteUser.js'
 import isAuthenticated from '../middleware/isAuthenticated.js'
 
+import createCheckoutSession from '../endpoints/stripe/createCheckoutSession.js'
+import createPortalSession from '../endpoints/stripe/createPortalSession.js'
+import webhook from '../endpoints/stripe/webhook.js'
+
 import { validator, validationErrorMiddleware } from '../middleware/inputValidation.js'
 
 const dataRouter = new Express.Router()
@@ -41,5 +45,9 @@ dataRouter.get('/cookie', checkCookie);
 dataRouter.get('/user', isAuthenticated, getUser);
 dataRouter.post('/user', isAuthenticated, updateUser);
 dataRouter.delete('/user', isAuthenticated, deleteUser);
+// Stripe Routes
+dataRouter.post('/create-checkout-session', isAuthenticated, createCheckoutSession);
+dataRouter.post('/create-portal-session', isAuthenticated, createPortalSession);
+dataRouter.post('/webhook', Express.raw({ type: 'application/json' }), webhook);
 
 export default dataRouter

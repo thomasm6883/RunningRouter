@@ -7,6 +7,7 @@ import * as olSource from 'ol/source'
 import * as olStyle from 'ol/style'
 import { TextInput } from 'flowbite-react';
 import MapContext  from './mapComponents/MapContext';
+import { GlobalContext } from './App';
 
 const StartRoute = (props) => {
     [start, setStart] = React.useState(null);
@@ -15,8 +16,11 @@ const StartRoute = (props) => {
     [address, setAddress] = React.useState(null);
     [coordinateFromFlask, setCoordinateFromFlask] = React.useState(null);
     const { map } = React.useContext(MapContext);
-    const startLoc = props.startLoc
-    const setStartLoc = props.setStartLoc
+
+    // const startLoc = props.startLoc
+    // const setStartLoc = props.setStartLoc
+
+    const { startLoc, setStartLoc } = React.useContext(GlobalContext);
     const [clicked, setClicked] = React.useState(false);
 
     // Added functionality to fix the side effect of not removing the on 'click' event listener
@@ -136,7 +140,7 @@ async function OutsideTextbox() {
 }
 
   return (
-    <div className="flex flex-col md:flex-row w-full ">
+    <div className="flex flex-col space-y-2 md:flex-row md:space-x-2 w-full ">
       <div>
       <div id="startSelect" className='flex flex-row justify-center items-center space-x-2'>
         <div className='font-bold py-auto'>Start:</div>
