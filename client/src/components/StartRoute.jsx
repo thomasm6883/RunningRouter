@@ -7,16 +7,15 @@ import * as olSource from 'ol/source'
 import * as olStyle from 'ol/style'
 import { TextInput } from 'flowbite-react';
 import MapContext  from './mapComponents/MapContext';
+import { GlobalContext } from './App';
 
 const StartRoute = (props) => {
     [start, setStart] = React.useState(null);
     [oldLayer, setOldLayer] = React.useState(null);
     [doStart, setDoStart] = React.useState(false);
     [address, setAddress] = React.useState(null);
-    [coordinateFromFlask, setCoordinateFromFlask] = React.useState(null);
     const { map } = React.useContext(MapContext);
-    const startLoc = props.startLoc
-    const setStartLoc = props.setStartLoc
+    const { startLoc, setStartLoc, setLength, length, setShowBar, setRoutes} = React.useContext(GlobalContext);
     const [clicked, setClicked] = React.useState(false);
 
     // Added functionality to fix the side effect of not removing the on 'click' event listener
@@ -82,23 +81,28 @@ const StartRoute = (props) => {
 
 async function sendStart(e) {
   console.log("Seeing start point ",start)
-  if (start != null) {
+  if (start != null && length != null) {
     console.log("Start position being sent", startLoc)
     try {
       let result = new FormData()
       result.append('lon', startLoc[0])
       result.append('lat', startLoc[1])
-      result.append('direction', null)
+      result.append('direction', length)
       result.append('mileage', 2)
       const dataBack = await fetch("http://127.0.0.1:5000/overpassGather", {
       method: "POST", // or 'PUT'
       body: result,
     }).then(response => response.json())
     console.log(dataBack)
+    console.log("length response", dataBack.length)
+    console.log("coordinates response", dataBack.coordinates)
     if(dataBack != null) {
-    window.alert("Was able to send start position")
+      setLength(dataBack.length)
+      setShowBar(true);
+      setRoutes(dataBack.coordinates);
+
     } else {
-      window.alert("Was not able to send start position")
+      window.alert("Was not able to generate a route with that Start location")
     }
   } catch (error) {
     console.error('Error:', error);
@@ -134,7 +138,6 @@ async function OutsideTextbox() {
   console.error('Error:', error);
 }
 }
-
   return (
     <div className="flex flex-col md:flex-row w-full ">
       <div>
@@ -209,7 +212,7 @@ async function OutsideTextbox() {
       </div>
       <div className='ml-3'>
         <label>Distance</label>
-        <input type="text" id="distance" name="distance" />
+        <input type="text" id="distance" name="distance" onChange={(e) => setLength(e.target.value)}/>
       </div>
       <button className="ml-auto justify-right px-2 rounded border-2" onClick={sendStart}>
         Generate Route

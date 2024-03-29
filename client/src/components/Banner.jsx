@@ -7,7 +7,7 @@ import GenerateRouteDrawer from './routeBarComponents/GenerateRouteDrawer.jsx';
 import { GlobalContext } from './App.jsx';
 
 const Banner = () => {
-  const { showGenerateRouteDrawer, setShowGenerateRouteDrawer, userData, setShowBar, setRoutes } = React.useContext(GlobalContext);
+  const { showGenerateRouteDrawer, setShowGenerateRouteDrawer, userData, setShowBar, setRoutes, setRoutesType } = React.useContext(GlobalContext);
   const handleOpenGenerateRouteDrawer = () => {
     console.log('open drawer');
     setShowGenerateRouteDrawer(true);
@@ -15,6 +15,7 @@ const Banner = () => {
   }
   const handleOpenRoutes = () => {
     setRoutes(userData.savedRoutes)
+    setRoutesType('My Routes')
     setShowBar(true)
   }
 

@@ -7,9 +7,8 @@ import { Avatar, Dropdown, Button } from 'flowbite-react';
 import { logout } from '../requests/authenticationRequests';
 import { Flowbite } from 'flowbite-react';
 
-const BannerMenu = () => {
-    const { loggedIn, setLoggedIn, setModalContent, setShowModal, userData, setShowBar, setRoutes } = React.useContext(GlobalContext)
-
+const BannerMenu = (props) => {
+    const { loggedIn, setLoggedIn, setModalContent, setShowModal, userData, setShowBar, setRoutes, setRoutesType } = React.useContext(GlobalContext)
     const handleClose = () => setShowModal(false);
     const handleShow = () => setShowModal(true);
 

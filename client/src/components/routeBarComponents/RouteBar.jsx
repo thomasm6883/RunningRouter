@@ -1,6 +1,7 @@
 import React from "react";
 
-export default function RouteBar({ show, onClose,  }) {
+export default function RouteBar({ show, onClose}, props) {
+  const length = props.length
   return (
     <div
       className={

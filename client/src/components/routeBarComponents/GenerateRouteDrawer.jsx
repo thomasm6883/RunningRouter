@@ -2,8 +2,12 @@ import React from "react";
 import { GlobalContext } from "../App.jsx";
 import StartRoute from "../StartRoute.jsx";
 
-export default function GenerateRouteDrawer({ showGenerateRouteDrawer }) {
-  const { setShowGenerateRouteDrawer } = React.useContext(GlobalContext);
+export default function GenerateRouteDrawer({ showGenerateRouteDrawer }, props) {
+  const startLoc = props.startLoc
+  const setStartLoc = props.setStartLoc
+  const length = props.length
+  const setLength = props.setLength
+  const { setShowGenerateRouteDrawer, setShowBar, routesType, setShowModal, setModalContent } = React.useContext(GlobalContext);
   const onClose = () => {
     setShowGenerateRouteDrawer(false);
   };
@@ -25,7 +29,7 @@ export default function GenerateRouteDrawer({ showGenerateRouteDrawer }) {
         <div className="relative w-full flex flex-col space-x-1 y-full">
           <div className="flex justify-left p-2">
           <header className="p-1 font-bold text-lg w-fit">Generate Route</header>
-          <StartRoute />
+          <StartRoute startLoc = {startLoc} setStartLoc = {setStartLoc} setLength = {setLength} length = {length} setShowBar={setShowBar} routesType={routesType} setShowModal={setShowModal} setModalContent={setModalContent}/>
           </div>
           <div className="w-full flex justify-center">
           <button className="" onClick={() => onClose()}>

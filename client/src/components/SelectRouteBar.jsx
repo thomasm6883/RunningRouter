@@ -43,13 +43,15 @@ function SelectRouteBar(props) {
   const routesType = props.routesType;
   const setShowModal = props.setShowModal;
   const setModalContent = props.setModalContent;
+  const setShow = props.setShow;
+  const length = props.length
 
   const [showRoutePreview, setShowRoutePreview] = React.useState(null);
   const [animationLayer, setAnimationLayer] = React.useState(null);
   const [startRoute, setStartRoute] = React.useState(false);
 
   const [showRouteNavBar, setShowRouteNavBar] = React.useState(false);
-  const handleCloseRouteNavBar = () => { setShowRouteNavBar(false); setShowBar(true); }
+  const handleCloseRouteNavBar = () => { setShowRouteNavBar(false); setShow(true); setShowBar(true); }
 
   const { map } = React.useContext(MapContext);
 
@@ -61,31 +63,30 @@ function SelectRouteBar(props) {
     }
     if (animationLayer) {map.removeLayer(animationLayer); setAnimationLayer(null);}
     const route = routes[routeIndex].route;
-    const points = []; // Convert each point object with lat and lng to an array
-
-    for (let i = 0; i < route.length; i++) {
-      points.push([route[i].Lat, route[i].Lng]);
-    }
+    const points = route;
+    // for (let i = 0; i < route.length; i++) {
+    //   points.push([route[i].Lat, route[i].Lng]);
+    // }
     let maxLat, minLat, maxLng, minLng;
     for (let i = 0; i < points.length; i++) {
         points[i] = olProj.transform(points[i], 'EPSG:4326', 'EPSG:3857');
         if(i === 0) {
-          maxLat = points[i].Lat;
-          minLat = points[i].Lat;
-          maxLng = points[i].Lng;
-          minLng = points[i].Lng;
+          maxLat = points[i][0];
+          minLat = points[i][0];
+          maxLng = points[i][1];
+          minLng = points[i][1];
         } else {
-          if(points[i].Lat > maxLat) {
-            maxLat = points[i].Lat;
+          if(points[i][0] > maxLat) {
+            maxLat = points[i][0];
           }
-          if(points[i].Lat < minLat) {
-            minLat = points[i].Lat;
+          if(points[i][0] < minLat) {
+            minLat = points[i][0];
           }
-          if(points[i].Lng > maxLng) {
-            maxLng = points[i].Lng;
+          if(points[i][1] > maxLng) {
+            maxLng = points[i][1];
           }
-          if(points[i].Lng < minLng) {
-            minLng = points[i].Lng;
+          if(points[i][1] < minLng) {
+            minLng = points[i][1];
           }
         }
     }
@@ -133,32 +134,32 @@ function SelectRouteBar(props) {
       setShowRoutePreview(null)
     }
     // Get the route points ---------------------------------------------------
+    console.log(routes)
     const route = routes[routeIndex].route;
-    const points = []; // Convert each point object with lat and lng to an array
-
-    for (let i = 0; i < route.length; i++) {
-      points.push([route[i].Lat, route[i].Lng]);
-    }
+    const points = route; // Convert each point object with lat and lng to an array
+    // for (let i = 0; i < route.length; i++) {
+    //   points.push([route[i].Lat, route[i].Lng]);
+    // }
     let maxLat, minLat, maxLng, minLng;
     for (let i = 0; i < points.length; i++) {
       points[i] = olProj.transform(points[i], "EPSG:4326", "EPSG:3857");
       if (i === 0) {
-        maxLat = points[i].Lat;
-        minLat = points[i].Lat;
-        maxLng = points[i].Lng;
-        minLng = points[i].Lng;
+        maxLat = points[i][0];
+        minLat = points[i][0];
+        maxLng = points[i][1];
+        minLng = points[i][1];
       } else {
-        if (points[i].Lat > maxLat) {
-          maxLat = points[i].Lat;
+        if (points[i][0] > maxLat) {
+          maxLat = points[i][0];
         }
-        if (points[i].Lat < minLat) {
-          minLat = points[i].Lat;
+        if (points[i][0] < minLat) {
+          minLat = points[i][0];
         }
-        if (points[i].Lng > maxLng) {
-          maxLng = points[i].Lng;
+        if (points[i][1] > maxLng) {
+          maxLng = points[i][1];
         }
-        if (points[i].Lng < minLng) {
-          minLng = points[i].Lng;
+        if (points[i][1] < minLng) {
+          minLng = points[i][1];
         }
       }
     }
@@ -297,6 +298,7 @@ function SelectRouteBar(props) {
     map.removeLayer(animationLayer);
     setAnimationLayer(null)
     setStartRoute(false);
+    setShow(false)
   }
   const handleSave = (routeIndex) => {
     console.log("Save "+routes[routeIndex].name);
@@ -320,6 +322,7 @@ function SelectRouteBar(props) {
   const handleCloseBar = () => {
     if (animationLayer) {map.removeLayer(animationLayer); setAnimationLayer(null);}
     if (showRoutePreview) {map.removeLayer(showRoutePreview); setShowRoutePreview(null);}
+    setShow(false)
     setStartRoute(false)
     setShowBar(false)
 
@@ -348,7 +351,7 @@ function SelectRouteBar(props) {
           );
         }): <div className="text-red-600" >No Routes Available</div>}
       </Drawer>
-      <RouteBar show={showRouteNavBar} onClose={handleCloseRouteNavBar} />
+      <RouteBar show={showRouteNavBar} onClose={handleCloseRouteNavBar} length={length}/>
 
     </>
   );
