@@ -52,7 +52,7 @@ app.use(Express.static(path.join('./client/public')));
 
 app.use('/api', dataRouter);
 
-app.get('*', (req, res) => {
+app.get('/*', (req, res) => {
     res.sendFile('index.html', { root: './client/public' })
 });
 

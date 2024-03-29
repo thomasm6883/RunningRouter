@@ -103,8 +103,6 @@ const FormLogin = (props) => {
 };
 FormLogin.propTypes = {
   handleClose: PropTypes.func.isRequired,
-  setModalContent: PropTypes.func.isRequired,
-  setLoggedIn: PropTypes.func.isRequired
 }
 
 export default FormLogin;

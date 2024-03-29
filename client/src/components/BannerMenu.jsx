@@ -5,9 +5,9 @@ import '../styles/Banner.css'
 import { GlobalContext } from './App.jsx';
 import { Avatar, Dropdown, Button } from 'flowbite-react';
 import { logout } from '../requests/authenticationRequests';
+import FormSelectStripeOption from './formsStripe/FormSelectStripeOption.jsx';
 
-const BannerMenu = (props) => {
-  const setShowStripeDrawer = props.setShowStripeDrawer;
+const BannerMenu = () => {
     const { loggedIn, setLoggedIn, setModalContent, setShowModal, userData, setShowBar, setRoutes, setRoutesType } = React.useContext(GlobalContext)
 
     const handleClose = () => setShowModal(false);
@@ -39,7 +39,8 @@ const BannerMenu = (props) => {
       setShowBar(true)
     }
     const handleUpgrade = () => {
-      setShowStripeDrawer(true)
+      setModalContent(<FormSelectStripeOption handleClose={handleClose} />);
+      handleShow();
     }
 
     return (

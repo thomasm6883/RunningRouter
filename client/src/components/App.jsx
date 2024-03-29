@@ -23,6 +23,8 @@ const App = () => {
 
   const [showGenerateRouteDrawer, setShowGenerateRouteDrawer] = React.useState(false)
 
+  const [showStripeDrawer, setShowStripeDrawer] = React.useState({show: false, option: null});
+
   const initialize = async () => {
     const cookie = await checkCookie()
     if (cookie) {
@@ -44,10 +46,10 @@ const App = () => {
   return (
     <MapContext.Provider value={{ map, setMap }}>
     <GoogleOAuthProvider clientId="954079927112-48qrn73bql7ma5c6qc7t8mddhsagr39v.apps.googleusercontent.com" >
-    <GlobalContext.Provider value={{ loggedIn, setLoggedIn, userData, setUserData, setShowModal, modalContent, setModalContent, setShowBar, routes, setRoutes, routesType, setRoutesType, showGenerateRouteDrawer, setShowGenerateRouteDrawer, startLoc, setStartLoc }}>
+    <GlobalContext.Provider value={{ loggedIn, setLoggedIn, userData, setUserData, setShowModal, modalContent, setModalContent, setShowBar, routes, setRoutes, routesType, setRoutesType, showGenerateRouteDrawer, setShowGenerateRouteDrawer, showStripeDrawer, setShowStripeDrawer, startLoc, setStartLoc }}>
     <Banner showGenerateRouteDrawer={showGenerateRouteDrawer} />
     <MapContainer />
-    <SelectRouteBar showBar={showBar} setShowBar={setShowBar} routes={routes} setRoutes={setRoutes} routesType={routesType} setRoutesType={setRoutesType} setShowModal={setShowModal} setModalContent={setModalContent} />
+    <SelectRouteBar showBar={showBar} setShowBar={setShowBar} routes={routes} setRoutes={setRoutes} routesType={routesType} setRoutesType={setRoutesType} setShowModal={setShowModal} setModalContent={setModalContent} showStripeDrawer={showStripeDrawer} setShowStripeDrawer={setShowStripeDrawer} />
     <CustomModal showModal={showModal} setShowModal={setShowModal} modalContent={modalContent} />
 
     </GlobalContext.Provider>

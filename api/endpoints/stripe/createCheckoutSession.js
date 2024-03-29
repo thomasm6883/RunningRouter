@@ -24,7 +24,7 @@ export default async function createCheckoutSession(req, res) {
       ],
       mode: 'subscription',
       ui_mode: 'embedded',
-      return_url: `${process.env.URL}/?session_id={CHECKOUT_SESSION_ID}`,
+      return_url: `${process.env.URL}/stripe-return?session_id={CHECKOUT_SESSION_ID}`,
     });
     console.log(session);
     console.log("Client Secret", session.client_secret);

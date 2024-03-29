@@ -12,7 +12,7 @@ export default function RouteBar({ show, onClose,  }) {
     >
       <section
         className={
-          "bg-white w-full md:w-1/2 md:max-w-1/2 delay-400 duration-500 ease-in-out transition-all transform self-center md:rounded-t-xl" +
+          "bg-white w-full lg:w-3/4 lg:max-w-3/4 delay-400 duration-500 ease-in-out transition-all transform self-center lg:rounded-t-xl" +
           (show ? " translate-y-0 " : " translate-y-full ")
         }
       >

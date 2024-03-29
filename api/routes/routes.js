@@ -20,6 +20,7 @@ import isAuthenticated from '../middleware/isAuthenticated.js'
 import createCheckoutSession from '../endpoints/stripe/createCheckoutSession.js'
 import createPortalSession from '../endpoints/stripe/createPortalSession.js'
 import webhook from '../endpoints/stripe/webhook.js'
+import sessionStatus from '../endpoints/stripe/sessionStatus.js'
 
 import { validator, validationErrorMiddleware } from '../middleware/inputValidation.js'
 
@@ -49,5 +50,6 @@ dataRouter.delete('/user', isAuthenticated, deleteUser);
 dataRouter.post('/create-checkout-session', isAuthenticated, createCheckoutSession);
 dataRouter.post('/create-portal-session', isAuthenticated, createPortalSession);
 dataRouter.post('/webhook', Express.raw({ type: 'application/json' }), webhook);
+dataRouter.get('/session-status', isAuthenticated, sessionStatus);
 
 export default dataRouter
