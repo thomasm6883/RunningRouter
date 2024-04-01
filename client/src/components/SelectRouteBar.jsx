@@ -349,7 +349,7 @@ function SelectRouteBar(props) {
             >
               <div onClick={() => handlePreview(index)}>
               <h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white p-0 m-0">
-                {route.name ?? "Route " + (index+1)}
+                {(name != null) ? name[index] : "Route " + (index+1)}
               </h5>
               </div>
               <div className="flex flex-row space-x-1 p-0 m-0">
