@@ -38,10 +38,16 @@ export const saveRoute = async (newRoute) => {
   }
 };
 
-export const deleteRoute = async (id) => {
+export const deleteRoute = async (name) => {
+  deleteRoute = {"routeName" : name}
+
   try {
-    const response = await fetch(`${API_URL}/routes/${id}`, {
+    const response = await fetch(`${API_URL}/routes`, {
         method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(deleteRoute),
     });
     if (response.status >= 400) {
       throw new Error(`Request failed with response code ${response.status}`)
