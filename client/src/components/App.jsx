@@ -9,7 +9,6 @@ import { checkCookie } from '../requests/authenticationRequests.js'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import MapContext from './mapComponents/MapContext.jsx'
 export const GlobalContext = React.createContext(null)
-import StartRoute from './StartRoute.jsx'
 
 const App = () => {
   const [loggedIn, setLoggedIn] = React.useState(false)
@@ -22,7 +21,7 @@ const App = () => {
   const [map, setMap] = React.useState(null)
   const [startLoc, setStartLoc] = React.useState(null)
   const [generatedRoute, setGeneratedRoute] = React.useState(null)
-  const [length, setLength] = React.useState(null)
+  const [length, setLength] = React.useState(0)
 
   const [showGenerateRouteDrawer, setShowGenerateRouteDrawer] = React.useState(false)
 
@@ -50,7 +49,7 @@ const App = () => {
     <Banner showGenerateRouteDrawer={showGenerateRouteDrawer} />
     <DropdownMenu setRoutes={setRoutes} />
     <MapContainer />
-    <SelectRouteBar showBar={showBar} setShowBar={setShowBar} routes={routes} setRoutes={setRoutes} routesType={routesType} setRoutesType={setRoutesType} setShowModal={setShowModal} setModalContent={setModalContent} length = {length}/>
+    <SelectRouteBar showBar={showBar} setShowBar={setShowBar} routes={routes} setRoutes={setRoutes} routesType={routesType} setRoutesType={setRoutesType} setShowModal={setShowModal} setModalContent={setModalContent} length = {length} setLength={setLength} loggedIn={loggedIn}/>
     <CustomModal showModal={showModal} setShowModal={setShowModal} modalContent={modalContent} />
 
     </GlobalContext.Provider>

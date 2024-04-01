@@ -7,6 +7,7 @@ import PropTypes from 'prop-types'
 const FormSaveRoute = (props) => {
   const handleClose = props.handleClose;
   const route = props.route;
+  const length = props.length
 
   const [name, setName] = React.useState('')
   const [description, setDescription] = React.useState('')
@@ -34,7 +35,7 @@ const FormSaveRoute = (props) => {
       return
     }
     const wrapper = async () => {
-    const saveRouteSuccess = await saveRoute(name, description, route)
+    const saveRouteSuccess = await saveRoute(name, description, route, length)
     if (saveRouteSuccess) {
       handleClose()
     } else{

@@ -15,8 +15,9 @@ const StartRoute = (props) => {
     [doStart, setDoStart] = React.useState(false);
     [address, setAddress] = React.useState(null);
     const { map } = React.useContext(MapContext);
-    const { startLoc, setStartLoc, setLength, length, setShowBar, setRoutes} = React.useContext(GlobalContext);
+    const { startLoc, setStartLoc, setLength, length, setShowBar, setRoutes, setShowGenerateRouteDrawer} = React.useContext(GlobalContext);
     const [clicked, setClicked] = React.useState(false);
+    const [userLength, setUserLength] = React.useState(0);
 
     // Added functionality to fix the side effect of not removing the on 'click' event listener
     // Now callback is called once per click
@@ -81,14 +82,14 @@ const StartRoute = (props) => {
 
 async function sendStart(e) {
   console.log("Seeing start point ",start)
-  if (start != null && length != null) {
+  if (start != null && userLength != null) {
     console.log("Start position being sent", startLoc)
     try {
       let result = new FormData()
       result.append('lon', startLoc[0])
       result.append('lat', startLoc[1])
-      result.append('direction', length)
-      result.append('mileage', 2)
+      result.append('direction', userLength)
+      result.append('mileage', userLength)
       const dataBack = await fetch("http://127.0.0.1:5000/overpassGather", {
       method: "POST", // or 'PUT'
       body: result,
@@ -97,10 +98,10 @@ async function sendStart(e) {
     console.log("length response", dataBack.length)
     console.log("coordinates response", dataBack.coordinates)
     if(dataBack != null) {
-      setLength(dataBack.length)
       setShowBar(true);
       setRoutes(dataBack.coordinates);
-
+      setLength(dataBack.length)
+      setShowGenerateRouteDrawer(false)
     } else {
       window.alert("Was not able to generate a route with that Start location")
     }
@@ -212,7 +213,7 @@ async function OutsideTextbox() {
       </div>
       <div className='ml-3'>
         <label>Distance</label>
-        <input type="text" id="distance" name="distance" onChange={(e) => setLength(e.target.value)}/>
+        <input type="text" id="distance" name="distance" onChange={(e) => setUserLength(e.target.value)}/>
       </div>
       <button className="ml-auto justify-right px-2 rounded border-2" onClick={sendStart}>
         Generate Route

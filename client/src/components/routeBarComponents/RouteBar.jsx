@@ -1,7 +1,7 @@
 import React from "react";
 
-export default function RouteBar({ show, onClose}, props) {
-  const length = props.length
+export default function RouteBar({ show, onClose, length }) {
+
   return (
     <div
       className={
@@ -20,10 +20,10 @@ export default function RouteBar({ show, onClose}, props) {
         <div className="relative  flex flex-col space-x-1 y-full">
           <div className="flex justify-left p-2">
             <div className="w-full flex flex-row justify-around">
-            <div>Elapsed Miles: </div>
-            <div>Miles: </div>
-            <div>Elapsed Time: </div>
-            <div>Calories Burnt: </div>
+            <div>Elapsed Miles: {length}</div>
+            <div>Miles: {length}</div>
+            <div>Elapsed Time: {length * 15}</div>
+            <div>Calories Burnt: {length * 100}</div>
             </div>
             <button
               className="p-2 ml-auto justify-right rounded-full border-2 border-black"
