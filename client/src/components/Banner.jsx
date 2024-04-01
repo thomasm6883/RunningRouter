@@ -8,7 +8,7 @@ import { GlobalContext } from './App.jsx';
 import { getRoutes } from '../requests/routeRequests.js'
 
 const Banner = () => {
-  const { showGenerateRouteDrawer, setShowGenerateRouteDrawer, userData, setShowBar, setRoutes, setRoutesType, setLength, loggedIn } = React.useContext(GlobalContext);
+  const { showGenerateRouteDrawer, setShowGenerateRouteDrawer, userData, setShowBar, setRoutes, setRoutesType, setLength, loggedIn, setName } = React.useContext(GlobalContext);
   const handleOpenGenerateRouteDrawer = () => {
     console.log('open drawer');
     setShowGenerateRouteDrawer(true);
@@ -22,15 +22,18 @@ const Banner = () => {
     const response = await getRoutes()
     let responseLength = []
     let responseRoutes = []
+    let responseName = []
     for (let i = 0; i < response.length; i++) {
       responseLength.push(response[i].length)
       responseRoutes.push({
         route: response[i].route
     })
+      responseName.push(response[i].routeName)
     }
     console.log(response)
     setLength(responseLength)
     setRoutes(responseRoutes)
+    setName(responseName)
   }
 
   return (

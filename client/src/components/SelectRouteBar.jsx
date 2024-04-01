@@ -46,6 +46,7 @@ function SelectRouteBar(props) {
   const length = props.length
   const setLength = props.setLength
   const loggedIn = props.loggedIn
+  const name = props.name
 
 
   const [showRoutePreview, setShowRoutePreview] = React.useState(null);
@@ -325,7 +326,7 @@ function SelectRouteBar(props) {
     //   newRoutes.splice(routeIndex, 1)
     //   setRoutes(newRoutes)
     // }
-    setModalContent(<FormDeleteRoute handleClose={()=>setShowModal(false)} route={routes[routeIndex]} />)
+    setModalContent(<FormDeleteRoute handleClose={()=>setShowModal(false)} route={name[routeIndex]} />)
     setShowModal(true)
   }
 

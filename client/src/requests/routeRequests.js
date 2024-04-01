@@ -46,6 +46,7 @@ export const saveRoute = async (name, description, route, length) => {
 
 export const deleteRoute = async (id) => {
   try {
+    console.log(id)
     const response = await fetch(`${API_URL}/routes/${id}`, {
         method: 'DELETE',
     });
