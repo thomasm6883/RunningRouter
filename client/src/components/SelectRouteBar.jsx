@@ -44,7 +44,6 @@ function SelectRouteBar(props) {
   const setShowModal = props.setShowModal;
   const setModalContent = props.setModalContent;
   const length = props.length
-  const setLength = props.setLength
   const loggedIn = props.loggedIn
   const name = props.name
 

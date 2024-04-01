@@ -15,7 +15,7 @@ const StartRoute = (props) => {
     [doStart, setDoStart] = React.useState(false);
     [address, setAddress] = React.useState(null);
     const { map } = React.useContext(MapContext);
-    const { startLoc, setStartLoc, setLength, length, setShowBar, setRoutes, setShowGenerateRouteDrawer} = React.useContext(GlobalContext);
+    const { startLoc, setStartLoc, setLength, length, setShowBar, setRoutes, setShowGenerateRouteDrawer, setName} = React.useContext(GlobalContext);
     const [clicked, setClicked] = React.useState(false);
     const [userLength, setUserLength] = React.useState(0);
 
@@ -101,6 +101,8 @@ async function sendStart(e) {
       setShowBar(true);
       setRoutes(dataBack.coordinates);
       setLength(dataBack.length)
+      setName(null)
+      map.removeLayer(oldLayer)
       setShowGenerateRouteDrawer(false)
     } else {
       window.alert("Was not able to generate a route with that Start location")

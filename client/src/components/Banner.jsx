@@ -57,16 +57,16 @@ const Banner = () => {
           <div className="flex items-left">
             <ul className="flex flex-row font-medium mt-0 space-x-8 text-sm">
               <li>
-                {(loggedIn) ?
                 <button className="text-gray-900 dark:text-white hover:underline" onClick={handleOpenGenerateRouteDrawer} >
                   Generate a Route
                 </button>
-                : null}
               </li>
               <li>
+              {(loggedIn) ?
                 <button className="text-gray-900 dark:text-white hover:underline" onClick={handleOpenRoutes}>
                   My Routes
                 </button>
+                : null}
               </li>
               <li>
                 <button className="text-gray-900 dark:text-white hover:underline">
