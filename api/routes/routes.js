@@ -14,6 +14,8 @@ import updateUser from '../endpoints/account/updateUser.js'
 import deleteUser from '../endpoints/account/deleteUser.js'
 import isAuthenticated from '../middleware/isAuthenticated.js'
 
+import saveLocation from '../endpoints/specificLocations/saveLocation.js'
+
 import { validator, validationErrorMiddleware } from '../middleware/inputValidation.js'
 
 
@@ -39,7 +41,7 @@ dataRouter.post('/locations',  saveLocation);
 //dataRouter.delete('/routes', deleteRoute);
 
 dataRouter.post('/login', login);
-dataRouter.post('/register', register);
+dataRouter.post('/register', register); 
 dataRouter.get('/logout', logout);// could be protected
 dataRouter.post('/forgotPassword', forgotPassword);
 dataRouter.post('/resetPassword', resetPassword);
