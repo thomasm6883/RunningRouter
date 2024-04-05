@@ -5,11 +5,11 @@ import '../styles/Banner.css'
 import { GlobalContext } from './App.jsx';
 import { Avatar, Dropdown, Button } from 'flowbite-react';
 import { logout } from '../requests/authenticationRequests';
+import { Flowbite } from 'flowbite-react';
+import { getRoutes } from '../requests/routeRequests.js'
 
 const BannerMenu = (props) => {
-  const setShowStripeDrawer = props.setShowStripeDrawer;
-    const { loggedIn, setLoggedIn, setModalContent, setShowModal, userData, setShowBar, setRoutes, setRoutesType } = React.useContext(GlobalContext)
-
+    const { loggedIn, setLoggedIn, setModalContent, setShowModal, userData, setShowBar, setRoutes, setRoutesType, setLength, setName } = React.useContext(GlobalContext)
     const handleClose = () => setShowModal(false);
     const handleShow = () => setShowModal(true);
 
@@ -34,10 +34,29 @@ const BannerMenu = (props) => {
       wrapper()
     }
     const handleOpenRoutes = () => {
-      setRoutes(userData.savedRoutes)
-      setRoutesType('My Routes')
-      setShowBar(true)
+      console.log("Opening routes")
+        getUserRoutes()
+        setShowBar(true)
     }
+      async function getUserRoutes() {
+        console.log("Getting user routes")
+        const response = await getRoutes()
+        let responseLength = []
+        let responseRoutes = []
+        let responseName = []
+        for (let i = 0; i < response.length; i++) {
+          responseLength.push(response[i].length)
+          responseRoutes.push({
+            route: response[i].route
+        })
+          responseName.push(response[i].routeName)
+        }
+        console.log(response)
+        setLength(responseLength)
+        setRoutes(responseRoutes)
+        setName(responseName)
+      }
+
     const handleUpgrade = () => {
       setShowStripeDrawer(true)
     }

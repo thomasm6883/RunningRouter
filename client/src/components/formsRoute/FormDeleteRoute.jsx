@@ -1,20 +1,41 @@
 import React from 'react';
-import { deleteRoute } from '../../requests/routeRequests.js'
+import { deleteRoute, getRoutes } from '../../requests/routeRequests.js'
 import { Button, Modal } from 'flowbite-react';
 import PropTypes from 'prop-types'
+import { GlobalContext } from '../App.jsx';
 
 
 const FormDeleteRoute = (props) => {
   const handleClose = props.handleClose;
   const route = props.route;
+  const { setLength, setRoutes, setName} = React.useContext(GlobalContext);
+
+  async function getUserRoutes() {
+    const response = await getRoutes()
+    let responseLength = []
+    let responseRoutes = []
+    let responseName = []
+    for (let i = 0; i < response.length; i++) {
+      responseLength.push(response[i].length)
+      responseRoutes.push({
+        route: response[i].route
+    })
+      responseName.push(response[i].routeName)
+    }
+    console.log(response)
+    setLength(responseLength)
+    setRoutes(responseRoutes)
+    setName(responseName)
+  }
 
   const handleDeleteRoute = (e) => {
     e.preventDefault()
     const wrapper = async () => {
     const deleteSuccess = await deleteRoute(route)
     if (deleteSuccess) {
-
+      console.log('Route deleted')
       handleClose()
+      getUserRoutes()
     } else{
       alert('Route deletion failed')
     }

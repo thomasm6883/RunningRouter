@@ -7,9 +7,12 @@ import PropTypes from 'prop-types'
 const FormSaveRoute = (props) => {
   const handleClose = props.handleClose;
   const route = props.route;
+  const length = props.length
 
   const [name, setName] = React.useState('')
-  const [nameErrorMessage, setNameErrorMessage] = React.useState('')
+
+  const [nameErrorMessage, setnameErrorMessage] = React.useState('')
+  const [descriptionErrorMessage, setdescriptionErrorMessage] = React.useState('')
 
   const nameRef = React.useRef(null)
   React.useEffect(() => {
@@ -20,14 +23,14 @@ const FormSaveRoute = (props) => {
     e.preventDefault()
     let error = false
     if (!validateName(name)) {
-      setNameErrorMessage('Invalid name')
+      setnameErrorMessage('Invalid name')
       error = true
     }
     if (error) {
       return
     }
     const wrapper = async () => {
-    const saveRouteSuccess = await saveRoute(name, route)
+    const saveRouteSuccess = await saveRoute(name, route, length)
     if (saveRouteSuccess) {
       handleClose()
     } else{
@@ -38,8 +41,13 @@ const FormSaveRoute = (props) => {
   }
   const handleNameChange = (e) => {
     setName(e.target.value)
-    setNameErrorMessage('')
+    setnameErrorMessage('')
   }
+  const handleDescriptionChange = (e) => {
+    setDescription(e.target.value)
+    setdescriptionErrorMessage('')
+  }
+
   return (
     <div>
     <Modal.Header />
@@ -71,4 +79,6 @@ export default FormSaveRoute;
 function validateName(name) {
   return name.length >= 1;
 }
-
+function validateDescription(description) {
+  return description.length >= 1;
+}
