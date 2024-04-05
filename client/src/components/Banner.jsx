@@ -62,11 +62,10 @@ const Banner = () => {
                 </button>
               </li>
               <li>
-              {(loggedIn) ?
+              {(loggedIn) ??
                 <button className="text-gray-900 dark:text-white hover:underline" onClick={handleOpenRoutes}>
                   My Routes
-                </button>
-                : null}
+                </button>}
               </li>
               <li>
                 <button className="text-gray-900 dark:text-white hover:underline">

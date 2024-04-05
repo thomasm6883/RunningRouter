@@ -353,7 +353,7 @@ function SelectRouteBar(props) {
               </div>
               <div className="flex flex-row space-x-1 p-0 m-0">
               {(!startRoute) ? <Button onClick={()=>handleStart(index)} color="success" size="xs" className="m-0">Start</Button> : <Button onClick={()=>handleCancel(index)} color="success" size="xs" className="m-0">Stop</Button> }
-              {(loggedIn) ? <div> <Button onClick={()=>handleSave(index)} color="blue" size="xs" className="m-0">Save</Button> <Button onClick={()=>handleDelete(index)} color="failure" size="xs" className="m-0">Delete</Button> </div> : null}
+              {(loggedIn) ?? <div> <Button onClick={()=>handleSave(index)} color="blue" size="xs" className="m-0">Save</Button> <Button onClick={()=>handleDelete(index)} color="failure" size="xs" className="m-0">Delete</Button> </div>}
               {(routesType === "Generated Routes") ? <Button onClick={()=>handleSave(index)} color="blue" size="xs" className="m-0">Save</Button> : null}
               </div>
             </Card>
