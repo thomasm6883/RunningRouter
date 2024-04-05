@@ -14,6 +14,7 @@ const StartRoute = (props) => {
     [oldLayer, setOldLayer] = React.useState(null);
     [doStart, setDoStart] = React.useState(false);
     [address, setAddress] = React.useState(null);
+    [direction, setDirection] = React.useState('No Preference');
     const { map } = React.useContext(MapContext);
     const { startLoc, setStartLoc, setLength, length, setShowBar, setRoutes, setShowGenerateRouteDrawer, setName} = React.useContext(GlobalContext);
     const [clicked, setClicked] = React.useState(false);
@@ -136,26 +137,26 @@ function clearStart() {
 }
 
 async function OutsideTextbox() {
-  try {
-    let result = new FormData()
-    result.append('address', address)
-    const dataBack = await fetch("http://127.0.0.1:5000/getCoordinates", {
-    method: "POST", // or 'PUT'
-    body: result,
-  }).then(response => response.json())
-  console.log("Return data from text box",dataBack)
-  if(dataBack != null){
-  setStartLoc([dataBack[1], dataBack[0]])
-  const transformedDataBack = olProj.transform([dataBack[1], dataBack[0]], 'EPSG:4326', 'EPSG:3857');
-  setDoStart(true)
-  setStart(transformedDataBack)
-  } else {
-    alert("Could not use that start location. Please select a different Start Location")
+    try {
+      let result = new FormData()
+      result.append('address', address)
+      const dataBack = await fetch("http://127.0.0.1:5000/getCoordinates", {
+      method: "POST", // or 'PUT'
+      body: result,
+    }).then(response => response.json())
+    console.log("Return data from text box",dataBack)
+    if(dataBack != null){
+      setStartLoc([dataBack[1], dataBack[0]])
+      const transformedDataBack = olProj.transform([dataBack[1], dataBack[0]], 'EPSG:4326', 'EPSG:3857');
+      setDoStart(true)
+      setStart(transformedDataBack)
+    } else {
+      alert("Could not use that start location. Please select a different Start Location")
+    }
+  } catch (error) {
+    console.error('Error:', error);
   }
-} catch (error) {
-  console.error('Error:', error);
-}
-}
+  }
   return (
     <div className="flex flex-col space-y-2 md:flex-row md:space-x-2 w-full ">
       <div>

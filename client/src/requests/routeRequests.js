@@ -17,7 +17,7 @@ export const getRoutes = async () => {
   }
 };
 
-export const saveRoute = async (name, description, route, length) => {
+export const saveRoute = async (name, route, length) => {
   try {
     const object = {
       routeName : name,
@@ -66,6 +66,5 @@ export const deleteRoute = async (name) => {
     return false
   }
 };
-
 
 

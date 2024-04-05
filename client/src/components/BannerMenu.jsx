@@ -34,30 +34,31 @@ const BannerMenu = (props) => {
       wrapper()
     }
     const handleOpenRoutes = () => {
-      setRoutes(userData.savedRoutes)
-      setRoutesType('My Routes')
-      setShowBar(true)
+      console.log("Opening routes")
+        getUserRoutes()
+        setShowBar(true)
     }
+      async function getUserRoutes() {
+        console.log("Getting user routes")
+        const response = await getRoutes()
+        let responseLength = []
+        let responseRoutes = []
+        let responseName = []
+        for (let i = 0; i < response.length; i++) {
+          responseLength.push(response[i].length)
+          responseRoutes.push({
+            route: response[i].route
+        })
+          responseName.push(response[i].routeName)
+        }
+        console.log(response)
+        setLength(responseLength)
+        setRoutes(responseRoutes)
+        setName(responseName)
+      }
+
     const handleUpgrade = () => {
       setShowStripeDrawer(true)
-    }
-
-    async function getUserRoutes() {
-      const response = await getRoutes()
-      let responseLength = []
-      let responseRoutes = []
-      let responseName = []
-      for (let i = 0; i < response.length; i++) {
-        responseLength.push(response[i].length)
-        responseRoutes.push({
-          route: response[i].route
-      })
-        responseName.push(response[i].routeName)
-      }
-      console.log(response)
-      setLength(responseLength)
-      setRoutes(responseRoutes)
-      setName(responseName)
     }
 
     return (
