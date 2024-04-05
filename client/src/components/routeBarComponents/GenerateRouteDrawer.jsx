@@ -11,6 +11,26 @@ export default function GenerateRouteDrawer({ showGenerateRouteDrawer }, props) 
   const onClose = () => {
     setShowGenerateRouteDrawer(false);
   };
+  const routes = [
+    {
+      route: [
+        {
+          Lng: 40.748817,
+          Lat: -73.985428,
+        },
+        {
+          Lng: 41.748817,
+          Lat: -74.985428,
+        },
+      ],
+    }
+      ]
+  const handleGenerateRoutes = () => {
+    setShowGenerateRouteDrawer(false);
+    setShowBar(true);
+    setRoutesType("Generated Routes");
+    setRoutes(routes);
+  }
   return (
     <div
       className={

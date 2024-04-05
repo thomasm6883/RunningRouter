@@ -39,7 +39,7 @@ const MapCreate = ({ children }) => {
   }, []);
 
     return (
-        <div ref={mapRef} className="ol-map">
+        <div ref={mapRef} className="h-full grow">
         { children }
         </div>
     );

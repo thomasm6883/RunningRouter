@@ -5,6 +5,9 @@ import session from 'express-session'
 import { Mongo } from './mongo/mongoClient.js'
 import MongoStore from 'connect-mongo'
 import cors from 'cors'
+import DotEnv from 'dotenv'
+DotEnv.config()
+
 const store = new session.MemoryStore()
 path.__dirname = path.resolve(path.dirname('./client/public/index.html'))
 
@@ -33,8 +36,8 @@ app.use((req, res, next) => {
 // -------------------------------------------
 
 const sessionOptions = {
-    name: 'connect.sid', // default name is 'connect.sid
-    secret: 'your-secret-key',
+    name: process.env.SESSION_NAME, // default name is 'connect.sid
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     store : MongoStore.create({ client: Mongo, dbName: 'Sessions' }),

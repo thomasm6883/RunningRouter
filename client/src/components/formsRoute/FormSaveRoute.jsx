@@ -10,10 +10,7 @@ const FormSaveRoute = (props) => {
   const length = props.length
 
   const [name, setName] = React.useState('')
-  const [description, setDescription] = React.useState('')
-
-  const [nameErrorMessage, setnameErrorMessage] = React.useState('')
-  const [descriptionErrorMessage, setdescriptionErrorMessage] = React.useState('')
+  const [nameErrorMessage, setNameErrorMessage] = React.useState('')
 
   const nameRef = React.useRef(null)
   React.useEffect(() => {
@@ -24,11 +21,7 @@ const FormSaveRoute = (props) => {
     e.preventDefault()
     let error = false
     if (!validateName(name)) {
-      setnameErrorMessage('Invalid name')
-      error = true
-    }
-    if (!validateDescription(description)) {
-      setdescriptionErrorMessage('description must be at least 8 characters')
+      setNameErrorMessage('Invalid name')
       error = true
     }
     if (error) {
@@ -46,13 +39,8 @@ const FormSaveRoute = (props) => {
   }
   const handleNameChange = (e) => {
     setName(e.target.value)
-    setnameErrorMessage('')
+    setNameErrorMessage('')
   }
-  const handleDescriptionChange = (e) => {
-    setDescription(e.target.value)
-    setdescriptionErrorMessage('')
-  }
-
   return (
     <div>
     <Modal.Header />
@@ -65,13 +53,6 @@ const FormSaveRoute = (props) => {
                 <div className="text-red-500 text-sm">{nameErrorMessage}</div>
               </div>
               <TextInput id="routeName" ref={nameRef} placeholder="Route Name" required onChange={handleNameChange} />
-            </div>
-            <div>
-              <div className="mb-2 block">
-                <Label htmlFor="description" value="Route description" />
-                <div className="text-red-500 text-sm">{descriptionErrorMessage}</div>
-              </div>
-              <TextInput id="description" type="description" required onChange={handleDescriptionChange}/>
             </div>
             <div className="w-full">
               <Button onClick={handleSaveRoute}>Save Route</Button>
@@ -90,8 +71,5 @@ export default FormSaveRoute;
 
 function validateName(name) {
   return name.length >= 1;
-}
-function validateDescription(description) {
-  return description.length >= 1;
 }
 

@@ -88,8 +88,21 @@ async function sendStart(e) {
       let result = new FormData()
       result.append('lon', startLoc[0])
       result.append('lat', startLoc[1])
-      result.append('direction', userLength)
-      result.append('mileage', userLength)
+
+      // Get the values from the form inputs
+      const distance = document.getElementById('distance').value;
+      const direction = document.getElementById('direction').value;
+      const roadOptions = Array.from(document.querySelectorAll('input[name="option"]:checked')).map(el => el.value);
+
+      if (distance < 0) {
+        alert("Distance cannot be negative. Please enter a valid value.");
+        return; // Stop execution of the function
+      }
+
+      result.append('direction', direction)
+      result.append('mileage', distance)
+      result.append('roadOptions', JSON.stringify(roadOptions)) // send as a JSON string
+
       const dataBack = await fetch("http://127.0.0.1:5000/overpassGather", {
       method: "POST", // or 'PUT'
       body: result,
@@ -115,6 +128,7 @@ async function sendStart(e) {
     alert("Please select a starting point")
   }
 }
+
 function clearStart() {
   map.removeLayer(oldLayer)
   setStart(null)
@@ -142,7 +156,7 @@ async function OutsideTextbox() {
 }
 }
   return (
-    <div className="flex flex-col md:flex-row w-full ">
+    <div className="flex flex-col space-y-2 md:flex-row md:space-x-2 w-full ">
       <div>
       <div id="startSelect" className='flex flex-row justify-center items-center space-x-2'>
         <div className='font-bold py-auto'>Start:</div>
@@ -213,9 +227,35 @@ async function OutsideTextbox() {
         />
       </div>
       </div>
-      <div className='ml-3'>
-        <label>Distance</label>
-        <input type="text" id="distance" name="distance" onChange={(e) => setUserLength(e.target.value)}/>
+      <div className='ml-3' style={{marginRight: '15px'}}>
+        <label style={{marginRight: '7px'}}>Distance</label>
+        <input type="number" id="distance" name="distance" onChange={(e) => setUserLength(e.target.value)}/>
+      </div>
+      <div style={{marginRight: '15px'}}>
+        <label style={{marginRight: '7px'}}>Direction</label>
+        <select id="direction" name="direction">
+          <option value="N">N</option>
+          <option value="NE">NE</option>
+          <option value="E">E</option>
+          <option value="SE">SE</option>
+          <option value="S">S</option>
+          <option value="SW">SW</option>
+          <option value="W">W</option>
+          <option value="NW">NW</option>
+          <option value="No Preference" selected>No Preference</option>
+        </select>
+      </div>
+      <div style={{marginRight: '20px'}}>
+        <p>Choose road options:</p>
+        <label style={{marginRight: '20px'}}>
+          <input type="checkbox" value="Streets" name="option" /> Streets
+        </label>
+        <label style={{marginRight: '20px'}}>
+          <input type="checkbox" value="Highways" name="option" /> Highways
+        </label>
+        <label style={{marginRight: '20px'}}>
+          <input type="checkbox" value="Walkways" name="option" /> Walkways
+        </label>
       </div>
       <button className="ml-auto justify-right px-2 rounded border-2" onClick={sendStart}>
         Generate Route

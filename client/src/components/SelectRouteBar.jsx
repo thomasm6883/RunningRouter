@@ -1,8 +1,8 @@
 import React from 'react';
 import { Button, Card } from 'flowbite-react';
 import Drawer from './routeBarComponents/Drawer.jsx';
-import FormDeleteRoute from './routeForms/FormDeleteRoute.jsx';
-import FormSaveRoute from './routeForms/FormSaveRoute.jsx';
+import FormDeleteRoute from './formsRoute/FormDeleteRoute.jsx';
+import FormSaveRoute from './formsRoute/FormSaveRoute.jsx';
 import MapContext from './mapComponents/MapContext.jsx';
 
 import * as ol from 'ol';

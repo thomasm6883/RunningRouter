@@ -3,7 +3,6 @@ import Banner from './Banner.jsx'
 import CustomModal from './Modal.jsx'
 import MapContainer from './MapContainer.jsx'
 import SelectRouteBar from './SelectRouteBar.jsx'
-import DropdownMenu from './DropdownMenu.jsx'
 import { getUser } from '../requests/accountRequests.js'
 import { checkCookie } from '../requests/authenticationRequests.js'
 import { GoogleOAuthProvider } from '@react-oauth/google'
@@ -36,6 +35,7 @@ const App = () => {
     const user = await getUser()
     if (user) {
       setUserData(user)
+      console.log('user', user)
     }
   }
   React.useEffect(() => {
@@ -43,12 +43,10 @@ const App = () => {
   }, [])
 
   return (
-    <>
     <MapContext.Provider value={{ map, setMap }}>
     <GoogleOAuthProvider clientId="954079927112-48qrn73bql7ma5c6qc7t8mddhsagr39v.apps.googleusercontent.com" >
     <GlobalContext.Provider value={{ loggedIn, setLoggedIn, userData, setUserData, setShowModal, modalContent, setModalContent, setShowBar, routes, setRoutes, routesType, setRoutesType, showGenerateRouteDrawer, setShowGenerateRouteDrawer, startLoc, setStartLoc, setLength, length, name, setName }}>
     <Banner showGenerateRouteDrawer={showGenerateRouteDrawer} />
-    <DropdownMenu setRoutes={setRoutes} />
     <MapContainer />
     <SelectRouteBar showBar={showBar} setShowBar={setShowBar} routes={routes} setRoutes={setRoutes} routesType={routesType} setRoutesType={setRoutesType} setShowModal={setShowModal} setModalContent={setModalContent} length = {length} setLength={setLength} loggedIn={loggedIn} name={name}/>
     <CustomModal showModal={showModal} setShowModal={setShowModal} modalContent={modalContent} />
@@ -56,7 +54,6 @@ const App = () => {
     </GlobalContext.Provider>
     </GoogleOAuthProvider>
     </MapContext.Provider>
-    </>
 
   )
 }
