@@ -49,7 +49,7 @@ export default function GenerateRouteDrawer({ showGenerateRouteDrawer }, props) 
         <div className="relative w-full flex flex-col space-x-1 y-full">
           <div className="flex justify-left p-2">
           <header className="p-1 font-bold text-lg w-fit">Generate Route</header>
-          <StartRoute startLoc = {startLoc} setStartLoc = {setStartLoc} setLength = {setLength} length = {length} setShowBar={setShowBar} routesType={routesType} setShowModal={setShowModal} setModalContent={setModalContent}/>
+          <StartRoute />
           </div>
           <div className="w-full flex justify-center">
           <button className="" onClick={() => onClose()}>

@@ -143,9 +143,6 @@ function SelectRouteBar(props) {
     const route = routes[routeIndex].route;
     const points = route; // Convert each point object with lat and lng to an array
 
-    // for (let i = 0; i < route.length; i++) {
-    //   points.push([route[i].Lat, route[i].Lng]);
-    // }
     let maxLat, minLat, maxLng, minLng;
     for (let i = 0; i < points.length; i++) {
       if(Math.abs(points[i][0]) < 800) {
@@ -217,11 +214,6 @@ function SelectRouteBar(props) {
         }),
       }),
       'geoMarker': new olStyle.Style({
-        // image: new olStyle.Icon({
-        //   anchor: [0.5, 0.5],
-        //   scale: 1,
-        //   src: 'logo.svg',
-        //   })
         image: new olStyle.Circle({
           radius: 7,
           fill: new olStyle.Fill({ color: 'black' }),
@@ -316,15 +308,6 @@ function SelectRouteBar(props) {
   }
   const handleDelete = (routeIndex) => {
     console.log("Delete "+routes[routeIndex].route);
-    // MongoDB FindOneAndUpdate because MyRoutes would be currently displayed. Only change display/React state when the mongoDB/backend state updates.
-    // if (routesType === 'My Routes') {
-    // setModalContent(<FormDeleteRoute handleClose={()=>setShowModal(false)} route={routes[routeIndex]} />)
-    // setShowModal(true)
-    // } else if (routesType === 'Generated Routes') {
-    //   const newRoutes = [...routes]
-    //   newRoutes.splice(routeIndex, 1)
-    //   setRoutes(newRoutes)
-    // }
     setModalContent(<FormDeleteRoute handleClose={()=>setShowModal(false)} route={name[routeIndex]} />)
     setShowModal(true)
   }
@@ -353,7 +336,7 @@ function SelectRouteBar(props) {
               </div>
               <div className="flex flex-row space-x-1 p-0 m-0">
               {(!startRoute) ? <Button onClick={()=>handleStart(index)} color="success" size="xs" className="m-0">Start</Button> : <Button onClick={()=>handleCancel(index)} color="success" size="xs" className="m-0">Stop</Button> }
-              {(loggedIn) ?? <div> <Button onClick={()=>handleSave(index)} color="blue" size="xs" className="m-0">Save</Button> <Button onClick={()=>handleDelete(index)} color="failure" size="xs" className="m-0">Delete</Button> </div>}
+              {(loggedIn) ? <div> <Button onClick={()=>handleSave(index)} color="blue" size="xs" className="m-0">Save</Button> <Button onClick={()=>handleDelete(index)} color="failure" size="xs" className="m-0">Delete</Button> </div> : null}
               {(routesType === "Generated Routes") ? <Button onClick={()=>handleSave(index)} color="blue" size="xs" className="m-0">Save</Button> : null}
               </div>
             </Card>
