@@ -81,6 +81,7 @@ const StartRoute = (props) => {
   }, [start]);
 
 async function sendStart(e) {
+  alert('Generating Route, please wait 10 minutes for the route to be generated.')
   console.log("Seeing start point ",start)
   if (start != null && userLength != null) {
     console.log("Start position being sent", startLoc)
