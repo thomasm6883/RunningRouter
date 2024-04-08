@@ -71,7 +71,6 @@ const Banner = () => {
                 </button>
               </li>
               <li>
-
                 <button className="text-gray-900 dark:text-white hover:underline" onClick={handleOpenRoutes}>
                   My Routes
                 </button>

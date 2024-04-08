@@ -50,7 +50,6 @@ const App = () => {
     <MapContainer />
     <SelectRouteBar showBar={showBar} setShowBar={setShowBar} routes={routes} setRoutes={setRoutes} routesType={routesType} setRoutesType={setRoutesType} setShowModal={setShowModal} setModalContent={setModalContent} length = {length} setLength={setLength} loggedIn={loggedIn} name={name}/>
     <CustomModal showModal={showModal} setShowModal={setShowModal} modalContent={modalContent} />
-
     </GlobalContext.Provider>
     </GoogleOAuthProvider>
     </MapContext.Provider>

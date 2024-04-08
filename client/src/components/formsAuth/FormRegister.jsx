@@ -92,12 +92,6 @@ const FormRegister = (props) => {
               </div>
               <TextInput id="passwordConfirm" type="password" required onChange={handlePasswordConfirmChange}/>
             </div>
-            <div className="flex justify-between">
-              <div className="flex items-center gap-2">
-                <Checkbox id="remember" />
-                <Label htmlFor="remember">Receive emails about product updates</Label>
-              </div>
-            </div>
             <div className="w-full">
               <Button onClick={handleRegister}>Create an account</Button>
             </div>
