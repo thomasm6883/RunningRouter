@@ -76,7 +76,7 @@ const Banner = () => {
                 </button>
               </li>
               <li>
-                <button className="text-gray-900 dark:text-white hover:underline">
+                <button href='/AboutPage.jsx' className="text-gray-900 dark:text-white hover:underline">
                   Team
                 </button>
               </li>

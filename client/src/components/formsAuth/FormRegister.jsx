@@ -70,13 +70,13 @@ const FormRegister = (props) => {
     <Modal.Header />
         <Modal.Body>
           <div className="space-y-6">
-            <h3 className="text-xl font-medium text-gray-900 dark:text-white">Register with our platform</h3>
+            <h3 className="text-xl font-medium text-gray-900 dark:text-white">Register with Running Routers!</h3>
             <div>
               <div className="mb-2 block">
                 <Label htmlFor="email" value="Your email" />
                 <div className="text-red-500 text-sm">{emailErrorMessage}</div>
               </div>
-              <TextInput id="email" ref={emailRef} placeholder="name@company.com" required onChange={handleEmailChange} />
+              <TextInput id="email" ref={emailRef} placeholder="name@email.com" required onChange={handleEmailChange} />
             </div>
             <div>
               <div className="mb-2 block">
