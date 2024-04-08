@@ -43,13 +43,18 @@ function SelectRouteBar(props) {
   const routesType = props.routesType;
   const setShowModal = props.setShowModal;
   const setModalContent = props.setModalContent;
+  const length = props.length
+  const loggedIn = props.loggedIn
+  const name = props.name
+
 
   const [showRoutePreview, setShowRoutePreview] = React.useState(null);
   const [animationLayer, setAnimationLayer] = React.useState(null);
   const [startRoute, setStartRoute] = React.useState(false);
+  const [routeLength, setRouteLength] = React.useState(0);
 
   const [showRouteNavBar, setShowRouteNavBar] = React.useState(false);
-  const handleCloseRouteNavBar = () => { setShowRouteNavBar(false); setShowBar(true); }
+  const handleCloseRouteNavBar = () => { setShowRouteNavBar(false); setShowBar(true); setRouteLength(routeLength)}
 
   const { map } = React.useContext(MapContext);
 
@@ -61,35 +66,36 @@ function SelectRouteBar(props) {
     }
     if (animationLayer) {map.removeLayer(animationLayer); setAnimationLayer(null);}
     const route = routes[routeIndex].route;
-    const points = []; // Convert each point object with lat and lng to an array
-
-    for (let i = 0; i < route.length; i++) {
-      points.push([route[i].Lat, route[i].Lng]);
-    }
+    const points = route;
+    // for (let i = 0; i < route.length; i++) {
+    //   points.push([route[i].Lat, route[i].Lng]);
+    // }
     let maxLat, minLat, maxLng, minLng;
     for (let i = 0; i < points.length; i++) {
+        if(Math.abs(points[i][0]) < 800) {
         points[i] = olProj.transform(points[i], 'EPSG:4326', 'EPSG:3857');
+        }
         if(i === 0) {
-          maxLat = points[i].Lat;
-          minLat = points[i].Lat;
-          maxLng = points[i].Lng;
-          minLng = points[i].Lng;
+          maxLat = points[i][0];
+          minLat = points[i][0];
+          maxLng = points[i][1];
+          minLng = points[i][1];
         } else {
-          if(points[i].Lat > maxLat) {
-            maxLat = points[i].Lat;
+          if(points[i][0] > maxLat) {
+            maxLat = points[i][0];
           }
-          if(points[i].Lat < minLat) {
-            minLat = points[i].Lat;
+          if(points[i][0] < minLat) {
+            minLat = points[i][0];
           }
-          if(points[i].Lng > maxLng) {
-            maxLng = points[i].Lng;
+          if(points[i][1] > maxLng) {
+            maxLng = points[i][1];
           }
-          if(points[i].Lng < minLng) {
-            minLng = points[i].Lng;
+          if(points[i][1] < minLng) {
+            minLng = points[i][1];
           }
         }
     }
-    console.log("Points: ", points);
+    console.log("Points in Preview: ", points);
     const featureLine = new ol.Feature({
         geometry: new olGeom.LineString(points)
     });
@@ -127,6 +133,7 @@ function SelectRouteBar(props) {
 
     setShowRouteNavBar(true);
     setShowBar(false);
+    setRouteLength(length[routeIndex])
 
     if (showRoutePreview) {
       map.removeLayer(showRoutePreview);
@@ -134,34 +141,34 @@ function SelectRouteBar(props) {
     }
     // Get the route points ---------------------------------------------------
     const route = routes[routeIndex].route;
-    const points = []; // Convert each point object with lat and lng to an array
+    const points = route; // Convert each point object with lat and lng to an array
 
-    for (let i = 0; i < route.length; i++) {
-      points.push([route[i].Lat, route[i].Lng]);
-    }
     let maxLat, minLat, maxLng, minLng;
     for (let i = 0; i < points.length; i++) {
-      points[i] = olProj.transform(points[i], "EPSG:4326", "EPSG:3857");
+      if(Math.abs(points[i][0]) < 800) {
+        points[i] = olProj.transform(points[i], 'EPSG:4326', 'EPSG:3857');
+        }
       if (i === 0) {
-        maxLat = points[i].Lat;
-        minLat = points[i].Lat;
-        maxLng = points[i].Lng;
-        minLng = points[i].Lng;
+        maxLat = points[i][0];
+        minLat = points[i][0];
+        maxLng = points[i][1];
+        minLng = points[i][1];
       } else {
-        if (points[i].Lat > maxLat) {
-          maxLat = points[i].Lat;
+        if (points[i][0] > maxLat) {
+          maxLat = points[i][0];
         }
-        if (points[i].Lat < minLat) {
-          minLat = points[i].Lat;
+        if (points[i][0] < minLat) {
+          minLat = points[i][0];
         }
-        if (points[i].Lng > maxLng) {
-          maxLng = points[i].Lng;
+        if (points[i][1] > maxLng) {
+          maxLng = points[i][1];
         }
-        if (points[i].Lng < minLng) {
-          minLng = points[i].Lng;
+        if (points[i][1] < minLng) {
+          minLng = points[i][1];
         }
       }
     }
+    console.log("Looking at points in annimation", points)
     // Create the route line ---------------------------------------------------
     const lineString = new olGeom.LineString(points);
     const featureLine = new ol.Feature({
@@ -207,11 +214,6 @@ function SelectRouteBar(props) {
         }),
       }),
       'geoMarker': new olStyle.Style({
-        // image: new olStyle.Icon({
-        //   anchor: [0.5, 0.5],
-        //   scale: 1,
-        //   src: 'logo.svg',
-        //   })
         image: new olStyle.Circle({
           radius: 7,
           fill: new olStyle.Fill({ color: 'black' }),
@@ -299,22 +301,15 @@ function SelectRouteBar(props) {
     setStartRoute(false);
   }
   const handleSave = (routeIndex) => {
-    console.log("Save "+routes[routeIndex].name);
+    console.log("Saving this route ", routes[routeIndex]);
     // MongoDB FindOneAndUpdate if we are keeping MyRoutes as state, otherwise call for MyRoutes on render
-    setModalContent(<FormSaveRoute handleClose={()=>setShowModal(false)} route={routes[routeIndex]} />)
+    setModalContent(<FormSaveRoute handleClose={()=>setShowModal(false)} route={routes[routeIndex]} length={length[routeIndex]}/>)
     setShowModal(true)
   }
   const handleDelete = (routeIndex) => {
-    console.log("Delete "+routes[routeIndex].name);
-    // MongoDB FindOneAndUpdate because MyRoutes would be currently displayed. Only change display/React state when the mongoDB/backend state updates.
-    if (routesType === 'My Routes') {
-    setModalContent(<FormDeleteRoute handleClose={()=>setShowModal(false)} route={routes[routeIndex]} />)
+    console.log("Delete "+routes[routeIndex].route);
+    setModalContent(<FormDeleteRoute handleClose={()=>setShowModal(false)} route={name[routeIndex]} />)
     setShowModal(true)
-    } else if (routesType === 'Generated Routes') {
-      const newRoutes = [...routes]
-      newRoutes.splice(routeIndex, 1)
-      setRoutes(newRoutes)
-    }
   }
 
   const handleCloseBar = () => {
@@ -327,7 +322,7 @@ function SelectRouteBar(props) {
   return (
     <>
       <Drawer show={showBar} onClose={handleCloseBar} routesType={routesType} >
-        {(routes.length) ? routes.map((route, index) => {
+        {(routes.length != null) ? routes.map((route, index) => {
           return (
             <Card
               key={index}
@@ -336,19 +331,19 @@ function SelectRouteBar(props) {
             >
               <div onClick={() => handlePreview(index)}>
               <h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white p-0 m-0">
-                {route.name ?? "Route " + (index+1)}
+                {(name != null) ? name[index] : "Route " + (index+1)}
               </h5>
               </div>
               <div className="flex flex-row space-x-1 p-0 m-0">
               {(!startRoute) ? <Button onClick={()=>handleStart(index)} color="success" size="xs" className="m-0">Start</Button> : <Button onClick={()=>handleCancel(index)} color="success" size="xs" className="m-0">Stop</Button> }
+              {(loggedIn) ? <div> <Button onClick={()=>handleSave(index)} color="blue" size="xs" className="m-0">Save</Button> <Button onClick={()=>handleDelete(index)} color="failure" size="xs" className="m-0">Delete</Button> </div> : null}
               {(routesType === "Generated Routes") ? <Button onClick={()=>handleSave(index)} color="blue" size="xs" className="m-0">Save</Button> : null}
-              <Button onClick={()=>handleDelete(index)} color="failure" size="xs" className="m-0">Delete</Button>
               </div>
             </Card>
           );
         }): <div className="text-red-600" >No Routes Available</div>}
       </Drawer>
-      <RouteBar show={showRouteNavBar} onClose={handleCloseRouteNavBar} />
+      <RouteBar show={showRouteNavBar} onClose={handleCloseRouteNavBar} length={routeLength}/>
 
     </>
   );

@@ -14,14 +14,11 @@ const StartRoute = (props) => {
     [oldLayer, setOldLayer] = React.useState(null);
     [doStart, setDoStart] = React.useState(false);
     [address, setAddress] = React.useState(null);
-    [coordinateFromFlask, setCoordinateFromFlask] = React.useState(null);
+    [direction, setDirection] = React.useState('No Preference');
     const { map } = React.useContext(MapContext);
-
-    // const startLoc = props.startLoc
-    // const setStartLoc = props.setStartLoc
-
-    const { startLoc, setStartLoc } = React.useContext(GlobalContext);
+    const { startLoc, setStartLoc, setLength, length, setShowBar, setRoutes, setShowGenerateRouteDrawer, setName} = React.useContext(GlobalContext);
     const [clicked, setClicked] = React.useState(false);
+    const [userLength, setUserLength] = React.useState(0);
 
     // Added functionality to fix the side effect of not removing the on 'click' event listener
     // Now callback is called once per click
@@ -85,8 +82,9 @@ const StartRoute = (props) => {
   }, [start]);
 
 async function sendStart(e) {
+  alert('Generating Route, please wait 10 minutes for the route to be generated.')
   console.log("Seeing start point ",start)
-  if (start != null) {
+  if (start != null && userLength != null) {
     console.log("Start position being sent", startLoc)
     try {
       let result = new FormData()
@@ -112,10 +110,17 @@ async function sendStart(e) {
       body: result,
     }).then(response => response.json())
     console.log(dataBack)
+    console.log("length response", dataBack.length)
+    console.log("coordinates response", dataBack.coordinates)
     if(dataBack != null) {
-    window.alert("Was able to send start position")
+      setShowBar(true);
+      setRoutes(dataBack.coordinates);
+      setLength(dataBack.length)
+      setName(null)
+      map.removeLayer(oldLayer)
+      setShowGenerateRouteDrawer(false)
     } else {
-      window.alert("Was not able to send start position")
+      window.alert("Was not able to generate a route with that Start location")
     }
   } catch (error) {
     console.error('Error:', error);
@@ -132,27 +137,26 @@ function clearStart() {
 }
 
 async function OutsideTextbox() {
-  try {
-    let result = new FormData()
-    result.append('address', address)
-    const dataBack = await fetch("http://127.0.0.1:5000/getCoordinates", {
-    method: "POST", // or 'PUT'
-    body: result,
-  }).then(response => response.json())
-  console.log("Return data from text box",dataBack)
-  if(dataBack != null){
-  setStartLoc([dataBack[1], dataBack[0]])
-  const transformedDataBack = olProj.transform([dataBack[1], dataBack[0]], 'EPSG:4326', 'EPSG:3857');
-  setDoStart(true)
-  setStart(transformedDataBack)
-  } else {
-    alert("Could not use that start location. Please select a different Start Location")
+    try {
+      let result = new FormData()
+      result.append('address', address)
+      const dataBack = await fetch("http://127.0.0.1:5000/getCoordinates", {
+      method: "POST", // or 'PUT'
+      body: result,
+    }).then(response => response.json())
+    console.log("Return data from text box",dataBack)
+    if(dataBack != null){
+      setStartLoc([dataBack[1], dataBack[0]])
+      const transformedDataBack = olProj.transform([dataBack[1], dataBack[0]], 'EPSG:4326', 'EPSG:3857');
+      setDoStart(true)
+      setStart(transformedDataBack)
+    } else {
+      alert("Could not use that start location. Please select a different Start Location")
+    }
+  } catch (error) {
+    console.error('Error:', error);
   }
-} catch (error) {
-  console.error('Error:', error);
-}
-}
-
+  }
   return (
     <div className="flex flex-col space-y-2 md:flex-row md:space-x-2 w-full ">
       <div>
@@ -227,7 +231,7 @@ async function OutsideTextbox() {
       </div>
       <div className='ml-3' style={{marginRight: '15px'}}>
         <label style={{marginRight: '7px'}}>Distance</label>
-        <input type="number" id="distance" name="distance" />
+        <input type="number" id="distance" name="distance" onChange={(e) => setUserLength(e.target.value)}/>
       </div>
       <div style={{marginRight: '15px'}}>
         <label style={{marginRight: '7px'}}>Direction</label>
