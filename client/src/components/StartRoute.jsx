@@ -14,7 +14,6 @@ const StartRoute = (props) => {
     [oldLayer, setOldLayer] = React.useState(null);
     [doStart, setDoStart] = React.useState(false);
     [address, setAddress] = React.useState(null);
-    [direction, setDirection] = React.useState('No Preference');
     const { map } = React.useContext(MapContext);
     const { startLoc, setStartLoc, setLength, length, setShowBar, setRoutes, setShowGenerateRouteDrawer, setName} = React.useContext(GlobalContext);
     const [clicked, setClicked] = React.useState(false);
