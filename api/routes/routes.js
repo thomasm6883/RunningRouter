@@ -15,6 +15,8 @@ import deleteUser from '../endpoints/account/deleteUser.js'
 import isAuthenticated from '../middleware/isAuthenticated.js'
 
 import saveLocation from '../endpoints/specificLocations/saveLocation.js'
+import deleteLocation from '../endpoints/specificLocations/deleteLocation.js'
+import getLocations from '../endpoints/specificLocations/getLocations.js' 
 
 import { validator, validationErrorMiddleware } from '../middleware/inputValidation.js'
 
@@ -37,6 +39,10 @@ dataRouter.delete('/routes', deleteRoute);
 //dataRouter.get('/routes', getSavedRoutes);
 //dataRouter.post('/routes', isAuthenticated, saveRoute);
 dataRouter.post('/locations',  saveLocation);
+dataRouter.delete('/locations',  deleteLocation);
+dataRouter.get('/locations/:latitude/:longitude/:dist',  getLocations);
+
+
 //dataRouter.delete('/routes', isAuthenticated, deleteRoute);
 //dataRouter.delete('/routes', deleteRoute);
 
