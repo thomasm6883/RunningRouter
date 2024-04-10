@@ -12,12 +12,11 @@ export const loginSchema = {
 }
 export const signupSchema = {
   type: 'object',
-  required: ['username', 'password', 'passwordConfirm', 'email'],
+  required: ['email', 'password', 'passwordConfirm'],
   properties: {
-    username: { type: 'string' },
+    email: { type: 'string' },
     password: { type: 'string' },
-    passwordConfirm: { type: 'string' },
-    email: { type: 'string' }
+    passwordConfirm: { type: 'string' }
   }
 }
 

@@ -19,6 +19,11 @@ export default async function register (req, res) { // working without authentic
       const savedRoutes = []
         const insertUser = await db.collection(collectionName).insertOne({ email, password: passwordHash, savedRoutes })
         if (insertUser.insertedCount === null) { res.status(404).json({ error: true, message: 'Failed to insert user info!' }) }
-        else { res.json({ error: false, message: `User: ${email} Signed Up Successfully` }) }
+
+        else {
+          req.session.email = email
+          const session = req.session
+          res.send(session)
+        }
     }, databaseName)
   }

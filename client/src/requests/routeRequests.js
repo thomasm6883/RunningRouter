@@ -17,14 +17,20 @@ export const getRoutes = async () => {
   }
 };
 
-export const saveRoute = async (route) => {
+export const saveRoute = async (name, route, length) => {
   try {
+    const object = {
+      routeName : name,
+      route : route.route,
+      length : length
+    }
+    console.log(JSON.stringify(object))
     const response = await fetch(`${API_URL}/routes`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(route),
+        body: JSON.stringify(object)
     });
     if (response.status >= 400) {
       throw new Error(`Request failed with response code ${response.status}`)
@@ -38,10 +44,16 @@ export const saveRoute = async (route) => {
   }
 };
 
-export const deleteRoute = async (id) => {
+export const deleteRoute = async (name) => {
+  const deleteRoute = {routeName : name}
+
   try {
-    const response = await fetch(`${API_URL}/routes/${id}`, {
+    const response = await fetch(`${API_URL}/routes`, {
         method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(deleteRoute),
     });
     if (response.status >= 400) {
       throw new Error(`Request failed with response code ${response.status}`)
@@ -54,6 +66,5 @@ export const deleteRoute = async (id) => {
     return false
   }
 };
-
 
 

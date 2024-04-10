@@ -20,6 +20,30 @@ export async function login (email, password) {
   }
 }
 
+export async function checkCookie () {
+  try {
+    const response = await fetch(`${API_URL}/cookie`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include'
+    })
+    if (response.status >= 400) {
+      throw new Error(`Request failed with response code ${response.status}`)
+    }
+    const data = await response.json()
+    console.log(data)
+    if(data.loggedIn === false){
+      return false
+    } else if (data.loggedIn === true){
+      return true
+    }
+  } catch (err) {
+    return false
+  }
+}
+
 export async function register ( email, password, passwordConfirm ) {
   try {
     const response = await fetch(`${API_URL}/register`, {
@@ -88,6 +112,26 @@ export async function forgotPassword (email) {
     return true
   } catch (err) {
     console.error('Failed to reset password')
+    console.error(err)
+    return false
+  }
+}
+
+export async function googleOAuth (authCode) {
+  try {
+    const response = await fetch(`${API_URL}/auth/google`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(authCode)
+    })
+    if (response.status >= 400) {
+      throw new Error(`Request failed with response code ${response.status}`)
+    }
+    return response.json()
+  } catch (err) {
+    console.error('Failed to authenticate with Google')
     console.error(err)
     return false
   }
