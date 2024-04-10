@@ -78,8 +78,12 @@ function SelectRouteBar(props) {
         points.push([route[i].Lat, route[i].Lng]);
       }
     } else {
-      points = route;
+      for (let i = 0; i < route.length; i++) {
+        points.push([route[i][0], route[i][1]]);
+      }
     }
+    // console.log("points: ", points)
+    // console.log("route: ", route)
     let maxLat, minLat, maxLng, minLng;
     for (let i = 0; i < points.length; i++) {
       points[i] = olProj.transform(points[i], "EPSG:4326", "EPSG:3857");
@@ -195,7 +199,9 @@ function SelectRouteBar(props) {
         points.push([route[i].Lat, route[i].Lng]);
       }
     } else {
-      points = route;
+      for (let i = 0; i < route.length; i++) {
+        points.push([route[i][0], route[i][1]]);
+      }
     }
     for (let i = 0; i < points.length; i++) {
       points[i] = olProj.transform(points[i], "EPSG:4326", "EPSG:3857");

@@ -49,7 +49,7 @@ dataRouter.delete('/user', isAuthenticated, deleteUser);
 // Stripe Routes
 dataRouter.post('/create-checkout-session', isAuthenticated, createCheckoutSession);
 dataRouter.post('/create-portal-session', isAuthenticated, createPortalSession);
-dataRouter.post('/webhook', Express.raw({ type: 'application/json' }), webhook);
+dataRouter.post('/webhook', isAuthenticated, webhook);
 dataRouter.get('/session-status', isAuthenticated, sessionStatus);
 
 export default dataRouter

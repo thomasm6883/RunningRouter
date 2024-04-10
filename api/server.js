@@ -5,6 +5,8 @@ import session from 'express-session'
 import { Mongo } from './mongo/mongoClient.js'
 import MongoStore from 'connect-mongo'
 import cors from 'cors'
+import { rateLimit } from 'express-rate-limit'
+import helmet from 'helmet'
 import DotEnv from 'dotenv'
 DotEnv.config()
 
@@ -16,6 +18,7 @@ const app = new Express();
 
 app.use(Express.json());
 app.use(cors())
+app.use(helmet())
 // -- Function for initializing a connection to the MongoDB Atlas database, so that sessions work (timing error) --
 async function connectToMongoDB() {
     try {
@@ -44,9 +47,17 @@ const sessionOptions = {
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 // 1 day
     }
-  }
-
+}
 app.use(session(sessionOptions))
+
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes Time Frame
+    max: 2, // limit each IP to X requests per windowMs
+    standardHeaders: 'draft-7',
+    legacyHeaders: false,
+})
+app.use(limiter)
+
 
 app.use(Express.static(path.join('./client/public')));
 

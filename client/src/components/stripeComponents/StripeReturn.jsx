@@ -40,19 +40,38 @@ const StripeReturn = () => {
     }
     wrapper()
   }
+  const customerPortalLink = 'https://billing.stripe.com/p/login/test_8wM9BNdmr7YscpidQQ'
 
     useEffect(() => {
         initialize();
     }, []);
     return (
-        <div>
-            <h1>Stripe Return</h1>
-            <div id="success" className="hidden">
-                <p>Payment successful! Your customer email is <span id="customer-email"></span>.</p>
-                <button onClick={handleOpenPortal} >Open Customer Portal</button>
+      <div className="flex justify-center p-6">
+        <div className="flex flex-col justify-items-center w-fit">
+          <h1 className="text-center font-sans text-3xl font-semibold text-green-500 ">
+            Upgrade Success!
+          </h1>
+          <div id="success" className="hidden">
+            <div className="flex flex-col justify-center w-fit text-center">
+              <p>
+                Payment successful! Your customer email is{" "}
+                <span id="customer-email"></span>.
+              </p>
+              <div className="flex flex-row justify-between">
+                <div className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                  <a href={customerPortalLink} target="_blank">
+                    Open Customer Portal
+                  </a>
+                </div>
+                <div className="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                <a href="http://localhost:3000/">Return to App</a>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-    )
+      </div>
+    );
 }
 
 export default StripeReturn;
