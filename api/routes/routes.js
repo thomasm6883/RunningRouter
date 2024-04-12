@@ -21,7 +21,7 @@ import saveLocation from '../endpoints/specificLocations/saveLocation.js'
 import deleteLocation from '../endpoints/specificLocations/deleteLocation.js'
 import getLocations from '../endpoints/specificLocations/getLocations.js' 
 
-import { validator, validationErrorMiddleware } from '../middleware/inputValidation.js'
+
 
 import createCheckoutSession from '../endpoints/stripe/createCheckoutSession.js'
 import createPortalSession from '../endpoints/stripe/createPortalSession.js'

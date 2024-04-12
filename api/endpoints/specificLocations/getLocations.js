@@ -25,14 +25,14 @@ export default async function getLocations (req, res) {
     queryMongoDatabase(async db => {
         console.log("here3");
 
-        const location = await db.collection(collectionName).find( 
+        const location = await db.collection(collectionName).find(
             {
-            //query:
-            Location:{ 0:{$gt: +minLati, $lt : +maxLati}}} //,Location:{1:{$gt: +minLongi, $lt : +maxLongi} }
+                'Location.0': { $gt: +minLati, $lt: +maxLati }, 'Location.1': { $gt: +minLongi, $lt: +maxLongi }
+            }
             //,{ projection: { _id:1}}
-            ).toArray();
+        ).toArray();
         if (!location) {
-            res.status(404).json({ message: "no Locations found"});
+            res.status(404).json({ message: "no Locations found" });
         } else {
             res.status(200).json(location);
         }

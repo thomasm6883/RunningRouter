@@ -1,5 +1,6 @@
 import { API_URL } from './API_URL';
 
+//dk get function is not done
 export const getLocations = async () => {
     try {
       const response = await fetch(`${API_URL}/locations`);
