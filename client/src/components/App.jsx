@@ -19,7 +19,6 @@ const App = () => {
   const [routesType, setRoutesType] = React.useState('My Routes')
   const [map, setMap] = React.useState(null)
   const [startLoc, setStartLoc] = React.useState(null)
-  const [generatedRoute, setGeneratedRoute] = React.useState(null)
   const [length, setLength] = React.useState(0)
   const [name, setName] = React.useState(null)
 

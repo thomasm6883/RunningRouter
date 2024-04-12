@@ -15,8 +15,9 @@ const StartRoute = (props) => {
     [doStart, setDoStart] = React.useState(false);
     [address, setAddress] = React.useState(null);
     [direction, setDirection] = React.useState('No Preference');
+    [generateDisabled, setGenerateDisabled] = React.useState(false);
     const { map } = React.useContext(MapContext);
-    const { startLoc, setStartLoc, setLength, length, setShowBar, setRoutes, setShowGenerateRouteDrawer, setName} = React.useContext(GlobalContext);
+    const { startLoc, setStartLoc, setLength, length, setShowBar, setRoutes, setShowGenerateRouteDrawer, setName, userData} = React.useContext(GlobalContext);
     const [clicked, setClicked] = React.useState(false);
     const [userLength, setUserLength] = React.useState(0);
 
@@ -82,7 +83,8 @@ const StartRoute = (props) => {
   }, [start]);
 
 async function sendStart(e) {
-  alert('Generating Route, please wait 10 minutes for the route to be generated.')
+  setGenerateDisabled(true)
+  alert('Generating Route, please wait 2 to 3 minutes for the route to be generated.')
   console.log("Seeing start point ",start)
   if (start != null && userLength != null) {
     console.log("Start position being sent", startLoc)
@@ -100,7 +102,7 @@ async function sendStart(e) {
         alert("Distance cannot be negative. Please enter a valid value.");
         return; // Stop execution of the function
       }
-
+      result.append('email', userData.email)
       result.append('direction', direction)
       result.append('mileage', distance)
       result.append('roadOptions', JSON.stringify(roadOptions)) // send as a JSON string
@@ -110,19 +112,25 @@ async function sendStart(e) {
       body: result,
     }).then(response => response.json())
     console.log(dataBack)
-    console.log("length response", dataBack.length)
+    console.log("length response", parseInt(dataBack.length))
     console.log("coordinates response", dataBack.coordinates)
     if(dataBack != null) {
-      setShowBar(true);
-      setRoutes(dataBack.coordinates);
-      setLength(dataBack.length)
+      let responseLength = []
+      responseLength.push(dataBack.length)
+      setLength(responseLength)
+      setRoutes(dataBack.coordinates)
+      console.log("Length of route", length)
       setName(null)
       map.removeLayer(oldLayer)
+      setGenerateDisabled(false)
+      setShowBar(true);
       setShowGenerateRouteDrawer(false)
     } else {
       window.alert("Was not able to generate a route with that Start location")
     }
   } catch (error) {
+    setGenerateDisabled(false)
+    window.alert("Was not able to generate a route")
     console.error('Error:', error);
   }
   }
@@ -259,7 +267,7 @@ async function OutsideTextbox() {
           <input type="checkbox" value="Walkways" name="option" /> Walkways
         </label>
       </div>
-      <button className="ml-auto justify-right px-2 rounded border-2" onClick={sendStart}>
+      <button className="ml-auto justify-right px-2 rounded border-2" onClick={sendStart} disabled={generateDisabled}>
         Generate Route
       </button>{" "}
       <br />
