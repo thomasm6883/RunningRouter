@@ -5,13 +5,18 @@ import '../styles/Banner.css';
 import { Navbar } from 'flowbite-react';
 import GenerateRouteDrawer from './routeBarComponents/GenerateRouteDrawer.jsx';
 import { GlobalContext } from './App.jsx';
+import StripeDrawer from './formsStripe/StripeDrawer.jsx';
+import TestStripeForm from './formsStripe/TestStripeForm.jsx';
+import { getRoutes } from '../requests/routeRequests.js';
+import TeamDrawer from './navbarComponents/TeamDrawer.jsx';
 
 const Banner = () => {
   const [showStripeDrawer, setShowStripeDrawer] = React.useState(false);
 
-  const { showGenerateRouteDrawer, setShowGenerateRouteDrawer, userData, setShowBar, setRoutes, setRoutesType, setLength, loggedIn, setName } = React.useContext(GlobalContext);
+  const { showGenerateRouteDrawer, setShowGenerateRouteDrawer, userData, setShowBar, setRoutes, setRoutesType, setLength, loggedIn, setName, setTeamDrawer, teamDrawer } = React.useContext(GlobalContext);
   const handleOpenGenerateRouteDrawer = () => {
     console.log('open drawer');
+    setShowBar(false);
     setShowGenerateRouteDrawer(true);
     console.log('showGenerateRouteDrawer', showGenerateRouteDrawer);
   }
@@ -19,6 +24,29 @@ const Banner = () => {
     if(loggedIn) {
     getUserRoutes()
     setShowBar(true)
+    } else {
+      alert('Please log in to view your routes')
+    }
+  }
+  const handleOpenTeam = () => {
+    setTeamDrawer(true)
+  }
+  async function getUserRoutes() {
+    const response = await getRoutes()
+    let responseLength = []
+    let responseRoutes = []
+    let responseName = []
+    for (let i = 0; i < response.length; i++) {
+      responseLength.push(response[i].length)
+      responseRoutes.push({
+        route: response[i].route
+    })
+      responseName.push(response[i].routeName)
+    }
+    console.log(response)
+    setLength(responseLength)
+    setRoutes(responseRoutes)
+    setName(responseName)
   }
 
   return (
@@ -69,6 +97,7 @@ const Banner = () => {
       </div>
       <GenerateRouteDrawer showGenerateRouteDrawer={showGenerateRouteDrawer} />
       <StripeDrawer show={showStripeDrawer} onClose={()=>setShowStripeDrawer(false)} >{(showStripeDrawer) ? <TestStripeForm/> : null}</StripeDrawer>
+      <TeamDrawer show={teamDrawer} onClose={()=>setTeamDrawer(false)} />
     </div>
   );
 };
