@@ -1,42 +1,84 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as olProj from 'ol/proj'
+import * as ol from 'ol';
+import * as olGeom from 'ol/geom'
+import * as olLayer from 'ol/layer'
+import * as olSource from 'ol/source'
+import * as olStyle from 'ol/style'
 import MapContext  from '../mapComponents/MapContext';
 
 
 
 function TeamDrawer({ show, onClose }) {
   const [clicked, setClicked] = React.useState(false);
+  const [hazardPoint, setHazardPoint] = React.useState(null);
+  const [hazardPointRef, setHazardPointRef] = React.useState(null);
+  const [oldLayer, setOldLayer] = React.useState(null);
   const { map } = React.useContext(MapContext);
+  const [doStart, setDoStart] = React.useState(false);
+  const [hazardDescription, setHazardDescription] = React.useState(null);
 
-  var DeterminLoc = function(evt) {
+  React.useEffect(() => {
     if(doStart != false) {
-      points = olProj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
-      setStartLoc(points)
-      setStart(evt.coordinate)
-      console.log("position", points)
-      if(clicked == false) {
-        setClicked(true)
-      } else {
-        setClicked(false)
-      }
+      if(hazardPoint != null) {
+        if(oldLayer != null) {
+          map.removeLayer(oldLayer)
+        }
+      const marker = new olLayer.Vector({
+        source: new olSource.Vector({
+          features: [
+            new ol.Feature({
+              geometry: new olGeom.Point(
+                hazardPoint
+              )
+            })
+          ]
+        })
+      })
+      marker.setStyle(new olStyle.Style({
+        image: new olStyle.Circle({
+          radius: 5,
+          fill: new olStyle.Fill({color: 'yellow'}),
+        })
+      }))
+      // marker.setStyle(styles.icon)
+      setOldLayer(marker)
+      map.addLayer(marker)
+      setDoStart(false)
+    }
+    }
+}, [hazardPoint]);
+
+var callback = function(evt) {
+  if(doStart != false) {
+    console.log("Got to the callback")
+    points = olProj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
+    setHazardPoint(evt.coordinate)
+    setHazardPointRef(evt.coordinate)
+    console.log("Hazard position", hazardPointRef)
+    if(clicked == false) {
+      setClicked(true)
+    } else {
+      setClicked(false)
     }
   }
-  const getHazLoc = () => {
-  setDoStart(true)
-  if(map != null) {
-    map.on('click', DeterminLoc);
-    if(clicked == true) {
-    map.un('click', DeterminLoc);
-    }
+}
+const SelectHazardPoint = () => {
+setHazardDescription(prompt("Please enter the description of the hazard. Then click the map where the hazard is located."))
+setDoStart(true)
+if(map != null) {
+  if(clicked == true) {
+  map.un('click', callback);
+  } else {
+    map.on('click', callback);
   }
-  }
+}
 
+}
 
-  function SelectHazardPoint(){
-    console.log("select a point"); //dk test
-    getHazLoc();
+if (show == true) {
 
-  }
+}
 
   return (
     <div
@@ -57,7 +99,7 @@ function TeamDrawer({ show, onClose }) {
           <div className="flex justify-left p-2">
             <button
               className="p-2 ml-auto justify-right"
-              onClick={() => onClose()}
+              onClick={() => {onClose(); setClicked(false); if(oldLayer != null) {map.removeLayer(oldLayer)}}}
             >
               <svg className="w-6 h-6" viewBox="0 0 24 24">
                 <path
@@ -68,9 +110,11 @@ function TeamDrawer({ show, onClose }) {
             </button>
           </div>
           <div className="flex flex-col overflow-y-scroll overflow-x-hidden overscroll-auto">
-            <p>Test</p>
-            <button className="text-gray-900 dark:text-white hover:underline" onClick={SelectHazardPoint()} >
+            <button className="text-gray-900 dark:text-white hover:underline" onClick={SelectHazardPoint} >
                   Report a hazard
+            </button>
+            <button className="text-gray-900 dark:text-white hover:underline" >
+                  Get a hazard
             </button>
           </div>
         </div>
