@@ -8,6 +8,7 @@ import { checkCookie } from '../requests/authenticationRequests.js'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import MapContext from './mapComponents/MapContext.jsx'
 export const GlobalContext = React.createContext(null)
+import SelectFeatureBar from './featureBar/featureBar.jsx'
 
 const App = () => {
   const [loggedIn, setLoggedIn] = React.useState(false)
@@ -22,6 +23,7 @@ const App = () => {
   const [generatedRoute, setGeneratedRoute] = React.useState(null)
   const [length, setLength] = React.useState(0)
   const [name, setName] = React.useState(null)
+  const [showFeaturesTab, setShowFeaturesTab] =  React.useState(false)
 
   const [showGenerateRouteDrawer, setShowGenerateRouteDrawer] = React.useState(false)
 
@@ -45,12 +47,15 @@ const App = () => {
   return (
     <MapContext.Provider value={{ map, setMap }}>
     <GoogleOAuthProvider clientId="954079927112-48qrn73bql7ma5c6qc7t8mddhsagr39v.apps.googleusercontent.com" >
-    <GlobalContext.Provider value={{ loggedIn, setLoggedIn, userData, setUserData, setShowModal, modalContent, setModalContent, setShowBar, routes, setRoutes, routesType, setRoutesType, showGenerateRouteDrawer, setShowGenerateRouteDrawer, startLoc, setStartLoc, setLength, length, name, setName }}>
+    <GlobalContext.Provider value={{ loggedIn, setLoggedIn, userData, setUserData, setShowModal, modalContent, setModalContent,
+                                        setShowBar, routes, setRoutes, routesType, setRoutesType, showGenerateRouteDrawer,
+                                        setShowGenerateRouteDrawer, startLoc, setStartLoc, setLength, length, name, setName, showFeaturesTab,  setShowFeaturesTab }}>
     <Banner showGenerateRouteDrawer={showGenerateRouteDrawer} />
     <MapContainer />
     <SelectRouteBar showBar={showBar} setShowBar={setShowBar} routes={routes} setRoutes={setRoutes} routesType={routesType} setRoutesType={setRoutesType} setShowModal={setShowModal} setModalContent={setModalContent} length = {length} setLength={setLength} loggedIn={loggedIn} name={name}/>
     <CustomModal showModal={showModal} setShowModal={setShowModal} modalContent={modalContent} />
-
+    <SelectFeatureBar showFeaturesTab={showFeaturesTab} setShowFeaturesTab={setShowFeaturesTab}/>
+ 
     </GlobalContext.Provider>
     </GoogleOAuthProvider>
     </MapContext.Provider>

@@ -12,12 +12,18 @@ import { getRoutes } from '../requests/routeRequests.js';
 const Banner = () => {
   const [showStripeDrawer, setShowStripeDrawer] = React.useState(false);
 
-  const { showGenerateRouteDrawer, setShowGenerateRouteDrawer, userData, setShowBar, setRoutes, setRoutesType, setLength, loggedIn, setName } = React.useContext(GlobalContext);
+  const { showFeaturesTab, setShowFeaturesTab, showGenerateRouteDrawer, setShowGenerateRouteDrawer, userData, setShowBar, setRoutes, setRoutesType, setLength, loggedIn, setName, setShowFeauresTab } = React.useContext(GlobalContext);
   const handleOpenGenerateRouteDrawer = () => {
     console.log('open drawer');
     setShowBar(false);
     setShowGenerateRouteDrawer(true);
     console.log('showGenerateRouteDrawer', showGenerateRouteDrawer);
+  }
+  const handleOpenFeaturesTab = () => {
+    console.log('open features tab');
+    setShowBar(false);
+    setShowFeauresTab(true);
+    console.log('showFeaturesTab', showFeaturesTab);
   }
   const handleOpenRoutes = () => {
     if(loggedIn) {
@@ -83,7 +89,7 @@ const Banner = () => {
               </li>
               <li>
                 <button
-                  className="text-gray-900 dark:text-white hover:underline" >
+                  className="text-gray-900 dark:text-white hover:underline" onClick={handleOpenFeaturesTab} >
                   Features
                 </button>
               </li>
