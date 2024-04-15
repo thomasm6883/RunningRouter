@@ -1,9 +1,9 @@
 import { API_URL } from './API_URL';
 
 //dk get function is not done
-export const getLocations = async () => {
+export const getLocations = async (loc) => {
     try {
-      const response = await fetch(`${API_URL}/locations`);
+      const response = await fetch(`${API_URL}/locations/${loc.latitude}/${loc.longitude}/${loc.distance}`);
   
       if (response.status >= 400) {
         throw new Error(`Request failed with response code ${response.status}`)
