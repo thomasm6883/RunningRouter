@@ -9,11 +9,12 @@ import StripeDrawer from './formsStripe/StripeDrawer.jsx';
 import TestStripeForm from './formsStripe/TestStripeForm.jsx';
 import { getRoutes } from '../requests/routeRequests.js';
 import TeamDrawer from './navbarComponents/TeamDrawer.jsx';
+import FeatureDrawer from './navbarComponents/FeatureDrawer.jsx';
 
 const Banner = () => {
   const [showStripeDrawer, setShowStripeDrawer] = React.useState(false);
 
-  const { showGenerateRouteDrawer, setShowGenerateRouteDrawer, userData, setShowBar, setRoutes, setRoutesType, setLength, loggedIn, setName, setTeamDrawer, teamDrawer } = React.useContext(GlobalContext);
+  const { showGenerateRouteDrawer, setShowGenerateRouteDrawer, userData, setShowBar, setRoutes, setRoutesType, setLength, loggedIn, setName, setTeamDrawer, teamDrawer, setFeatureDrawer, featureDrawer } = React.useContext(GlobalContext);
   const handleOpenGenerateRouteDrawer = () => {
     console.log('open drawer');
     setShowBar(false);
@@ -31,6 +32,11 @@ const Banner = () => {
   const handleOpenTeam = () => {
     setTeamDrawer(true)
   }
+
+  const handleOpenFeature = () => {
+    setFeatureDrawer(true)
+  }
+
   async function getUserRoutes() {
     const response = await getRoutes()
     let responseLength = []
@@ -98,6 +104,7 @@ const Banner = () => {
       <GenerateRouteDrawer showGenerateRouteDrawer={showGenerateRouteDrawer} />
       <StripeDrawer show={showStripeDrawer} onClose={()=>setShowStripeDrawer(false)} >{(showStripeDrawer) ? <TestStripeForm/> : null}</StripeDrawer>
       <TeamDrawer show={teamDrawer} onClose={()=>setTeamDrawer(false)} />
+      <FeatureDrawer show={featureDrawer} onClose={()=>setFeatureDrawer(false)} />
     </div>
   );
 };
