@@ -1,42 +1,10 @@
 import React from 'react';
-import * as olProj from 'ol/proj'
-import MapContext  from '../mapComponents/MapContext';
+
 
 
 
 function TeamDrawer({ show, onClose }) {
-  const [clicked, setClicked] = React.useState(false);
-  const { map } = React.useContext(MapContext);
 
-  var DeterminLoc = function(evt) {
-    if(doStart != false) {
-      points = olProj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
-      setStartLoc(points)
-      setStart(evt.coordinate)
-      console.log("position", points)
-      if(clicked == false) {
-        setClicked(true)
-      } else {
-        setClicked(false)
-      }
-    }
-  }
-  const getHazLoc = () => {
-  setDoStart(true)
-  if(map != null) {
-    map.on('click', DeterminLoc);
-    if(clicked == true) {
-    map.un('click', DeterminLoc);
-    }
-  }
-  }
-
-
-  function SelectHazardPoint(){
-    console.log("select a point"); //dk test
-    getHazLoc();
-
-  }
 
   return (
     <div
@@ -69,9 +37,7 @@ function TeamDrawer({ show, onClose }) {
           </div>
           <div className="flex flex-col overflow-y-scroll overflow-x-hidden overscroll-auto">
             <p>Test</p>
-            <button className="text-gray-900 dark:text-white hover:underline" onClick={SelectHazardPoint()} >
-                  Report a hazard
-            </button>
+
           </div>
         </div>
       </section>
