@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as olProj from 'ol/proj'
 import * as ol from 'ol';
 import * as olGeom from 'ol/geom'
@@ -17,9 +17,17 @@ const StartRoute = (props) => {
     [direction, setDirection] = React.useState('No Preference');
     [generateDisabled, setGenerateDisabled] = React.useState(false);
     const { map } = React.useContext(MapContext);
-    const { startLoc, setStartLoc, setLength, length, setShowBar, setRoutes, setShowGenerateRouteDrawer, setName, userData} = React.useContext(GlobalContext);
+    const { startLoc, setStartLoc, setLength, length, setShowBar, setRoutes, setShowGenerateRouteDrawer, setName, userData, showGenerateRouteDrawer, showBar} = React.useContext(GlobalContext);
     const [clicked, setClicked] = React.useState(false);
     const [userLength, setUserLength] = React.useState(0);
+
+    useEffect(() => {
+      if(showGenerateRouteDrawer == false) {
+        if(oldLayer != null) {
+          map.removeLayer(oldLayer)
+        }
+      }
+    }, [showGenerateRouteDrawer])
 
     // Added functionality to fix the side effect of not removing the on 'click' event listener
     // Now callback is called once per click
@@ -116,7 +124,7 @@ async function sendStart(e) {
     console.log("coordinates response", dataBack.coordinates)
     if(dataBack != null) {
       let responseLength = []
-      responseLength.push(dataBack.length)
+      responseLength.push(Number((dataBack.length).toFixed(1)))
       setLength(responseLength)
       setRoutes(dataBack.coordinates)
       console.log("Length of route", length)
@@ -170,40 +178,6 @@ async function OutsideTextbox() {
       <div>
       <div id="startSelect" className='flex flex-row justify-center items-center space-x-2'>
         <div className='font-bold py-auto'>Start:</div>
-        <button id="selectStartButton" onClick={getStart}><svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <circle cx="12" cy="12" r="10" />
-          <circle cx="12" cy="12" r="6" />
-          <line x1="22" y1="12" x2="18" y2="12" />
-          <line x1="6" y1="12" x2="2" y2="12" />
-          <line x1="12" y1="6" x2="12" y2="2" />
-          <line x1="12" y1="22" x2="12" y2="18" />
-        </svg>
-        </button>
-        <button id="clearStartButton" onClick={clearStart}>Clear</button>
-        <TextInput
-          id="address"
-          type="address"
-          placeholder='Or enter an address'
-          required
-          onChange={
-            (e) =>
-              setAddress(e.target.value) /*setStartAddress(e.target.value)*/
-          }
-          onBlur={OutsideTextbox}
-        />
-      </div>
-      <div id="startEnd" className='flex flex-row justify-center items-center space-x-2'>
-        <div className='font-bold py-auto'>End:</div>
         <button id="selectStartButton" onClick={getStart}><svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"

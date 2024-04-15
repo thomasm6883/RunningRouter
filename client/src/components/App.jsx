@@ -34,7 +34,6 @@ const App = () => {
     const user = await getUser()
     if (user) {
       setUserData(user)
-      console.log('user', user)
     }
   }
   React.useEffect(() => {

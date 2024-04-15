@@ -204,13 +204,10 @@ function SelectRouteBar(props) {
         }),
       }),
       'start': new olStyle.Style({
-        image: new olStyle.Circle({
-          radius: 7,
-          fill: new olStyle.Fill({ color: 'grey' }),
-          stroke: new olStyle.Stroke({
-            color: [50, 50, 50, .5],// TO DO change to dark grey
-            width: 1,
-          }),
+        image: new olStyle.Icon({
+          anchor: [0.5, 1],
+          scale: 0.04,
+          src: 'marker.png',
         }),
       }),
       'geoMarker': new olStyle.Style({
