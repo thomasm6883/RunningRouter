@@ -1,6 +1,103 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import * as olProj from 'ol/proj'
+import * as ol from 'ol';
+import * as olGeom from 'ol/geom'
+import * as olLayer from 'ol/layer'
+import * as olSource from 'ol/source'
+import * as olStyle from 'ol/style'
+import MapContext  from '../mapComponents/MapContext';
+import {getLocations, saveLocation} from '../../requests/locationRequests.js'
 
-function FeatureDrawer({ show, onClose }) {
+
+function TeamDrawer({ show, onClose }) {
+  const [clicked, setClicked] = React.useState(false);
+  const [hazardPoint, setHazardPoint] = React.useState(null);
+  const [hazardPointRef, setHazardPointRef] = React.useState(null);
+  const [oldLayer, setOldLayer] = React.useState(null);
+  const { map } = React.useContext(MapContext);
+  const [doStart, setDoStart] = React.useState(false);
+  const [hazardDescription, setHazardDescription] = React.useState(null);
+
+  React.useEffect(() => {
+    if(doStart != false) {
+      if(hazardPoint != null) {
+        if(oldLayer != null) {
+          map.removeLayer(oldLayer)
+        }
+      const marker = new olLayer.Vector({
+        source: new olSource.Vector({
+          features: [
+            new ol.Feature({
+              geometry: new olGeom.Point(
+                hazardPoint
+              )
+            })
+          ]
+        })
+      })
+      marker.setStyle(new olStyle.Style({
+        image: new olStyle.Circle({
+          radius: 5,
+          fill: new olStyle.Fill({color: 'yellow'}),
+        })
+      }))
+      // marker.setStyle(styles.icon)
+      setOldLayer(marker)
+      map.addLayer(marker)
+      savePoint()
+      setDoStart(false)
+    }
+    }
+}, [hazardPoint]);
+
+async function savePoint() {
+  try {
+    const save = {
+      Location: hazardPoint,
+      Description: hazardDescription,
+      LocationType: "Hazard"
+    }
+    const response = saveLocation(save)
+    console.log("Save point response", response)
+  } catch (err) {
+    console.error('Failed to save location')
+    console.error(err)
+  }
+}
+
+var callback = function(evt) {
+  if(doStart != false) {
+    console.log("Got to the callback")
+    points = olProj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
+    setHazardPoint(evt.coordinate)
+    setHazardPointRef(points)
+    console.log("Hazard position", hazardPointRef)
+    if(clicked == false) {
+      setClicked(true)
+    } else {
+      setClicked(false)
+    }
+  }
+}
+const SelectHazardPoint = () => {
+setDoStart(true)
+if(map != null) {
+  if(clicked == true) {
+  map.un('click', callback);
+  } else {
+    map.on('click', callback);
+  }
+}
+}
+
+function showHazards() {
+
+}
+
+function hindHazards() {
+
+}
+
   return (
     <div
       className={
@@ -20,7 +117,7 @@ function FeatureDrawer({ show, onClose }) {
           <div className="flex justify-left p-2">
             <button
               className="p-2 ml-auto justify-right"
-              onClick={() => onClose()}
+              onClick={() => {onClose(); setClicked(false); if(oldLayer != null) {map.removeLayer(oldLayer)}}}
             >
               <svg className="w-6 h-6" viewBox="0 0 24 24">
                 <path
@@ -31,7 +128,15 @@ function FeatureDrawer({ show, onClose }) {
             </button>
           </div>
           <div className="flex flex-col overflow-y-scroll overflow-x-hidden overscroll-auto">
-            <p>Test</p>
+            <button className="text-gray-900 dark:text-white hover:underline" onClick={SelectHazardPoint} >
+                  Report a hazard
+            </button>
+            <button className="text-gray-900 dark:text-white hover:underline" onClick={showHazards}>
+                  Show a hazard
+            </button>
+            <button className="text-gray-900 dark:text-white hover:underline" onClick={hindHazards}>
+                  Hind a hazard
+            </button>
           </div>
         </div>
       </section>
@@ -39,4 +144,6 @@ function FeatureDrawer({ show, onClose }) {
   );
 }
 
-export default FeatureDrawer;
+
+
+export default TeamDrawer;

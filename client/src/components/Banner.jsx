@@ -92,7 +92,7 @@ const Banner = () => {
               </li>
               <li>
                 <button
-                  className="text-gray-900 dark:text-white hover:underline" onClick={handleOpenTeam}>
+                  className="text-gray-900 dark:text-white hover:underline" onClick={handleOpenFeature}>
                   Features
                 </button>
               </li>
@@ -103,7 +103,7 @@ const Banner = () => {
       </div>
       <GenerateRouteDrawer showGenerateRouteDrawer={showGenerateRouteDrawer} />
       <StripeDrawer show={showStripeDrawer} onClose={()=>setShowStripeDrawer(false)} >{(showStripeDrawer) ? <TestStripeForm/> : null}</StripeDrawer>
-      <TeamDrawer show={teamDrawer} onClose={()=>setTeamDrawer(false)} />
+      {/* <TeamDrawer show={teamDrawer} onClose={()=>setTeamDrawer(false)} /> */}
       <FeatureDrawer show={featureDrawer} onClose={()=>setFeatureDrawer(false)} />
     </div>
   );
