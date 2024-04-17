@@ -2,9 +2,9 @@ import queryMongoDatabase from "../../mongo/mongoClient.js";
 
 export default async function saveLocation(req, res) {
     console.log("im in");
-    const email = req.session.email; 
+    const email = req.session.email;
     const newLoc = req.body;
-    console.log(newloc);
+    console.log(newLoc);
     const databaseName = "main";
     const CollectionName = "specificLocation";
 
@@ -20,8 +20,8 @@ export default async function saveLocation(req, res) {
 
             res.status(500).json({  message: "Failed to add Location",
                                     _id : "0" });
-        }   
+        }
     }, databaseName);
-    
+
 
 }
