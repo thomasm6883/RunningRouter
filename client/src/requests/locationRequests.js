@@ -17,14 +17,14 @@ export const getLocations = async (loc) => {
     }
   };
 
-export const saveLocation = async (route) => {
+export const saveLocation = async (loc) => {
     try {
       const response = await fetch(`${API_URL}/locations`, {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
           },
-          body: JSON.stringify(route),
+          body: JSON.stringify(loc),
       });
       if (response.status >= 400) {
         throw new Error(`Request failed with response code ${response.status}`)

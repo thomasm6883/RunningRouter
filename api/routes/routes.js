@@ -43,11 +43,11 @@ dataRouter.post('/routes',  saveRoute);
 dataRouter.delete('/routes', deleteRoute);
 
 
-//dataRouter.get('/routes', isAuthenticated, getSavedRoutes); //can remove isAuthenticated for testing
-//dataRouter.get('/routes', getSavedRoutes);
-//dataRouter.post('/routes', isAuthenticated, saveRoute);
-dataRouter.post('/locations',  saveLocation);
-dataRouter.delete('/locations',  deleteLocation);
+
+//dataRouter.post('/locations',  saveLocation);
+dataRouter.post('/locations', isAuthenticated,  saveLocation);
+//dataRouter.delete('/locations',  deleteLocation);
+dataRouter.delete('/locations', isAuthenticated,  deleteLocation);
 dataRouter.get('/locations/:latitude/:longitude/:dist',  getLocations);
 
 
