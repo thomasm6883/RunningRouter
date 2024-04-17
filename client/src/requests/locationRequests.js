@@ -1,6 +1,6 @@
 import { API_URL } from './API_URL';
 
-//dk get function is not done
+/** loc is an object containing 'latitude','longitude', and 'distance' which is the radius of search */
 export const getLocations = async (loc) => {
     try {
       const response = await fetch(`${API_URL}/locations/${loc.latitude}/${loc.longitude}/${loc.distance}`);
@@ -17,6 +17,12 @@ export const getLocations = async (loc) => {
     }
   };
 
+  /*loc{
+      "Location" array [0: latitude , 1: logitude]
+      "LocationType" : string with type e.g. "Hazard"
+      "Description" : string with a description of hazard
+
+      }*/ 
 export const saveLocation = async (loc) => {
     try {
       const response = await fetch(`${API_URL}/locations`, {
@@ -38,7 +44,7 @@ export const saveLocation = async (loc) => {
     }
   };
 
-
+/** id is a string with the mongodb id */
 export const deleteLocation = async (id) => {
   const deleteRoute = {_id : id}
 
