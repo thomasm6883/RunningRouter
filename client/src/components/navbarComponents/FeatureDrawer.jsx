@@ -52,6 +52,7 @@ function TeamDrawer({ show, onClose }) {
 
 async function savePoint() {
   try {
+    setHazardDescription(prompt("Please enter the description of the hazard. Then click the map where the hazard is located."))
     const save = {
       Location: hazardPoint,
       Description: hazardDescription,

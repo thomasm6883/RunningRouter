@@ -4,7 +4,7 @@ import { API_URL } from './API_URL';
 export const getLocations = async (loc) => {
     try {
       const response = await fetch(`${API_URL}/locations/${loc.latitude}/${loc.longitude}/${loc.distance}`);
-  
+
       if (response.status >= 400) {
         throw new Error(`Request failed with response code ${response.status}`)
       }
@@ -22,9 +22,10 @@ export const getLocations = async (loc) => {
       "LocationType" : string with type e.g. "Hazard"
       "Description" : string with a description of hazard
 
-      }*/ 
+      }*/
 export const saveLocation = async (loc) => {
     try {
+      console.log('loc', loc)
       const response = await fetch(`${API_URL}/locations`, {
           method: 'POST',
           headers: {
