@@ -1,6 +1,6 @@
 import { API_URL } from './API_URL';
 
-//dk get function is not done
+/** loc is an object containing 'latitude','longitude', and 'distance' which is the radius of search */
 export const getLocations = async (loc) => {
     try {
       const response = await fetch(`${API_URL}/locations/${loc.latitude}/${loc.longitude}/${loc.distance}`);
@@ -17,14 +17,20 @@ export const getLocations = async (loc) => {
     }
   };
 
-export const saveLocation = async (route) => {
+  /*loc{
+      "Location" array [0: latitude , 1: logitude]
+      "LocationType" : string with type e.g. "Hazard"
+      "Description" : string with a description of hazard
+
+      }*/ 
+export const saveLocation = async (loc) => {
     try {
       const response = await fetch(`${API_URL}/locations`, {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
           },
-          body: JSON.stringify(route),
+          body: JSON.stringify(loc),
       });
       if (response.status >= 400) {
         throw new Error(`Request failed with response code ${response.status}`)
@@ -38,7 +44,7 @@ export const saveLocation = async (route) => {
     }
   };
 
-
+/** id is a string with the mongodb id */
 export const deleteLocation = async (id) => {
   const deleteRoute = {_id : id}
 
