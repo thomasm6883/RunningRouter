@@ -4,7 +4,7 @@ export default async function saveLocation(req, res) {
     console.log("im in");
     const email = req.session.email; 
     const newLoc = req.body;
-    console.log(newloc);
+    console.log(newLoc);
     const databaseName = "main";
     const CollectionName = "specificLocation";
 
