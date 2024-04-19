@@ -91,6 +91,7 @@ const Banner = () => {
                 </button>
               </li>
               <li>
+                {/* TODO Make this on click if not logged in cant do */}
                 <button
                   className="text-gray-900 dark:text-white hover:underline" onClick={handleOpenFeature}>
                   Features
