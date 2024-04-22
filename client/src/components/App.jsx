@@ -19,9 +19,10 @@ const App = () => {
   const [routesType, setRoutesType] = React.useState('My Routes')
   const [map, setMap] = React.useState(null)
   const [startLoc, setStartLoc] = React.useState(null)
-  const [generatedRoute, setGeneratedRoute] = React.useState(null)
   const [length, setLength] = React.useState(0)
   const [name, setName] = React.useState(null)
+  const [teamDrawer, setTeamDrawer] = React.useState(false)
+  const [featureDrawer, setFeatureDrawer] = React.useState(false)
 
   const [showGenerateRouteDrawer, setShowGenerateRouteDrawer] = React.useState(false)
 
@@ -35,7 +36,6 @@ const App = () => {
     const user = await getUser()
     if (user) {
       setUserData(user)
-      console.log('user', user)
     }
   }
   React.useEffect(() => {
@@ -45,7 +45,7 @@ const App = () => {
   return (
     <MapContext.Provider value={{ map, setMap }}>
     <GoogleOAuthProvider clientId="954079927112-48qrn73bql7ma5c6qc7t8mddhsagr39v.apps.googleusercontent.com" >
-    <GlobalContext.Provider value={{ loggedIn, setLoggedIn, userData, setUserData, setShowModal, modalContent, setModalContent, setShowBar, routes, setRoutes, routesType, setRoutesType, showGenerateRouteDrawer, setShowGenerateRouteDrawer, startLoc, setStartLoc, setLength, length, name, setName }}>
+    <GlobalContext.Provider value={{ loggedIn, setLoggedIn, userData, setUserData, setShowModal, modalContent, setModalContent, setShowBar, routes, setRoutes, routesType, setRoutesType, showGenerateRouteDrawer, setShowGenerateRouteDrawer, startLoc, setStartLoc, setLength, length, name, setName, teamDrawer, setTeamDrawer, featureDrawer, setFeatureDrawer }}>
     <Banner showGenerateRouteDrawer={showGenerateRouteDrawer} />
     <MapContainer />
     <SelectRouteBar showBar={showBar} setShowBar={setShowBar} routes={routes} setRoutes={setRoutes} routesType={routesType} setRoutesType={setRoutesType} setShowModal={setShowModal} setModalContent={setModalContent} length = {length} setLength={setLength} loggedIn={loggedIn} name={name}/>

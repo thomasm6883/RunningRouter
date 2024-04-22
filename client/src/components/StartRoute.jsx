@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as olProj from 'ol/proj'
 import * as ol from 'ol';
 import * as olGeom from 'ol/geom'
@@ -15,15 +15,25 @@ const StartRoute = (props) => {
     [doStart, setDoStart] = React.useState(false);
     [address, setAddress] = React.useState(null);
     [direction, setDirection] = React.useState('No Preference');
+    [generateDisabled, setGenerateDisabled] = React.useState(false);
     const { map } = React.useContext(MapContext);
-    const { startLoc, setStartLoc, setLength, length, setShowBar, setRoutes, setShowGenerateRouteDrawer, setName} = React.useContext(GlobalContext);
+    const { startLoc, setStartLoc, setLength, length, setShowBar, setRoutes, setShowGenerateRouteDrawer, setName, userData, showGenerateRouteDrawer, showBar} = React.useContext(GlobalContext);
     const [clicked, setClicked] = React.useState(false);
     const [userLength, setUserLength] = React.useState(0);
+
+    useEffect(() => {
+      if(showGenerateRouteDrawer == false) {
+        if(oldLayer != null) {
+          map.removeLayer(oldLayer)
+        }
+      }
+    }, [showGenerateRouteDrawer])
 
     // Added functionality to fix the side effect of not removing the on 'click' event listener
     // Now callback is called once per click
     var callback = function(evt) {
       if(doStart != false) {
+
         points = olProj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
         setStartLoc(points)
         setStart(evt.coordinate)
@@ -82,7 +92,8 @@ const StartRoute = (props) => {
   }, [start]);
 
 async function sendStart(e) {
-  alert('Generating Route, please wait 10 minutes for the route to be generated.')
+  setGenerateDisabled(true)
+  alert('Generating Route, please wait 3 to 5 minutes for the route to be generated.')
   console.log("Seeing start point ",start)
   if (start != null && userLength != null) {
     console.log("Start position being sent", startLoc)
@@ -100,7 +111,7 @@ async function sendStart(e) {
         alert("Distance cannot be negative. Please enter a valid value.");
         return; // Stop execution of the function
       }
-
+      result.append('email', userData.email)
       result.append('direction', direction)
       result.append('mileage', distance)
       result.append('roadOptions', JSON.stringify(roadOptions)) // send as a JSON string
@@ -113,16 +124,19 @@ async function sendStart(e) {
     console.log("length response", dataBack.length)
     console.log("coordinates response", dataBack.coordinates)
     if(dataBack != null) {
-      setShowBar(true);
-      setRoutes(dataBack.coordinates);
       setLength(dataBack.length)
+      setRoutes(dataBack.coordinates)
       setName(null)
       map.removeLayer(oldLayer)
+      setGenerateDisabled(false)
+      setShowBar(true);
       setShowGenerateRouteDrawer(false)
     } else {
       window.alert("Was not able to generate a route with that Start location")
     }
   } catch (error) {
+    setGenerateDisabled(false)
+    window.alert("Was not able to generate a route")
     console.error('Error:', error);
   }
   }
@@ -194,40 +208,6 @@ async function OutsideTextbox() {
           onBlur={OutsideTextbox}
         />
       </div>
-      <div id="startEnd" className='flex flex-row justify-center items-center space-x-2'>
-        <div className='font-bold py-auto'>End:</div>
-        <button id="selectStartButton" onClick={getStart}><svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <circle cx="12" cy="12" r="10" />
-          <circle cx="12" cy="12" r="6" />
-          <line x1="22" y1="12" x2="18" y2="12" />
-          <line x1="6" y1="12" x2="2" y2="12" />
-          <line x1="12" y1="6" x2="12" y2="2" />
-          <line x1="12" y1="22" x2="12" y2="18" />
-        </svg>
-        </button>
-        <button id="clearStartButton" onClick={clearStart}>Clear</button>
-        <TextInput
-          id="address"
-          type="address"
-          placeholder='Or enter an address'
-          required
-          onChange={
-            (e) =>
-              setAddress(e.target.value) /*setStartAddress(e.target.value)*/
-          }
-          onBlur={OutsideTextbox}
-        />
-      </div>
       </div>
       <div className='ml-3' style={{marginRight: '15px'}}>
         <label style={{marginRight: '7px'}}>Distance</label>
@@ -259,7 +239,7 @@ async function OutsideTextbox() {
           <input type="checkbox" value="Walkways" name="option" /> Walkways
         </label>
       </div>
-      <button className="ml-auto justify-right px-2 rounded border-2" onClick={sendStart}>
+      <button className="ml-auto justify-right px-2 rounded border-2" onClick={sendStart} disabled={generateDisabled}>
         Generate Route
       </button>{" "}
       <br />
