@@ -8,11 +8,13 @@ import { GlobalContext } from './App.jsx';
 import StripeDrawer from './formsStripe/StripeDrawer.jsx';
 import TestStripeForm from './formsStripe/TestStripeForm.jsx';
 import { getRoutes } from '../requests/routeRequests.js';
+import MapInteractionDrawer from './routeBarComponents/MapInteractionDrawer.jsx';
 import TeamDrawer from './navbarComponents/TeamDrawer.jsx';
 import FeatureDrawer from './navbarComponents/FeatureDrawer.jsx';
 
 const Banner = () => {
   const [showStripeDrawer, setShowStripeDrawer] = React.useState(false);
+  const [showMapDrawer, setMapDrawer] = React.useState(false);
 
   const { showGenerateRouteDrawer, setShowGenerateRouteDrawer, userData, setShowBar, setRoutes, setRoutesType, setLength, loggedIn, setName, setTeamDrawer, teamDrawer, setFeatureDrawer, featureDrawer } = React.useContext(GlobalContext);
   const handleOpenGenerateRouteDrawer = () => {
@@ -104,6 +106,7 @@ const Banner = () => {
       </div>
       <GenerateRouteDrawer showGenerateRouteDrawer={showGenerateRouteDrawer} />
       <StripeDrawer show={showStripeDrawer} onClose={()=>setShowStripeDrawer(false)} >{(showStripeDrawer) ? <TestStripeForm/> : null}</StripeDrawer>
+      <MapInteractionDrawer />
       {/* <TeamDrawer show={teamDrawer} onClose={()=>setTeamDrawer(false)} /> */}
       <FeatureDrawer show={featureDrawer} onClose={()=>setFeatureDrawer(false)} />
     </div>
