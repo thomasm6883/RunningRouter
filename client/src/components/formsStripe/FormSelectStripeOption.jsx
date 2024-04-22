@@ -19,7 +19,7 @@ const FormSelectStripeOption = (props) => {
   // }, [])
 
   const handleSelect = (option) => {
-    console.log(option)
+    //console.log(option)
     setSelectedOption(option)
   }
   const handleSubmit = () => {

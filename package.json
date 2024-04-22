@@ -1,5 +1,5 @@
 {
-  "name": "RunningRouteGroup",
+  "name": "RunningRouterGroup",
   "version": "1.0.0",
   "description": "",
   "main": "api/server.js",
@@ -12,6 +12,7 @@
     "watch:esbuild": "esbuild --watch --bundle --sourcemap --target=es6 --outdir=client/public client/src/main.jsx",
     "watch:tailwind": "npx tailwindcss -i ./client/src/main.css -o ./client/public/app.css --watch",
     "client:dev": "npm-run-all --parallel watch:*",
+    "client:prod": "npm-run-all buildClient:*",
     "server:dev": "nodemon --watch api dev",
     "server:prod": "node api/server.js prod"
   },

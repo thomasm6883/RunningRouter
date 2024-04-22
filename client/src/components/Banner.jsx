@@ -9,9 +9,8 @@ import { GlobalContext } from './App.jsx';
 const Banner = () => {
   const { showGenerateRouteDrawer, setShowGenerateRouteDrawer, userData, setShowBar, setRoutes, setRoutesType } = React.useContext(GlobalContext);
   const handleOpenGenerateRouteDrawer = () => {
-    console.log('open drawer');
     setShowGenerateRouteDrawer(true);
-    console.log('showGenerateRouteDrawer', showGenerateRouteDrawer);
+    //console.log('showGenerateRouteDrawer', showGenerateRouteDrawer);
   }
   const handleOpenRoutes = () => {
     setRoutes(userData.savedRoutes)

@@ -22,7 +22,7 @@ const FormForgot = (props) => {
     if (loginSuccess) {
       setModalContent(<FormReset handleClose={handleClose} email={email} />)
     } else{
-      alert('Login failed')
+      alert('email failed to send')
     }
   }
   wrapper()

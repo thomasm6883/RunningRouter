@@ -57,7 +57,7 @@ function SelectRouteBar(props) {
   const [startLoop, setStartLoop] = React.useState(false);
 
   const [showRouteNavBar, setShowRouteNavBar] = React.useState(false);
-  const handleCloseRouteNavBar = () => { setShowRouteNavBar(false); setShowBar(true); }
+  const handleCloseRouteNavBar = () => { setShowRouteNavBar(false); setShowBar(true); setStartRoute(false) }
 
   const { map } = React.useContext(MapContext);
 
@@ -176,10 +176,10 @@ function SelectRouteBar(props) {
     // TO DO - FORMAT
     // separate this function into at least 1 separate file to clean the code up
     setStartRoute(true);
-    console.log(startRoute);
+    //console.log(startRoute);
 
     setStartLoop(true);
-    console.log("start loop: ", startLoop);
+    //console.log("start loop: ", startLoop);
 
     setShowRouteNavBar(true);
     setShowBar(false);
@@ -311,7 +311,7 @@ function SelectRouteBar(props) {
       const time = event.frameState.time;
       const elapsedTime = time - lastTime;
       distance = (distance + (speed * elapsedTime) / 1e6) //% 2;
-      console.log(distance);
+      //console.log(distance);
       lastTime = time;
 
       function setDistance(distance) {

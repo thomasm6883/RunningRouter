@@ -20,7 +20,7 @@ const FormLogin = (props) => {
     const wrapper = async () => {
       const googleLoginSuccess = await googleOAuth(authorizationCode)
       if (googleLoginSuccess) {
-        console.log('Google login success', googleLoginSuccess)
+        //console.log('Google login success', googleLoginSuccess)
 
         setUserData(googleLoginSuccess.user)
         setLoggedIn(true)

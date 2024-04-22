@@ -22,7 +22,7 @@ export async function fetchClientSecret (productOption) {
       throw new Error(`Request failed with response code ${response.status}`)
     }
     const responseBody = await response.json()
-    console.log(responseBody)
+    //console.log(responseBody)
 
     return responseBody.client_secret
   } catch (err) {
@@ -39,7 +39,7 @@ export async function fetchSessionStatus (sessionId) {
       throw new Error(`Request failed with response code ${response.status}`)
     }
     const responseBody = await response.json()
-    console.log(responseBody)
+    //console.log(responseBody)
 
     return responseBody
   } catch (err) {
@@ -62,7 +62,7 @@ export async function createPortalSession (session_id) {
       throw new Error(`Request failed with response code ${response.status}`)
     }
     const responseBody = await response.json()
-    console.log(responseBody)
+    //console.log(responseBody)
 
     return responseBody
   } catch (err) {
