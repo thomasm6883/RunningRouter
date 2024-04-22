@@ -8,9 +8,11 @@ import * as olStyle from 'ol/style'
 import MapContext  from '../mapComponents/MapContext';
 import {getLocations, saveLocation} from '../../requests/locationRequests.js'
 import { distance } from 'ol/coordinate.js';
+import { GlobalContext } from '../App.jsx';
+import { EMPTY } from 'sqlite3';
 
 
-function TeamDrawer({ show, onClose }) {
+function FeatureDrawer({ show, onClose }) {
   const [clicked, setClicked] = React.useState(false);
   const [hazardPoint, setHazardPoint] = React.useState(null);
   const [hazardPointRef, setHazardPointRef] = React.useState(null);
@@ -21,6 +23,8 @@ function TeamDrawer({ show, onClose }) {
   const [showPoints, setShowPoints] = React.useState(false);
   const [getHazardPoints, setGetHazardPoints] = React.useState(null);
   const [pointsLayer, setPointsLayer] = React.useState([]);
+  const { loggedIn } = React.useContext(GlobalContext);
+  console.log("Logged in", loggedIn)
 
   React.useEffect(() => {
     if(doStart != false) {
@@ -197,7 +201,7 @@ function hindHazards() {
             </button>
           </div>
           <div className="flex flex-col overflow-y-scroll overflow-x-hidden overscroll-auto">
-            <button className="text-gray-900 dark:text-white hover:underline" onClick={SelectHazardPoint} >
+            <button className="text-gray-900 dark:text-white hover:underline" onClick={(loggedIn != false) ? SelectHazardPoint : window.alert("Please Login to save hazard points")} >
                   Report a hazard
             </button>
             {(showPoints == false) ? <button className="text-gray-900 dark:text-white hover:underline" onClick={showHazards}>
@@ -215,4 +219,4 @@ function hindHazards() {
 
 
 
-export default TeamDrawer;
+export default FeatureDrawer;
