@@ -9,7 +9,6 @@ import MapContext  from '../mapComponents/MapContext';
 import {getLocations, saveLocation} from '../../requests/locationRequests.js'
 import { distance } from 'ol/coordinate.js';
 import { GlobalContext } from '../App.jsx';
-import { EMPTY } from 'sqlite3';
 
 
 function FeatureDrawer({ show, onClose }) {
@@ -24,7 +23,6 @@ function FeatureDrawer({ show, onClose }) {
   const [getHazardPoints, setGetHazardPoints] = React.useState(null);
   const [pointsLayer, setPointsLayer] = React.useState([]);
   const { loggedIn } = React.useContext(GlobalContext);
-  console.log("Logged in", loggedIn)
 
   React.useEffect(() => {
     if(doStart != false) {
@@ -141,7 +139,6 @@ async function savePoint() {
 
 var callback = function(evt) {
   if(doStart != false) {
-    console.log("Got to the callback")
     points = olProj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
     setHazardPoint(evt.coordinate)
     setHazardPointRef(points)
@@ -153,14 +150,18 @@ var callback = function(evt) {
   }
 }
 const SelectHazardPoint = () => {
-setDoStart(true)
-if(map != null) {
-  if(clicked == true) {
-  map.un('click', callback);
+  if (loggedIn){
+    setDoStart(true)
+    if(map != null) {
+      if(clicked == true) {
+      map.un('click', callback);
+      } else {
+        map.on('click', callback);
+      }
+    }
   } else {
-    map.on('click', callback);
+    alert("Please log in to report a hazard")
   }
-}
 }
 
 function showHazards() {
@@ -201,7 +202,7 @@ function hindHazards() {
             </button>
           </div>
           <div className="flex flex-col overflow-y-scroll overflow-x-hidden overscroll-auto">
-            <button className="text-gray-900 dark:text-white hover:underline" onClick={(loggedIn != false) ? SelectHazardPoint : window.alert("Please Login to save hazard points")} >
+            <button className="text-gray-900 dark:text-white hover:underline" onClick={SelectHazardPoint} >
                   Report a hazard
             </button>
             {(showPoints == false) ? <button className="text-gray-900 dark:text-white hover:underline" onClick={showHazards}>
