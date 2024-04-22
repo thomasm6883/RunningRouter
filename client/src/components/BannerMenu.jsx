@@ -34,12 +34,10 @@ const BannerMenu = (props) => {
       wrapper()
     }
     const handleOpenRoutes = () => {
-      console.log("Opening routes")
         getUserRoutes()
         setShowBar(true)
     }
       async function getUserRoutes() {
-        console.log("Getting user routes")
         const response = await getRoutes()
         let responseLength = []
         let responseRoutes = []
@@ -51,7 +49,6 @@ const BannerMenu = (props) => {
         })
           responseName.push(response[i].routeName)
         }
-        console.log(response)
         setLength(responseLength)
         setRoutes(responseRoutes)
         setName(responseName)

@@ -17,10 +17,8 @@ const Banner = () => {
 
   const { showGenerateRouteDrawer, setShowGenerateRouteDrawer, userData, setShowBar, setRoutes, setRoutesType, setLength, loggedIn, setName, setTeamDrawer, teamDrawer, setFeatureDrawer, featureDrawer } = React.useContext(GlobalContext);
   const handleOpenGenerateRouteDrawer = () => {
-    console.log('open drawer');
     setShowBar(false);
     setShowGenerateRouteDrawer(true);
-    console.log('showGenerateRouteDrawer', showGenerateRouteDrawer);
   }
   const handleOpenRoutes = () => {
     if(loggedIn) {
@@ -50,7 +48,6 @@ const Banner = () => {
     })
       responseName.push(response[i].routeName)
     }
-    console.log(response)
     setLength(responseLength)
     setRoutes(responseRoutes)
     setName(responseName)

@@ -67,7 +67,6 @@ function SelectRouteBar(props) {
     if (animationLayer) {map.removeLayer(animationLayer); setAnimationLayer(null);}
     const route = routes[routeIndex].route;
     const points = route;
-    console.log("Points in Preview: ", points);
     // for (let i = 0; i < route.length; i++) {
     //   points.push([route[i].Lat, route[i].Lng]);
     // }
@@ -96,7 +95,6 @@ function SelectRouteBar(props) {
           }
         }
     }
-    console.log("Points in Preview: ", points);
     const featureLine = new ol.Feature({
         geometry: new olGeom.LineString(points)
     });
@@ -169,7 +167,6 @@ function SelectRouteBar(props) {
         }
       }
     }
-    console.log("Looking at points in annimation", points)
     // Create the route line ---------------------------------------------------
     const lineString = new olGeom.LineString(points);
     const featureLine = new ol.Feature({
@@ -292,20 +289,17 @@ function SelectRouteBar(props) {
     // function stopRunningRoute() { ... }
   };
   const handleCancel = (routeIndex) => {
-    console.log("Cancel "+routes[routeIndex].name);
     // Stop the route navigation
     map.removeLayer(animationLayer);
     setAnimationLayer(null)
     setStartRoute(false);
   }
   const handleSave = (routeIndex) => {
-    console.log("Saving this route ", routes[routeIndex]);
     // MongoDB FindOneAndUpdate if we are keeping MyRoutes as state, otherwise call for MyRoutes on render
     setModalContent(<FormSaveRoute handleClose={()=>setShowModal(false)} route={routes[routeIndex]} length={length[routeIndex]}/>)
     setShowModal(true)
   }
   const handleDelete = (routeIndex) => {
-    console.log("Delete "+routes[routeIndex].route);
     setModalContent(<FormDeleteRoute handleClose={()=>setShowModal(false)} route={name[routeIndex]} />)
     setShowModal(true)
   }

@@ -15,7 +15,6 @@ const MapDraw = (props) => {
 
     for (var i = 0; i < points.length; i++) {
         points[i] = olProj.transform(points[i], 'EPSG:4326', 'EPSG:3857');
-        console.log(points[i])
       }
 
     var featureLine = new ol.Feature({

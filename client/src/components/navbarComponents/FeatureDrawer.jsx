@@ -68,11 +68,9 @@ async function getHazardLocations(location) {
   for (let i = 0; i < response.length; i++) {
    points.push(olProj.transform([response[i].Location[1], response[i].Location[0]], 'EPSG:4326', 'EPSG:3857'))
   }
-  console.log("Points", points)
   markerArray = []
   if(points != []) {
     for (let i = 0; i < points.length; i++) {
-      console.log("Got to the get hazard points")
       const marker = new olLayer.Vector({
         source: new olSource.Vector({
           features: [
@@ -130,7 +128,6 @@ async function savePoint() {
       LocationType: "Hazard"
     }
     const response = await saveLocation(save)
-    console.log("Save point response", response)
   } catch (err) {
     console.error('Failed to save location')
     console.error(err)

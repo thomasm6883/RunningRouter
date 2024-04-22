@@ -10,9 +10,7 @@ import * as olStyle from 'ol/style'
 
 const MapInsertPoint = (props) => {
   React.useEffect(() => {
-    console.log("Got to the insert point compodent")
     if(props.coordinate != null) {
-    console.log("Got inside the insert point compodent")
     const marker = new olLayer.Vector({
       source: new olSource.Vector({
         features: [

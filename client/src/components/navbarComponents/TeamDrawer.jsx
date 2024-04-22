@@ -51,11 +51,9 @@ function TeamDrawer({ show, onClose }) {
 
 var callback = function(evt) {
   if(doStart != false) {
-    console.log("Got to the callback")
     points = olProj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
     setHazardPoint(evt.coordinate)
     setHazardPointRef(evt.coordinate)
-    console.log("Hazard position", hazardPointRef)
     if(clicked == false) {
       setClicked(true)
     } else {

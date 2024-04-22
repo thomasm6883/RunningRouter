@@ -37,7 +37,6 @@ const StartRoute = (props) => {
         points = olProj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
         setStartLoc(points)
         setStart(evt.coordinate)
-        console.log("Start position", points)
         if(clicked == false) {
           setClicked(true)
         } else {
@@ -94,9 +93,7 @@ const StartRoute = (props) => {
 async function sendStart(e) {
   setGenerateDisabled(true)
   alert('Generating Route, please wait 3 to 5 minutes for the route to be generated.')
-  console.log("Seeing start point ",start)
   if (start != null && userLength != null) {
-    console.log("Start position being sent", startLoc)
     try {
       let result = new FormData()
       result.append('lon', startLoc[0])
@@ -120,9 +117,6 @@ async function sendStart(e) {
       method: "POST", // or 'PUT'
       body: result,
     }).then(response => response.json())
-    console.log(dataBack)
-    console.log("length response", dataBack.length)
-    console.log("coordinates response", dataBack.coordinates)
     if(dataBack != null) {
       setLength(dataBack.length)
       setRoutes(dataBack.coordinates)
@@ -158,7 +152,6 @@ async function OutsideTextbox() {
       method: "POST", // or 'PUT'
       body: result,
     }).then(response => response.json())
-    console.log("Return data from text box",dataBack)
     if(dataBack != null){
       setStartLoc([dataBack[1], dataBack[0]])
       const transformedDataBack = olProj.transform([dataBack[1], dataBack[0]], 'EPSG:4326', 'EPSG:3857');

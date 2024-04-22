@@ -22,7 +22,6 @@ const FormDeleteRoute = (props) => {
     })
       responseName.push(response[i].routeName)
     }
-    console.log(response)
     setLength(responseLength)
     setRoutes(responseRoutes)
     setName(responseName)
@@ -33,7 +32,6 @@ const FormDeleteRoute = (props) => {
     const wrapper = async () => {
     const deleteSuccess = await deleteRoute(route)
     if (deleteSuccess) {
-      console.log('Route deleted')
       handleClose()
       getUserRoutes()
     } else{
