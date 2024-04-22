@@ -17,6 +17,12 @@ import updateUser from '../endpoints/account/updateUser.js'
 import deleteUser from '../endpoints/account/deleteUser.js'
 import isAuthenticated from '../middleware/isAuthenticated.js'
 
+import saveLocation from '../endpoints/specificLocations/saveLocation.js'
+import deleteLocation from '../endpoints/specificLocations/deleteLocation.js'
+import getLocations from '../endpoints/specificLocations/getLocations.js' 
+
+
+
 import createCheckoutSession from '../endpoints/stripe/createCheckoutSession.js'
 import createPortalSession from '../endpoints/stripe/createPortalSession.js'
 import webhook from '../endpoints/stripe/webhook.js'
@@ -30,14 +36,33 @@ dataRouter.get('/test', (req, res) => {
     res.send('Hello from the server!')
 })
 
-// Running Routes
-dataRouter.get('/routes', isAuthenticated, getSavedRoutes);
-dataRouter.post('/routes', isAuthenticated, saveRoute);
-dataRouter.delete('/routes', isAuthenticated, deleteRoute);
+//dataRouter.get('/routes', isAuthenticated, getSavedRoutes); //can remove isAuthenticated for testing
+dataRouter.get('/routes', getSavedRoutes);
+//dataRouter.post('/routes', isAuthenticated, saveRoute);
+dataRouter.post('/routes',  saveRoute);
+//dataRouter.delete('/routes', isAuthenticated, deleteRoute);
+dataRouter.delete('/routes', deleteRoute);
+
+
+
+//dataRouter.post('/locations',  saveLocation);
+dataRouter.post('/locations', isAuthenticated,  saveLocation);
+//dataRouter.delete('/locations',  deleteLocation);
+dataRouter.delete('/locations', isAuthenticated,  deleteLocation);
+dataRouter.get('/locations/:latitude/:longitude/:dist',  getLocations);
+
+
+//dataRouter.delete('/routes', isAuthenticated, deleteRoute);
+//dataRouter.delete('/routes', deleteRoute);
+
+
 // Authentication Routes
 dataRouter.post('/login', login);
 dataRouter.post('/register', register);
 dataRouter.get('/logout', logout);
+
+
+
 dataRouter.post('/forgotPassword', forgotPassword);
 dataRouter.post('/resetPassword', resetPassword);
 dataRouter.post('/auth/google', googleOAuth);

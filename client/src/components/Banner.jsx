@@ -5,17 +5,56 @@ import '../styles/Banner.css';
 import { Navbar } from 'flowbite-react';
 import GenerateRouteDrawer from './routeBarComponents/GenerateRouteDrawer.jsx';
 import { GlobalContext } from './App.jsx';
+import StripeDrawer from './formsStripe/StripeDrawer.jsx';
+import TestStripeForm from './formsStripe/TestStripeForm.jsx';
+import { getRoutes } from '../requests/routeRequests.js';
+import MapInteractionDrawer from './routeBarComponents/MapInteractionDrawer.jsx';
+import TeamDrawer from './navbarComponents/TeamDrawer.jsx';
+import FeatureDrawer from './navbarComponents/FeatureDrawer.jsx';
 
 const Banner = () => {
-  const { showGenerateRouteDrawer, setShowGenerateRouteDrawer, userData, setShowBar, setRoutes, setRoutesType } = React.useContext(GlobalContext);
+  const [showStripeDrawer, setShowStripeDrawer] = React.useState(false);
+  const [showMapDrawer, setMapDrawer] = React.useState(false);
+
+  const { showGenerateRouteDrawer, setShowGenerateRouteDrawer, userData, setShowBar, setRoutes, setRoutesType, setLength, loggedIn, setName, setTeamDrawer, teamDrawer, setFeatureDrawer, featureDrawer } = React.useContext(GlobalContext);
   const handleOpenGenerateRouteDrawer = () => {
+    console.log('open drawer');
+    setShowBar(false);
     setShowGenerateRouteDrawer(true);
     //console.log('showGenerateRouteDrawer', showGenerateRouteDrawer);
   }
   const handleOpenRoutes = () => {
-    setRoutes(userData.savedRoutes)
-    setRoutesType('My Routes')
+    if(loggedIn) {
+    getUserRoutes()
     setShowBar(true)
+    } else {
+      alert('Please log in to view your routes')
+    }
+  }
+  const handleOpenTeam = () => {
+    setTeamDrawer(true)
+  }
+
+  const handleOpenFeature = () => {
+    setFeatureDrawer(true)
+  }
+
+  async function getUserRoutes() {
+    const response = await getRoutes()
+    let responseLength = []
+    let responseRoutes = []
+    let responseName = []
+    for (let i = 0; i < response.length; i++) {
+      responseLength.push(response[i].length)
+      responseRoutes.push({
+        route: response[i].route
+    })
+      responseName.push(response[i].routeName)
+    }
+    console.log(response)
+    setLength(responseLength)
+    setRoutes(responseRoutes)
+    setName(responseName)
   }
 
   return (
@@ -54,9 +93,10 @@ const Banner = () => {
                 </button>
               </li>
               <li>
+                {/* TODO Make this on click if not logged in cant do */}
                 <button
-                  className="text-gray-900 dark:text-white hover:underline" >
-                  Features
+                  className="text-gray-900 dark:text-white hover:underline" onClick={handleOpenFeature}>
+                  Hazards
                 </button>
               </li>
             </ul>
@@ -65,6 +105,10 @@ const Banner = () => {
       </nav>
       </div>
       <GenerateRouteDrawer showGenerateRouteDrawer={showGenerateRouteDrawer} />
+      <StripeDrawer show={showStripeDrawer} onClose={()=>setShowStripeDrawer(false)} >{(showStripeDrawer) ? <TestStripeForm/> : null}</StripeDrawer>
+      <MapInteractionDrawer />
+      {/* <TeamDrawer show={teamDrawer} onClose={()=>setTeamDrawer(false)} /> */}
+      <FeatureDrawer show={featureDrawer} onClose={()=>setFeatureDrawer(false)} />
     </div>
   );
 };
