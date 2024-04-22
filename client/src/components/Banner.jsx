@@ -9,12 +9,14 @@ import StripeDrawer from './formsStripe/StripeDrawer.jsx';
 import TestStripeForm from './formsStripe/TestStripeForm.jsx';
 import { getRoutes } from '../requests/routeRequests.js';
 import MapInteractionDrawer from './routeBarComponents/MapInteractionDrawer.jsx';
+import TeamDrawer from './navbarComponents/TeamDrawer.jsx';
+import FeatureDrawer from './navbarComponents/FeatureDrawer.jsx';
 
 const Banner = () => {
   const [showStripeDrawer, setShowStripeDrawer] = React.useState(false);
   const [showMapDrawer, setMapDrawer] = React.useState(false);
 
-  const { showGenerateRouteDrawer, setShowGenerateRouteDrawer, userData, setShowBar, setRoutes, setRoutesType, setLength, loggedIn, setName } = React.useContext(GlobalContext);
+  const { showGenerateRouteDrawer, setShowGenerateRouteDrawer, userData, setShowBar, setRoutes, setRoutesType, setLength, loggedIn, setName, setTeamDrawer, teamDrawer, setFeatureDrawer, featureDrawer } = React.useContext(GlobalContext);
   const handleOpenGenerateRouteDrawer = () => {
     console.log('open drawer');
     setShowBar(false);
@@ -29,6 +31,14 @@ const Banner = () => {
       alert('Please log in to view your routes')
     }
   }
+  const handleOpenTeam = () => {
+    setTeamDrawer(true)
+  }
+
+  const handleOpenFeature = () => {
+    setFeatureDrawer(true)
+  }
+
   async function getUserRoutes() {
     const response = await getRoutes()
     let responseLength = []
@@ -73,7 +83,6 @@ const Banner = () => {
                 </button>
               </li>
               <li>
-
                 <button className="text-gray-900 dark:text-white hover:underline" onClick={handleOpenRoutes}>
                   My Routes
                 </button>
@@ -84,9 +93,10 @@ const Banner = () => {
                 </button>
               </li>
               <li>
+                {/* TODO Make this on click if not logged in cant do */}
                 <button
-                  className="text-gray-900 dark:text-white hover:underline" >
-                  Features
+                  className="text-gray-900 dark:text-white hover:underline" onClick={handleOpenFeature}>
+                  Hazards
                 </button>
               </li>
             </ul>
@@ -97,6 +107,8 @@ const Banner = () => {
       <GenerateRouteDrawer showGenerateRouteDrawer={showGenerateRouteDrawer} />
       <StripeDrawer show={showStripeDrawer} onClose={()=>setShowStripeDrawer(false)} >{(showStripeDrawer) ? <TestStripeForm/> : null}</StripeDrawer>
       <MapInteractionDrawer />
+      {/* <TeamDrawer show={teamDrawer} onClose={()=>setTeamDrawer(false)} /> */}
+      <FeatureDrawer show={featureDrawer} onClose={()=>setFeatureDrawer(false)} />
     </div>
   );
 };

@@ -33,6 +33,7 @@ const StartRoute = (props) => {
     // Now callback is called once per click
     var callback = function(evt) {
       if(doStart != false) {
+
         points = olProj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
         setStartLoc(points)
         setStart(evt.coordinate)
