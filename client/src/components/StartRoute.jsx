@@ -92,7 +92,7 @@ const StartRoute = (props) => {
 
 async function sendStart(e) {
   setGenerateDisabled(true)
-  alert('Generating Route, please wait 2 to 3 minutes for the route to be generated.')
+  alert('Generating Route, please wait 3 to 5 minutes for the route to be generated.')
   console.log("Seeing start point ",start)
   if (start != null && userLength != null) {
     console.log("Start position being sent", startLoc)
@@ -120,14 +120,11 @@ async function sendStart(e) {
       body: result,
     }).then(response => response.json())
     console.log(dataBack)
-    console.log("length response", parseInt(dataBack.length))
+    console.log("length response", dataBack.length)
     console.log("coordinates response", dataBack.coordinates)
     if(dataBack != null) {
-      let responseLength = []
-      responseLength.push(Number((dataBack.length).toFixed(1)))
-      setLength(responseLength)
+      setLength(dataBack.length)
       setRoutes(dataBack.coordinates)
-      console.log("Length of route", length)
       setName(null)
       map.removeLayer(oldLayer)
       setGenerateDisabled(false)

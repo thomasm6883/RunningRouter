@@ -67,6 +67,7 @@ function SelectRouteBar(props) {
     if (animationLayer) {map.removeLayer(animationLayer); setAnimationLayer(null);}
     const route = routes[routeIndex].route;
     const points = route;
+    console.log("Points in Preview: ", points);
     // for (let i = 0; i < route.length; i++) {
     //   points.push([route[i].Lat, route[i].Lng]);
     // }
