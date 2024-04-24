@@ -20,7 +20,7 @@ const FormLogin = (props) => {
     const wrapper = async () => {
       const googleLoginSuccess = await googleOAuth(authorizationCode)
       if (googleLoginSuccess) {
-        console.log('Google login success', googleLoginSuccess)
+        //console.log('Google login success', googleLoginSuccess)
 
         setUserData(googleLoginSuccess.user)
         setLoggedIn(true)
@@ -103,8 +103,6 @@ const FormLogin = (props) => {
 };
 FormLogin.propTypes = {
   handleClose: PropTypes.func.isRequired,
-  setModalContent: PropTypes.func.isRequired,
-  setLoggedIn: PropTypes.func.isRequired
 }
 
 export default FormLogin;

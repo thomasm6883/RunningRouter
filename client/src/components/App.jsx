@@ -26,6 +26,8 @@ const App = () => {
 
   const [showGenerateRouteDrawer, setShowGenerateRouteDrawer] = React.useState(false)
 
+  const [showStripeDrawer, setShowStripeDrawer] = React.useState({show: false, option: null});
+
   const initialize = async () => {
     const cookie = await checkCookie()
     if (cookie) {
@@ -45,10 +47,10 @@ const App = () => {
   return (
     <MapContext.Provider value={{ map, setMap }}>
     <GoogleOAuthProvider clientId="954079927112-48qrn73bql7ma5c6qc7t8mddhsagr39v.apps.googleusercontent.com" >
-    <GlobalContext.Provider value={{ loggedIn, setLoggedIn, userData, setUserData, setShowModal, modalContent, setModalContent, setShowBar, routes, setRoutes, routesType, setRoutesType, showGenerateRouteDrawer, setShowGenerateRouteDrawer, startLoc, setStartLoc, setLength, length, name, setName, teamDrawer, setTeamDrawer, featureDrawer, setFeatureDrawer }}>
+    <GlobalContext.Provider value={{ loggedIn, setLoggedIn, userData, setUserData, setShowModal, modalContent, setModalContent, setShowBar, routes, setRoutes, routesType, setRoutesType, showGenerateRouteDrawer, setShowGenerateRouteDrawer, startLoc, setStartLoc, setLength, length, name, setName, teamDrawer, setTeamDrawer, featureDrawer, setFeatureDrawer, showStripeDrawer, setShowStripeDrawer }}>
     <Banner showGenerateRouteDrawer={showGenerateRouteDrawer} />
     <MapContainer />
-    <SelectRouteBar showBar={showBar} setShowBar={setShowBar} routes={routes} setRoutes={setRoutes} routesType={routesType} setRoutesType={setRoutesType} setShowModal={setShowModal} setModalContent={setModalContent} length = {length} setLength={setLength} loggedIn={loggedIn} name={name}/>
+    <SelectRouteBar showBar={showBar} setShowBar={setShowBar} routes={routes} setRoutes={setRoutes} routesType={routesType} setRoutesType={setRoutesType} setShowModal={setShowModal} setModalContent={setModalContent} length = {length} setLength={setLength} loggedIn={loggedIn} name={name} showStripeDrawer={showStripeDrawer} setShowStripeDrawer={setShowStripeDrawer}/>
     <CustomModal showModal={showModal} setShowModal={setShowModal} modalContent={modalContent} />
 
     </GlobalContext.Provider>

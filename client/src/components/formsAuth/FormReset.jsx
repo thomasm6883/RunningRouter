@@ -65,7 +65,6 @@ const FormReset = (props) => {
 };
 FormReset.propTypes = {
   handleClose: PropTypes.func.isRequired,
-  emailInputRef: PropTypes.object.isRequired,
 }
 
 export default FormReset;

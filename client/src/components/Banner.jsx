@@ -21,7 +21,7 @@ const Banner = () => {
     console.log('open drawer');
     setShowBar(false);
     setShowGenerateRouteDrawer(true);
-    console.log('showGenerateRouteDrawer', showGenerateRouteDrawer);
+    //console.log('showGenerateRouteDrawer', showGenerateRouteDrawer);
   }
   const handleOpenRoutes = () => {
     if(loggedIn) {
@@ -68,7 +68,7 @@ const Banner = () => {
           </span>
         </Navbar.Brand>
         <div className="flex md:order-2">
-          <BannerMenu setShowStripeDrawer={setShowStripeDrawer} />
+          <BannerMenu />
         </div>
       </Navbar>
       </div>
