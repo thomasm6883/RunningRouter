@@ -1,24 +1,3 @@
-/* @import "node_modules/ol/ol.css"; */
-
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-}
-#map {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
-}
-.ol-map {
-  min-width: 100%;
-  min-height: 100%;
-
-  height: 100%;
-  width: 100%;
-}
 .mapContainer {
   display: flex;
   justify-content: center;
@@ -26,6 +5,76 @@ html, body {
   margin: 0;
   padding: 0;
   margin-top: 0vh;
-  height: 90vh;
+  min-height: 60%;
+  height:max-content;
   width: 100%;
+}
+div.custom-zoom {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  flex-direction: column;
+  display: flex;
+  height: auto;
+  z-index: 5;
+  gap: 2px;
+}
+button.custom-zoom-in {
+  padding: auto;
+  width: 2em;
+  height: 2em;
+  background-color: rgba(255, 255, 255, 0.4);
+  border: 1px solid black;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 20px;
+  color: #333;
+  cursor: pointer;
+}
+button.custom-zoom-out {
+  padding: auto;
+  width: 2em;
+  height: 2em;
+  background-color: rgba(255, 255, 255, 0.4);
+  border: 1px solid black;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 20px;
+  color: #333;
+  cursor: pointer;
+}
+
+div.ol-attribution {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  right: auto;
+  height: auto;
+  width: auto;
+  background-color: rgba(255, 255, 255, 0.4);
+  border: 1px solid black;
+  border-radius: 5px;
+
+  font-size: 12px;
+}
+.ol-attribution-expand {
+display: none;
+}
+.recenter {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  flex-direction: column;
+  height: auto;
+  width:auto;
+  padding: 5px;
+  z-index: 5;
+  gap: 2px;
+  background-color: rgba(255, 255, 255, 0.4);
+  border: 1px solid black;
+  border-radius: 5px;
+  font-size: 16px;
+
 }

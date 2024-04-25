@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.App {
+  height: 100vh;
+}
+body {
+  overscroll-behavior: none;
+  overscroll-behavior-block: none;
+  overflow-x: hidden;
+  overflow-y: hidden;
+
+}

@@ -8,8 +8,12 @@ import FormReset from './FormReset.jsx'
 const FormForgot = (props) => {
   const setModalContent = props.setModalContent;
   const handleClose = props.handleClose;
-  const emailInputRef = props.emailInputRef
   const [email, setEmail] = React.useState('')
+
+  const emailRef = React.useRef(null) // Focus the Email Input Field on Render
+  React.useEffect(() => {
+    emailRef.current.focus()
+  }, [])
 
   const handleForgot = (e) => {
     e.preventDefault()
@@ -18,7 +22,7 @@ const FormForgot = (props) => {
     if (loginSuccess) {
       setModalContent(<FormReset handleClose={handleClose} email={email} />)
     } else{
-      alert('Login failed')
+      alert('email failed to send')
     }
   }
   wrapper()
@@ -34,7 +38,7 @@ const FormForgot = (props) => {
               <div className="mb-2 block">
                 <Label htmlFor="email" value="Your email" />
               </div>
-              <TextInput id="email" ref={emailInputRef} placeholder="name@company.com" required onChange={(e) => setEmail(e.target.value)} />
+              <TextInput id="email" ref={emailRef} placeholder="name@company.com" required onChange={(e) => setEmail(e.target.value)} />
             </div>
             <div className="w-full">
               <Button onClick={handleForgot}>Send Account Recovery Email</Button>
@@ -45,8 +49,7 @@ const FormForgot = (props) => {
   );
 };
 FormForgot.propTypes = {
-  handleClose: PropTypes.func.isRequired,
-  emailInputRef: PropTypes.object.isRequired,
+  handleClose: PropTypes.func.isRequired
 }
 
 export default FormForgot;
