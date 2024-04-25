@@ -5,7 +5,7 @@ export const DEV_FLASK_URL = 'http://localhost:5000';
 
 export const PROD_API_URL = 'https://starfish-app-6mqw2.ondigitalocean.app/api';
 export const PROD_WEB_URL = 'https://starfish-app-6mqw2.ondigitalocean.app';
-export const PROD_FLASK_URL = 'http://localhost:5000';
+export const PROD_FLASK_URL = 'https://{PRODUCTION_URL}';
 
 const DEV = true;
 export const API_URL = DEV ? DEV_API_URL : PROD_API_URL;
