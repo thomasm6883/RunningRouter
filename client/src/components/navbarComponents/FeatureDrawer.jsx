@@ -9,7 +9,6 @@ import MapContext  from '../mapComponents/MapContext';
 import {getLocations, saveLocation} from '../../requests/locationRequests.js'
 import { distance } from 'ol/coordinate.js';
 import { GlobalContext } from '../App.jsx';
-import { EMPTY } from 'sqlite3';
 
 
 function FeatureDrawer({ show, onClose }) {

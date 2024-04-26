@@ -17,8 +17,6 @@ import RouteBar from './routeBarComponents/RouteBar.jsx';
 
 import StripeDrawer from './stripeComponents/StripeDrawer.jsx';
 import EmbeddedStripeCheckout from './formsStripe/EmbeddedStripeCheckout.jsx';
-import { set } from 'ol/transform.js';
-
 
 const customTheme = {
     "root": {
@@ -354,74 +352,6 @@ function SelectRouteBar(props) {
       geoMarker.setGeometry(endMarker.getGeometry().clone()); // draws the geoMarker at the end of the route when the animation is stopped
       //setStartRoute(false);
     }
-
-    // TO DO - ADD NAVIGATION BAR
-    // TO DO - Create loop to start navigation. Separate state variable for the loop control.
-    // In loop track user position, if user is within x distance of the end, stop the loop and the route
-    // Something like if (!startRoute) {   setStartRoute(true); startRunningRoute(); }
-    // function startRunningRoute() { ... }
-    // function stopRunningRoute() { ... }
-    // function recenter () { // add rotation control
-    //   navigator.geolocation.getCurrentPosition((position) => {
-    //     const latitude = position.coords.latitude;
-    //     const longitude = position.coords.longitude;
-    //     const coordinate = [longitude, latitude];
-    //     const marker = new olLayer.Vector({
-    //       source: new olSource.Vector({
-    //         features: [
-    //           new ol.Feature({
-    //             geometry: new olGeom.Point(
-    //               olProj.fromLonLat(coordinate)
-    //             )
-    //           })
-    //         ]
-    //       })
-    //     })
-    //     marker.setStyle(new olStyle.Style({
-    //       image: new olStyle.Circle({
-    //         radius: 3,
-    //         fill: new olStyle.Fill({color: 'red'}),
-    //         stroke: new olStyle.Stroke({
-    //           color: [255,0,0], width: 2
-    //         })
-    //       })
-    //     }))
-    //     map.addLayer(marker);
-    //     map.getView().setCenter(olProj.transform([longitude, latitude], 'EPSG:4326', 'EPSG:3857'));
-    //     map.getView().setZoom(18);
-    //   });
-    // }
-    // console.log("Start Route", startRoute);
-    // async function wrapper() {
-    //   return new Promise(resolve => {
-    //     setTimeout(() => {
-    //       resolve();
-    //     }, 10000);
-    //   });
-    // }
-    // async function wait() {
-    //   await wrapper();
-    // }
-    // function sleep(ms) {
-    //   return new Promise(resolve => setTimeout(resolve, ms));
-    // }
-    // while (!startLoop) {
-    //   // TO DO - ADD USER LOCATION TRACKING
-    //   setTimeout(() => {
-    //   recenter();
-    //   console.log("Recentering");
-    //   }, 100);
-
-    //   // TO DO - ADD USER LOCATION ICON
-
-    //   // TO DO - ADD USER LOCATION FOLLOWING
-    //   // TO DO - ADD USER LOCATION RE-CENTERING
-    //   // TO DO - ADD USER LOCATION ROTATION
-    //   // TO DO - ADD USER LOCATION DISTANCE FROM ROUTE
-    //   // TO DO - ADD USER LOCATION DISTANCE FROM END
-    //   // TO DO - ADD USER LOCATION DISTANCE FROM START
-    //   // TO DO - ADD USER LOCATION DISTANCE FROM BREAK
-    // }
   };
   const handleCancel = (routeIndex) => {
     console.log("Cancel "+routes[routeIndex].name);

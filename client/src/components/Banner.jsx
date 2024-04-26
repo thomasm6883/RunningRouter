@@ -5,8 +5,8 @@ import '../styles/Banner.css';
 import { Navbar } from 'flowbite-react';
 import GenerateRouteDrawer from './routeBarComponents/GenerateRouteDrawer.jsx';
 import { GlobalContext } from './App.jsx';
-import StripeDrawer from './formsStripe/StripeDrawer.jsx';
-import TestStripeForm from './formsStripe/TestStripeForm.jsx';
+import StripeDrawer from './stripeComponents/StripeDrawer.jsx';
+import EmbeddedStripeCheckout from './formsStripe/EmbeddedStripeCheckout.jsx';
 import { getRoutes } from '../requests/routeRequests.js';
 import MapInteractionDrawer from './routeBarComponents/MapInteractionDrawer.jsx';
 import TeamDrawer from './navbarComponents/TeamDrawer.jsx';
@@ -105,10 +105,10 @@ const Banner = () => {
       </nav>
       </div>
       <GenerateRouteDrawer showGenerateRouteDrawer={showGenerateRouteDrawer} />
-      <StripeDrawer show={showStripeDrawer} onClose={()=>setShowStripeDrawer(false)} >{(showStripeDrawer) ? <TestStripeForm/> : null}</StripeDrawer>
-      <MapInteractionDrawer />
+      <StripeDrawer show={showStripeDrawer} onClose={()=>setShowStripeDrawer(false)} >{(showStripeDrawer) ? <EmbeddedStripeCheckout/> : null}</StripeDrawer>
+      {/* <MapInteractionDrawer /> */}
       {/* <TeamDrawer show={teamDrawer} onClose={()=>setTeamDrawer(false)} /> */}
-      <FeatureDrawer show={featureDrawer} onClose={()=>setFeatureDrawer(false)} />
+      {/* <FeatureDrawer show={featureDrawer} onClose={()=>setFeatureDrawer(false)} /> */}
     </div>
   );
 };
