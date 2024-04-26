@@ -67,11 +67,12 @@ function SelectRouteBar(props) {
 
   const handlePreview = (routeIndex) => {
     // Show the route on the map and erase the previous route
-    if (showRoutePreview) {
+    if (showRoutePreview != null) {
       map.removeLayer(showRoutePreview);
       setShowRoutePreview(null);
+      console.log("Delete layer")
     }
-    if (animationLayer) {
+    if (animationLayer != null) {
       map.removeLayer(animationLayer);
       setAnimationLayer(null);
     }
@@ -161,6 +162,7 @@ function SelectRouteBar(props) {
       },
     });
     map.addLayer(routeLayer);
+    console.log("set route layer")
     setShowRoutePreview(routeLayer);
     // Set the map zoom
     const extent = olExtent.boundingExtent(points);
@@ -308,7 +310,7 @@ function SelectRouteBar(props) {
     map.getView().fit(extent, { padding: [90, 75, 200, 75] });
     // Start the route navigation ---------------------------------------------
 
-    const speed = 600; // will be input by the user and passed as a state variable
+    const speed = 100; // will be input by the user and passed as a state variable
     // start and stop animation
     let animating = false;
     let distance = 0;

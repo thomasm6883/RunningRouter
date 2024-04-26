@@ -5,8 +5,9 @@ import '../styles/Banner.css';
 import { Navbar } from 'flowbite-react';
 import GenerateRouteDrawer from './routeBarComponents/GenerateRouteDrawer.jsx';
 import { GlobalContext } from './App.jsx';
-import StripeDrawer from './formsStripe/StripeDrawer.jsx';
-import TestStripeForm from './formsStripe/TestStripeForm.jsx';
+import StripeDrawer from './stripeComponents/StripeDrawer.jsx';
+//TODO what does this component does
+//import TestStripeForm from './formsStripe/TestStripeForm.jsx';
 import { getRoutes } from '../requests/routeRequests.js';
 import MapInteractionDrawer from './routeBarComponents/MapInteractionDrawer.jsx';
 import TeamDrawer from './navbarComponents/TeamDrawer.jsx';
@@ -36,7 +37,11 @@ const Banner = () => {
   }
 
   const handleOpenFeature = () => {
-    setFeatureDrawer(true)
+    if(loggedIn) {
+      setFeatureDrawer(true)
+    } else {
+      alert('Please log in to get hazard points')
+    }
   }
 
   async function getUserRoutes() {
@@ -105,7 +110,7 @@ const Banner = () => {
       </nav>
       </div>
       <GenerateRouteDrawer showGenerateRouteDrawer={showGenerateRouteDrawer} />
-      <StripeDrawer show={showStripeDrawer} onClose={()=>setShowStripeDrawer(false)} >{(showStripeDrawer) ? <TestStripeForm/> : null}</StripeDrawer>
+      <StripeDrawer show={showStripeDrawer} onClose={()=>setShowStripeDrawer(false)} >{(showStripeDrawer) ? null : null}</StripeDrawer>
       <MapInteractionDrawer />
       {/* <TeamDrawer show={teamDrawer} onClose={()=>setTeamDrawer(false)} /> */}
       <FeatureDrawer show={featureDrawer} onClose={()=>setFeatureDrawer(false)} />
