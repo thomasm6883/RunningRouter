@@ -9,7 +9,6 @@ import MapContext  from '../mapComponents/MapContext';
 import {getLocations, saveLocation} from '../../requests/locationRequests.js'
 import { distance } from 'ol/coordinate.js';
 import { GlobalContext } from '../App.jsx';
-import { EMPTY } from 'sqlite3';
 
 
 function FeatureDrawer({ show, onClose }) {
@@ -201,7 +200,7 @@ function hindHazards() {
             </button>
           </div>
           <div className="flex flex-col overflow-y-scroll overflow-x-hidden overscroll-auto">
-            <button className="text-gray-900 dark:text-white hover:underline" onClick={(loggedIn != false) ? SelectHazardPoint : window.alert("Please Login to save hazard points")} >
+            <button className="text-gray-900 dark:text-white hover:underline" onClick={SelectHazardPoint} >
                   Report a hazard
             </button>
             {(showPoints == false) ? <button className="text-gray-900 dark:text-white hover:underline" onClick={showHazards}>

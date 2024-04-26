@@ -41,6 +41,8 @@ app.use(
           "https://accounts.google.com/gsi",
           "https://accounts.google.com/gsi/button",
           "https://lh3.googleusercontent.com/",
+          "http://127.0.0.1:5000/overpassGather",
+          "http://127.0.0.1:5000/getCoordinates",
 
 
         ],
@@ -85,6 +87,8 @@ app.use(
           "https://*.stripe-static.com",
           "https://*.stripe-terminal.com",
           "https://accounts.google.com",
+          "http://127.0.0.1:5000/overpassGather",
+          "http://127.0.0.1:5000/getCoordinates",
         ],
         frameSrc: [
           "'self'",
