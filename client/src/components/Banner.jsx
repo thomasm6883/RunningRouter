@@ -8,7 +8,8 @@ import { GlobalContext } from './App.jsx';
 import StripeDrawer from './formsStripe/StripeDrawer.jsx';
 import TestStripeForm from './formsStripe/TestStripeForm.jsx';
 import { getRoutes } from '../requests/routeRequests.js';
-import TeamDrawer from './navbarComponents/TeamDrawer.jsx';
+// import TeamDrawer from './navbarComponents/TeamDrawer.jsx';
+import { Link } from 'react-router-dom';
 import FeatureDrawer from './navbarComponents/FeatureDrawer.jsx';
 
 const Banner = () => {
@@ -86,9 +87,11 @@ const Banner = () => {
                 </button>
               </li>
               <li>
-                <button className="text-gray-900 dark:text-white hover:underline" onClick={handleOpenTeam}>
-                  Team
-                </button>
+                <Link to="/team">
+                  <button className="text-gray-900 dark:text-white hover:underline">
+                    Team
+                  </button>
+                </Link>
               </li>
               <li>
                 <button
@@ -103,7 +106,7 @@ const Banner = () => {
       </div>
       <GenerateRouteDrawer showGenerateRouteDrawer={showGenerateRouteDrawer} />
       <StripeDrawer show={showStripeDrawer} onClose={()=>setShowStripeDrawer(false)} >{(showStripeDrawer) ? <TestStripeForm/> : null}</StripeDrawer>
-      <TeamDrawer show={teamDrawer} onClose={()=>setTeamDrawer(false)} />
+      {/* <TeamDrawer show={teamDrawer} onClose={()=>setTeamDrawer(false)} /> */}
       <FeatureDrawer show={featureDrawer} onClose={()=>setFeatureDrawer(false)} />
     </div>
   );
