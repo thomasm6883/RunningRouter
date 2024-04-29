@@ -13,6 +13,7 @@ root.render(
         <Routes>
             <Route path="/" element={<App className="App"/>} />
             <Route path="/stripe-return" element={<StripeReturn/>} />
+            <Route path="/team" element={<Team/>} />
         </Routes>
 
 

@@ -11,6 +11,7 @@ import StripeDrawer from './stripeComponents/StripeDrawer.jsx';
 import { getRoutes } from '../requests/routeRequests.js';
 import MapInteractionDrawer from './routeBarComponents/MapInteractionDrawer.jsx';
 import FeatureDrawer from './navbarComponents/FeatureDrawer.jsx';
+import { Link } from 'react-router-dom';
 
 const Banner = () => {
   const [showStripeDrawer, setShowStripeDrawer] = React.useState(false);
@@ -91,11 +92,11 @@ const Banner = () => {
                   My Routes
                 </button>
               </li>
-              <li>
+              <Link to="/team">
                 <button className="text-gray-900 dark:text-white hover:underline">
-                  Team
+                  About Us
                 </button>
-              </li>
+              </Link>
               <li>
                 {/* TODO Make this on click if not logged in cant do */}
                 <button
