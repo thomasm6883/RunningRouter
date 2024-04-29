@@ -62,7 +62,7 @@ async function getHazardLocations(location) {
   const objectForGetLocation = {
     latitude: location[1],
     longitude: location[0],
-    distance : 15
+    distance : 8
   }
   const response = await getLocations(objectForGetLocation)
   let points = []
@@ -85,12 +85,15 @@ async function getHazardLocations(location) {
           ]
         })
       })
-      marker.setStyle(new olStyle.Style({
-        image: new olStyle.Circle({
-          radius: 5,
-          fill: new olStyle.Fill({color: 'orange'}),
-        })
-      }))
+      marker.setStyle(
+        new olStyle.Style({
+          image: new olStyle.Icon({
+            anchor: [0.5, 1],
+            scale: 0.01,
+            src: 'hazard.png',
+          }),
+        }),
+      )
       markerArray.push(marker)
       map.addLayer(marker)
   }
@@ -155,7 +158,7 @@ const SelectHazardPoint = () => {
 setDoStart(true)
 if(map != null) {
   if(clicked == true) {
-  map.un('click', callback);
+    map.un('click', callback);
   } else {
     map.on('click', callback);
   }
@@ -207,8 +210,9 @@ function hindHazards() {
                   Show a hazard
             </button> :
             <button className="text-gray-900 dark:text-white hover:underline" onClick={hindHazards}>
-                  Hind a hazard
-            </button>}
+                  Hide a hazard
+            </button>
+            }
           </div>
         </div>
       </section>
