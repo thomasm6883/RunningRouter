@@ -9,7 +9,7 @@
 body {
   overscroll-behavior: none;
   overscroll-behavior-block: none;
-  overflow-x: hidden;
-  overflow-y: hidden;
+  overflow-x: auto;
+  overflow-y: auto;
 
 }

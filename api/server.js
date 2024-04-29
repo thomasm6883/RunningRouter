@@ -59,6 +59,8 @@ app.use(
           "https://accounts.google.com",
           "https://lh3.googleusercontent.com/",
           "lh3.googleusercontent.com",
+          "https://www.w3schools.com",
+          "https://cdnjs.cloudflare.com",
 
 
         ],
@@ -67,6 +69,7 @@ app.use(
           "https://*.googleapis.com",
           "https://*.gstatic.com",
           "https://accounts.google.com",
+          "https://cdnjs.cloudflare.com",
         ],
         imgSrc: [
           "'self'",
@@ -77,6 +80,8 @@ app.use(
           "https://accounts.google.com",
           "https://lh3.googleusercontent.com/",
           "lh3.googleusercontent.com",
+          "https://www.w3schools.com",
+          "https://static.vecteezy.com",
         ],
         connectSrc: [
           "'self'",

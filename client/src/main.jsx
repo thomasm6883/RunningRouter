@@ -1,9 +1,10 @@
 import React from 'react';
 import App from './components/App.jsx';
 import { createRoot } from 'react-dom/client';
-import './main.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import './main.css';
 import StripeReturn from './components/stripeComponents/StripeReturn.jsx';
+import Team from './components/Team.jsx';
 
 const root = createRoot(document.getElementById('root'))
 root.render(
@@ -12,6 +13,7 @@ root.render(
         <Routes>
             <Route path="/" element={<App className="App"/>} />
             <Route path="/stripe-return" element={<StripeReturn/>} />
+            <Route path="/team" element={<Team/>} />
         </Routes>
 
 
