@@ -1,12 +1,15 @@
 import { stripeInstance as stripe } from "../../stripe/stripe.js";
+import DotEnv from 'dotenv';
+DotEnv.config();
 
 export default async function webhook(request, response) {
   let event = request.body;
+  console.log('Webhook received:', event.type);
     // Replace this endpoint secret with your endpoint's unique secret
     // If you are testing with the CLI, find the secret by running 'stripe listen'
     // If you are using an endpoint defined with the API or dashboard, look in your webhook settings
     // at https://dashboard.stripe.com/webhooks
-    const endpointSecret = 'whsec_12345';
+    const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
     // Only verify the event if you have an endpoint secret defined.
     // Otherwise use the basic event deserialized with JSON.parse
     if (endpointSecret) {

@@ -6,7 +6,7 @@ import {
 } from '@stripe/react-stripe-js';
 import { fetchClientSecret } from '../../requests/stripeRequests';
 import { Button, Label, Modal, TextInput } from 'flowbite-react';
-
+import { GlobalContext } from '../App.jsx';
 
 // import DotEnv from 'dotenv';
 // DotEnv.config();
@@ -16,12 +16,15 @@ import { Button, Label, Modal, TextInput } from 'flowbite-react';
 const stripePromise = loadStripe('pk_test_51OqmizAzZWJ2Ag6GOXDCgnAwHJS7oIRCeZGFhfR7Xzxh81mNl9MTpkSDbbinrkzyJcS6WpMeatQIC7AgVpMoivq600wuwJzeKG', {      // process.env.STRIPE_PUBLIC_KEY
 });
 
-const TestStripeForm = () => {
+const EmbeddedStripeCheckout = () => {
+  const { showStripeDrawer } = React.useContext(GlobalContext)
 
-  const options = {fetchClientSecret};
+  const fetchClientSecretStripeCallback = async () => {return await fetchClientSecret(showStripeDrawer.option)}
+  const options = {fetchClientSecret: fetchClientSecretStripeCallback};
+
 
   return (
-    <div className='w-full max-h-full z-30 overflow-scroll '>
+    <div className='max-h-full'>
     <EmbeddedCheckoutProvider
       stripe={stripePromise}
       options={options}
@@ -33,32 +36,4 @@ const TestStripeForm = () => {
   )
 }
 
-export default TestStripeForm;
-
-
-
-
-/**
- * const TestStripeForm = () => {
-  const [clientSecret, setClientSecret] = React.useState(null);
-  React.useEffect(() => {
-    const wrapper = async () => {
-      const tempClientSecret = await fetchClientSecret("price_1Oqmu1AzZWJ2Ag6GFtzM7YfC");
-      setClientSecret(tempClientSecret);
-      console.log(tempClientSecret);
-    }
-    wrapper();
-
-  }, []);
-  const options = {clientSecret};
-
-  return (
-    <EmbeddedCheckoutProvider
-      stripe={stripePromise}
-      options={options}
-    >
-      <EmbeddedCheckout />
-    </EmbeddedCheckoutProvider>
-  )
-}
- */
+export default EmbeddedStripeCheckout;

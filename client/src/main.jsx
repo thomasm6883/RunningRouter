@@ -3,15 +3,21 @@ import App from './components/App.jsx';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './main.css';
+import StripeReturn from './components/stripeComponents/StripeReturn.jsx';
 import Team from './components/Team.jsx';
+
 const root = createRoot(document.getElementById('root'))
 root.render(
     <div className='h-screen w-screen flex flex-col'>
-      <BrowserRouter>
+        <BrowserRouter>
         <Routes>
-          <Route path="/" element={<App className="App"/>} />
-          <Route path="/team" element={<Team />} />
+            <Route path="/" element={<App className="App"/>} />
+            <Route path="/stripe-return" element={<StripeReturn/>} />
         </Routes>
-      </BrowserRouter>
+
+
+        </BrowserRouter>
     </div>
 );
+
+// <App className="App"/>

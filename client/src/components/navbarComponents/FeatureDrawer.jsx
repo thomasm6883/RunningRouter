@@ -1,6 +1,175 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import * as olProj from 'ol/proj'
+import * as ol from 'ol';
+import * as olGeom from 'ol/geom'
+import * as olLayer from 'ol/layer'
+import * as olSource from 'ol/source'
+import * as olStyle from 'ol/style'
+import MapContext  from '../mapComponents/MapContext';
+import {getLocations, saveLocation} from '../../requests/locationRequests.js'
+import { distance } from 'ol/coordinate.js';
+import { GlobalContext } from '../App.jsx';
+
 
 function FeatureDrawer({ show, onClose }) {
+  const [clicked, setClicked] = React.useState(false);
+  const [hazardPoint, setHazardPoint] = React.useState(null);
+  const [hazardPointRef, setHazardPointRef] = React.useState(null);
+  const [oldLayer, setOldLayer] = React.useState(null);
+  const { map } = React.useContext(MapContext);
+  const [doStart, setDoStart] = React.useState(false);
+  const [hazardDescription, setHazardDescription] = React.useState(null);
+  const [showPoints, setShowPoints] = React.useState(false);
+  const [getHazardPoints, setGetHazardPoints] = React.useState(null);
+  const [pointsLayer, setPointsLayer] = React.useState([]);
+  const { loggedIn } = React.useContext(GlobalContext);
+  console.log("Logged in", loggedIn)
+
+  React.useEffect(() => {
+    if(doStart != false) {
+      if(hazardPoint != null) {
+        if(oldLayer != null) {
+          map.removeLayer(oldLayer)
+        }
+      const marker = new olLayer.Vector({
+        source: new olSource.Vector({
+          features: [
+            new ol.Feature({
+              geometry: new olGeom.Point(
+                hazardPoint
+              )
+            })
+          ]
+        })
+      })
+      marker.setStyle(new olStyle.Style({
+        image: new olStyle.Circle({
+          radius: 5,
+          fill: new olStyle.Fill({color: 'orange'}),
+        })
+      }))
+      // marker.setStyle(styles.icon)
+      setOldLayer(marker)
+      map.addLayer(marker)
+      savePoint()
+      setDoStart(false)
+    }
+    }
+}, [hazardPoint]);
+
+async function getHazardLocations(location) {
+  try {
+  const objectForGetLocation = {
+    latitude: location[1],
+    longitude: location[0],
+    distance : 15
+  }
+  const response = await getLocations(objectForGetLocation)
+  let points = []
+  for (let i = 0; i < response.length; i++) {
+   points.push(olProj.transform([response[i].Location[1], response[i].Location[0]], 'EPSG:4326', 'EPSG:3857'))
+  }
+  console.log("Points", points)
+  markerArray = []
+  if(points != []) {
+    for (let i = 0; i < points.length; i++) {
+      console.log("Got to the get hazard points")
+      const marker = new olLayer.Vector({
+        source: new olSource.Vector({
+          features: [
+            new ol.Feature({
+              geometry: new olGeom.Point(
+                points[i]
+              )
+            })
+          ]
+        })
+      })
+      marker.setStyle(new olStyle.Style({
+        image: new olStyle.Circle({
+          radius: 5,
+          fill: new olStyle.Fill({color: 'orange'}),
+        })
+      }))
+      markerArray.push(marker)
+      map.addLayer(marker)
+  }
+  }
+  setPointsLayer(markerArray)
+} catch (err) {
+  console.error('Failed to get hazard locations')
+  console.error(err)
+}
+}
+
+useEffect(() => {
+  if(showPoints == true) {
+    navigator.geolocation.getCurrentPosition((position) => {
+      const location = [position.coords.longitude, position.coords.latitude]
+      getHazardLocations(location)
+    },
+    (error) => {
+      console.log(error)
+      alert("Please enable location services to get hazard locations")
+    })
+  } else {
+    if(pointsLayer != []) {
+      for (let i = 0; i < pointsLayer.length; i++) {
+        map.removeLayer(pointsLayer[i])
+      }
+    }
+  }
+
+}, [showPoints])
+
+async function savePoint() {
+  try {
+    // setHazardDescription(prompt("Please enter the description of the hazard. Then click the map where the hazard is located."))
+    const save = {
+      Location: [hazardPointRef[1], hazardPointRef[0]],
+      Description: hazardDescription,
+      LocationType: "Hazard"
+    }
+    const response = await saveLocation(save)
+    console.log("Save point response", response)
+  } catch (err) {
+    console.error('Failed to save location')
+    console.error(err)
+  }
+}
+
+var callback = function(evt) {
+  if(doStart != false) {
+    console.log("Got to the callback")
+    points = olProj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
+    setHazardPoint(evt.coordinate)
+    setHazardPointRef(points)
+    if(clicked == false) {
+      setClicked(true)
+    } else {
+      setClicked(false)
+    }
+  }
+}
+const SelectHazardPoint = () => {
+setDoStart(true)
+if(map != null) {
+  if(clicked == true) {
+  map.un('click', callback);
+  } else {
+    map.on('click', callback);
+  }
+}
+}
+
+function showHazards() {
+setShowPoints(true)
+}
+
+function hindHazards() {
+  setShowPoints(false)
+}
+
   return (
     <div
       className={
@@ -20,7 +189,7 @@ function FeatureDrawer({ show, onClose }) {
           <div className="flex justify-left p-2">
             <button
               className="p-2 ml-auto justify-right"
-              onClick={() => onClose()}
+              onClick={() => {onClose(); setClicked(false); if(oldLayer != null) {map.removeLayer(oldLayer)}}}
             >
               <svg className="w-6 h-6" viewBox="0 0 24 24">
                 <path
@@ -31,12 +200,22 @@ function FeatureDrawer({ show, onClose }) {
             </button>
           </div>
           <div className="flex flex-col overflow-y-scroll overflow-x-hidden overscroll-auto">
-            <p>Test</p>
+            <button className="text-gray-900 dark:text-white hover:underline" onClick={SelectHazardPoint} >
+                  Report a hazard
+            </button>
+            {(showPoints == false) ? <button className="text-gray-900 dark:text-white hover:underline" onClick={showHazards}>
+                  Show a hazard
+            </button> :
+            <button className="text-gray-900 dark:text-white hover:underline" onClick={hindHazards}>
+                  Hind a hazard
+            </button>}
           </div>
         </div>
       </section>
     </div>
   );
 }
+
+
 
 export default FeatureDrawer;

@@ -13,17 +13,17 @@ export default function RouteBar({ show, onClose, length }) {
     >
       <section
         className={
-          "bg-white w-full md:w-1/2 md:max-w-1/2 delay-400 duration-500 ease-in-out transition-all transform self-center md:rounded-t-xl" +
+          "bg-white w-full lg:w-3/4 lg:max-w-3/4 delay-400 duration-500 ease-in-out transition-all transform self-center lg:rounded-t-xl" +
           (show ? " translate-y-0 " : " translate-y-full ")
         }
       >
         <div className="relative  flex flex-col space-x-1 y-full">
           <div className="flex justify-left p-2">
             <div className="w-full flex flex-row justify-around">
-            <div>Elapsed Miles: {length}</div>
-            <div>Miles: {length}</div>
-            <div>Elapsed Time: {length * 15}</div>
-            <div>Calories Burnt: {length * 100}</div>
+            <div>Elapsed Miles: {Number(length).toFixed(1)}</div>
+            <div>Miles: {Number(length).toFixed(1)}</div>
+            <div>Elapsed Time: {Number(length).toFixed(1) * 15}</div>
+            <div>Calories Burnt: {Number(length).toFixed(1) * 100}</div>
             </div>
             <button
               className="p-2 ml-auto justify-right rounded-full border-2 border-black"

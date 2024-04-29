@@ -15,6 +15,10 @@ import * as olStyle from 'ol/style'
 import {getVectorContext} from 'ol/render.js';
 import RouteBar from './routeBarComponents/RouteBar.jsx';
 
+import StripeDrawer from './stripeComponents/StripeDrawer.jsx';
+import EmbeddedStripeCheckout from './formsStripe/EmbeddedStripeCheckout.jsx';
+import { set } from 'ol/transform.js';
+
 
 const customTheme = {
     "root": {
@@ -43,79 +47,128 @@ function SelectRouteBar(props) {
   const routesType = props.routesType;
   const setShowModal = props.setShowModal;
   const setModalContent = props.setModalContent;
+  const showStripeDrawer = props.showStripeDrawer;
+  const setShowStripeDrawer = props.setShowStripeDrawer;
   const length = props.length
   const loggedIn = props.loggedIn
   const name = props.name
-
 
   const [showRoutePreview, setShowRoutePreview] = React.useState(null);
   const [animationLayer, setAnimationLayer] = React.useState(null);
   const [startRoute, setStartRoute] = React.useState(false);
   const [routeLength, setRouteLength] = React.useState(0);
 
+  const [startLoop, setStartLoop] = React.useState(false);
+
   const [showRouteNavBar, setShowRouteNavBar] = React.useState(false);
-  const handleCloseRouteNavBar = () => { setShowRouteNavBar(false); setShowBar(true); setRouteLength(routeLength)}
+  const handleCloseRouteNavBar = () => { setShowRouteNavBar(false); setShowBar(true); setRouteLength(routeLength); setStartRoute(false)}
 
   const { map } = React.useContext(MapContext);
 
   const handlePreview = (routeIndex) => {
     // Show the route on the map and erase the previous route
-    if (showRoutePreview) {
+    if (showRoutePreview != null) {
       map.removeLayer(showRoutePreview);
       setShowRoutePreview(null);
+      console.log("Delete layer")
     }
-    if (animationLayer) {map.removeLayer(animationLayer); setAnimationLayer(null);}
+    if (animationLayer != null) {
+      map.removeLayer(animationLayer);
+      setAnimationLayer(null);
+    }
     const route = routes[routeIndex].route;
-    const points = route;
-    // for (let i = 0; i < route.length; i++) {
-    //   points.push([route[i].Lat, route[i].Lng]);
-    // }
+    let points = []; // Convert each point object with lat and lng to an array
+    if (!route[0][0]) {
+      for (let i = 0; i < route.length; i++) {
+        points.push([route[i].Lat, route[i].Lng]);
+      }
+    } else {
+      for (let i = 0; i < route.length; i++) {
+        points.push([route[i][0], route[i][1]]);
+      }
+    }
+    // console.log("points: ", points)
+    // console.log("route: ", route)
     let maxLat, minLat, maxLng, minLng;
     for (let i = 0; i < points.length; i++) {
-        if(Math.abs(points[i][0]) < 800) {
-        points[i] = olProj.transform(points[i], 'EPSG:4326', 'EPSG:3857');
-        }
-        if(i === 0) {
+      points[i] = olProj.transform(points[i], "EPSG:4326", "EPSG:3857");
+      if (i === 0) {
+        maxLat = points[i][0];
+        minLat = points[i][0];
+        maxLng = points[i][1];
+        minLng = points[i][1];
+      } else {
+        if (points[i].Lat > maxLat) {
           maxLat = points[i][0];
-          minLat = points[i][0];
-          maxLng = points[i][1];
-          minLng = points[i][1];
-        } else {
-          if(points[i][0] > maxLat) {
-            maxLat = points[i][0];
-          }
-          if(points[i][0] < minLat) {
-            minLat = points[i][0];
-          }
-          if(points[i][1] > maxLng) {
-            maxLng = points[i][1];
-          }
-          if(points[i][1] < minLng) {
-            minLng = points[i][1];
-          }
         }
+        if (points[i].Lat < minLat) {
+          minLat = points[i][0];
+        }
+        if (points[i].Lng > maxLng) {
+          maxLng = points[i][1];
+        }
+        if (points[i].Lng < minLng) {
+          minLng = points[i][1];
+        }
+      }
     }
-    console.log("Points in Preview: ", points);
+    // Create the route line ---------------------------------------------------
+    const lineString = new olGeom.LineString(points);
     const featureLine = new ol.Feature({
-        geometry: new olGeom.LineString(points)
+      type: "route",
+      geometry: lineString,
+    });
+    const startMarker = new ol.Feature({
+      type: "start",
+      geometry: new olGeom.Point(lineString.getFirstCoordinate()),
+    });
+    const endMarker = new ol.Feature({
+      type: "end",
+      geometry: new olGeom.Point(lineString.getLastCoordinate()),
     });
 
-    const vectorLine = new olSource.Vector({});
-    vectorLine.addFeature(featureLine);
-
-    const Route = new olLayer.Vector({
-        source: vectorLine,
-        style: new olStyle.Style({
-            fill: new olStyle.Fill({ color: 'red', weight: 6 }),
-            stroke: new olStyle.Stroke({ color: [0, 0, 200, 0.4], width: 6 })
-        })
+    const styles = {
+      route: new olStyle.Style({
+        stroke: new olStyle.Stroke({
+          width: 6,
+          color: [50, 50, 200, 0.7],
+        }),
+      }),
+      end: new olStyle.Style({
+        image: new olStyle.Icon({
+          anchor: [0.5, 1],
+          scale: 0.04,
+          src: "marker.png",
+        }),
+      }),
+      start: new olStyle.Style({
+        image: new olStyle.Circle({
+          radius: 7,
+          fill: new olStyle.Fill({ color: "grey" }),
+          stroke: new olStyle.Stroke({
+            color: [50, 50, 50, 0.5], // TO DO change to dark grey
+            width: 1,
+          }),
+        }),
+      }),
+    };
+    const routeLayer = new olLayer.Vector({
+      source: new olSource.Vector({
+        features: [featureLine, startMarker, endMarker],
+      }),
+      style: function (feature) {
+        // hide geoMarker if animation is active
+        return styles[feature.get("type")];
+      },
     });
-    map.addLayer(Route);
+    map.addLayer(routeLayer);
+    console.log("set route layer")
+    setShowRoutePreview(routeLayer);
     // Set the map zoom
     const extent = olExtent.boundingExtent(points);
     map.getView().fit(extent, { padding: [90, 75, 200, 75] });
-    setShowRoutePreview(Route);
-  }
+
+  };
   const handleStart = (routeIndex) => {
     // TO DO - ACTIVE NAVIGATION
     // 1) add dynamic re-centering and rotation based on user location (follow the user, break if screen is changed)
@@ -128,8 +181,11 @@ function SelectRouteBar(props) {
 
     // TO DO - FORMAT
     // separate this function into at least 1 separate file to clean the code up
-
     setStartRoute(true);
+    //console.log(startRoute);
+
+    setStartLoop(true);
+    //console.log("start loop: ", startLoop);
 
     setShowRouteNavBar(true);
     setShowBar(false);
@@ -137,13 +193,23 @@ function SelectRouteBar(props) {
 
     if (showRoutePreview) {
       map.removeLayer(showRoutePreview);
-      setShowRoutePreview(null)
+      setShowRoutePreview(null);
     }
     // Get the route points ---------------------------------------------------
     const route = routes[routeIndex].route;
-    const points = route; // Convert each point object with lat and lng to an array
+    let points = []; // Convert each point object with lat and lng to an array
 
     let maxLat, minLat, maxLng, minLng;
+
+    if (!route[0][0]) {
+      for (let i = 0; i < route.length; i++) {
+        points.push([route[i].Lat, route[i].Lng]);
+      }
+    } else {
+      for (let i = 0; i < route.length; i++) {
+        points.push([route[i][0], route[i][1]]);
+      }
+    }
     for (let i = 0; i < points.length; i++) {
       if(Math.abs(points[i][0]) < 800) {
         points[i] = olProj.transform(points[i], 'EPSG:4326', 'EPSG:3857');
@@ -190,35 +256,40 @@ function SelectRouteBar(props) {
     });
 
     const styles = {
-      'route': new olStyle.Style({
+      route: new olStyle.Style({
         stroke: new olStyle.Stroke({
           width: 6,
           color: [50, 50, 200, 0.7],
         }),
       }),
-      'end': new olStyle.Style({
+      end: new olStyle.Style({
         image: new olStyle.Icon({
           anchor: [0.5, 1],
           scale: 0.04,
-          src: 'marker.png',
+          src: "marker.png",
         }),
       }),
-      'start': new olStyle.Style({
+      start: new olStyle.Style({
         image: new olStyle.Circle({
           radius: 7,
-          fill: new olStyle.Fill({ color: 'grey' }),
+          fill: new olStyle.Fill({ color: "grey" }),
           stroke: new olStyle.Stroke({
-            color: [50, 50, 50, .5],// TO DO change to dark grey
+            color: [50, 50, 50, 0.5], // TO DO change to dark grey
             width: 1,
           }),
         }),
       }),
-      'geoMarker': new olStyle.Style({
+      geoMarker: new olStyle.Style({
+        // image: new olStyle.Icon({
+        //   anchor: [0.5, 0.5],
+        //   scale: 1,
+        //   src: 'logo.svg',
+        //   })
         image: new olStyle.Circle({
           radius: 7,
-          fill: new olStyle.Fill({ color: 'black' }),
+          fill: new olStyle.Fill({ color: "black" }),
           stroke: new olStyle.Stroke({
-            color: 'white',
+            color: "white",
             width: 2,
           }),
         }),
@@ -230,7 +301,7 @@ function SelectRouteBar(props) {
       }),
       style: function (feature) {
         // hide geoMarker if animation is active
-        return styles[feature.get('type')];
+        return styles[feature.get("type")];
       },
     });
     map.addLayer(routeLayer);
@@ -239,7 +310,7 @@ function SelectRouteBar(props) {
     map.getView().fit(extent, { padding: [90, 75, 200, 75] });
     // Start the route navigation ---------------------------------------------
 
-    const speed = 60; // will be input by the user and passed as a state variable
+    const speed = 100; // will be input by the user and passed as a state variable
     // start and stop animation
     let animating = false;
     let distance = 0;
@@ -248,11 +319,12 @@ function SelectRouteBar(props) {
     const moveFeature = (event) => {
       const time = event.frameState.time;
       const elapsedTime = time - lastTime;
-      distance = (distance + (speed * elapsedTime) / 1e6) % 2;
+      distance = (distance + (speed * elapsedTime) / 1e6) //% 2;
+      //console.log(distance);
       lastTime = time;
 
       function setDistance(distance) {
-        if (distance > 1) {
+        if (distance >= 1) {
           stopAnimation();
           return 1;
         } else {
@@ -260,7 +332,7 @@ function SelectRouteBar(props) {
         }
       }
       const currentCoordinate = lineString.getCoordinateAt(
-        setDistance(distance), // 2 - distance
+        setDistance(distance) // 2 - distance
       );
       position.setCoordinates(currentCoordinate);
       const vectorContext = getVectorContext(event);
@@ -268,21 +340,20 @@ function SelectRouteBar(props) {
       vectorContext.drawGeometry(position);
       // tell OpenLayers to continue the postrender animation
       map.render();
-    }
+    };
     function startAnimation() {
       animating = true;
       lastTime = Date.now();
       // set animating boolean variable to true
-      routeLayer.on('postrender', moveFeature);
-
-      geoMarker.setGeometry(null); // this is necessary for the open layers example, but might not be necessary for our implementation
+      routeLayer.on("postrender", moveFeature);
     }
     startAnimation();
 
     function stopAnimation() {
       animating = false;
       // set animating boolean variable to false
-      routeLayer.un('postrender', moveFeature);
+      routeLayer.un("postrender", moveFeature);
+      geoMarker.setGeometry(endMarker.getGeometry().clone()); // draws the geoMarker at the end of the route when the animation is stopped
       //setStartRoute(false);
     }
 
@@ -292,6 +363,67 @@ function SelectRouteBar(props) {
     // Something like if (!startRoute) {   setStartRoute(true); startRunningRoute(); }
     // function startRunningRoute() { ... }
     // function stopRunningRoute() { ... }
+    // function recenter () { // add rotation control
+    //   navigator.geolocation.getCurrentPosition((position) => {
+    //     const latitude = position.coords.latitude;
+    //     const longitude = position.coords.longitude;
+    //     const coordinate = [longitude, latitude];
+    //     const marker = new olLayer.Vector({
+    //       source: new olSource.Vector({
+    //         features: [
+    //           new ol.Feature({
+    //             geometry: new olGeom.Point(
+    //               olProj.fromLonLat(coordinate)
+    //             )
+    //           })
+    //         ]
+    //       })
+    //     })
+    //     marker.setStyle(new olStyle.Style({
+    //       image: new olStyle.Circle({
+    //         radius: 3,
+    //         fill: new olStyle.Fill({color: 'red'}),
+    //         stroke: new olStyle.Stroke({
+    //           color: [255,0,0], width: 2
+    //         })
+    //       })
+    //     }))
+    //     map.addLayer(marker);
+    //     map.getView().setCenter(olProj.transform([longitude, latitude], 'EPSG:4326', 'EPSG:3857'));
+    //     map.getView().setZoom(18);
+    //   });
+    // }
+    // console.log("Start Route", startRoute);
+    // async function wrapper() {
+    //   return new Promise(resolve => {
+    //     setTimeout(() => {
+    //       resolve();
+    //     }, 10000);
+    //   });
+    // }
+    // async function wait() {
+    //   await wrapper();
+    // }
+    // function sleep(ms) {
+    //   return new Promise(resolve => setTimeout(resolve, ms));
+    // }
+    // while (!startLoop) {
+    //   // TO DO - ADD USER LOCATION TRACKING
+    //   setTimeout(() => {
+    //   recenter();
+    //   console.log("Recentering");
+    //   }, 100);
+
+    //   // TO DO - ADD USER LOCATION ICON
+
+    //   // TO DO - ADD USER LOCATION FOLLOWING
+    //   // TO DO - ADD USER LOCATION RE-CENTERING
+    //   // TO DO - ADD USER LOCATION ROTATION
+    //   // TO DO - ADD USER LOCATION DISTANCE FROM ROUTE
+    //   // TO DO - ADD USER LOCATION DISTANCE FROM END
+    //   // TO DO - ADD USER LOCATION DISTANCE FROM START
+    //   // TO DO - ADD USER LOCATION DISTANCE FROM BREAK
+    // }
   };
   const handleCancel = (routeIndex) => {
     console.log("Cancel "+routes[routeIndex].name);
@@ -343,8 +475,8 @@ function SelectRouteBar(props) {
           );
         }): <div className="text-red-600" >No Routes Available</div>}
       </Drawer>
+      <StripeDrawer show={showStripeDrawer.show} onClose={()=>setShowStripeDrawer({show: false, option: null})} stripeObj={showStripeDrawer} >{(showStripeDrawer.show) ? <EmbeddedStripeCheckout/> : null}</StripeDrawer>
       <RouteBar show={showRouteNavBar} onClose={handleCloseRouteNavBar} length={routeLength}/>
-
     </>
   );
 }

@@ -47,7 +47,7 @@ const FormRegister = (props) => {
       setLoggedIn(true)
       setUserData({ email })
     } else{
-      alert('Login failed')
+      alert('Register failed')
     }
   }
   wrapper()
@@ -114,8 +114,6 @@ const FormRegister = (props) => {
 };
 FormRegister.propTypes = {
   handleClose: PropTypes.func.isRequired,
-  setLoggedIn: PropTypes.func.isRequired,
-  setModalContent: PropTypes.func.isRequired
 }
 
 export default FormRegister;

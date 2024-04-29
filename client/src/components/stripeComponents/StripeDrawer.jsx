@@ -4,19 +4,19 @@ export default function StripeDrawer({ children, show, onClose }) {
   return (
     <div
       className={
-        " fixed overflow-y-scroll overflow-x-hidden overscroll-auto z-10 inset-x-0 bottom-0 h-fit" +
+        " fixed overflow-hidden z-10 inset-x-0 bottom-0 h-fit max-h-screen" +
         (show
           ? " transition-opacity opacity-100 duration-500 translate-y-0  "
-          : " transition-all delay-500 opacity-0 translate-y-fit  ")
+          : " transition-all delay-500 opacity-0 translate-y-full  ")
       }
     >
       <section
         className={
           " w-screen  bottom-0 bg-white w-full delay-400 duration-500 ease-in-out transition-all transform  " +
-          (show ? " translate-y-0 " : " translate-y-fit ")
+          (show ? " translate-y-0 " : " translate-y-full ")
         }
       >
-        <div className="relative w-screen flex flex-col">
+        <div className="relative w-screen y-full max-h-screen flex flex-col">
           <div className="flex justify-left p-2">
             <button
               className="p-2 ml-auto justify-right"
@@ -30,7 +30,7 @@ export default function StripeDrawer({ children, show, onClose }) {
               </svg>
             </button>
           </div>
-          <div className="flex flex-col overflow-y-scroll overflow-x-hidden overscroll-auto">
+          <div className="overflow-y-scroll">
           {children}
           </div>
         </div>

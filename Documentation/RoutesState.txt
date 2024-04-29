@@ -1,0 +1,17 @@
+The format in which routes are stored in state needs to be consistent
+Suggested form for Routes data in the Routes or Generated
+
+Saved Routes
+[
+  {
+    name: "name",
+    route: [[90.1, 40.1], [90.2, 40.2]]  // structure [[Lat, Lon]]
+  }
+]
+
+Generated Routes
+[
+  {
+    route: [[90.1, 40.1], [90.2, 40.2]]  // structure [[Lat, Lon]]
+  }
+]
