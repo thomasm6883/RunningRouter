@@ -142,6 +142,7 @@ async function sendStart(e) {
   }
   else {
     alert("Please select a starting point")
+    setGenerateDisabled(false)
   }
 }
 
