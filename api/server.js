@@ -43,6 +43,8 @@ app.use(
           "https://lh3.googleusercontent.com/",
           "http://127.0.0.1:5000/overpassGather",
           "http://127.0.0.1:5000/getCoordinates",
+          "http://134.209.46.156:8080/overpassGather",
+          "http://134.209.46.156:8080/getCoordinates"
 
 
         ],
@@ -94,6 +96,8 @@ app.use(
           "https://accounts.google.com",
           "http://127.0.0.1:5000/overpassGather",
           "http://127.0.0.1:5000/getCoordinates",
+          "http://134.209.46.156:8080/overpassGather",
+          "http://134.209.46.156:8080/getCoordinates"
         ],
         frameSrc: [
           "'self'",
