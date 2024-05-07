@@ -144,9 +144,14 @@ useEffect(() => {
 }, [showPoints])
 
 async function savePoint() {
-  try {
     const testing = prompt("Please enter the description of the hazard. Then click the map where the hazard is located.")
     console.log(testing)
+    setHazardDescription(testing)
+    if(testing === null || testing === undefined || testing === "") {
+      map.removeLayer(oldLayer)
+      return;
+    }
+    try {
     const save = {
       Location: [hazardPointRef[1], hazardPointRef[0]],
       Discription: testing,
@@ -158,6 +163,7 @@ async function savePoint() {
     console.error('Failed to save location')
     console.error(err)
   }
+
 }
 
 var callback = function(evt) {
