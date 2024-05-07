@@ -25,6 +25,7 @@ function FeatureDrawer({ show, onClose }) {
   const { loggedIn } = React.useContext(GlobalContext);
   console.log("Logged in", loggedIn)
 
+
   React.useEffect(() => {
     if(doStart != false) {
       if(hazardPoint != null) {
@@ -43,14 +44,16 @@ function FeatureDrawer({ show, onClose }) {
         })
       })
       marker.setStyle(new olStyle.Style({
-        image: new olStyle.Circle({
-          radius: 5,
-          fill: new olStyle.Fill({color: 'orange'}),
-        })
+        image: new olStyle.Icon({
+          anchor: [0.5, 1],
+          scale: 0.01,
+          src: 'hazard.png',
+        }),
       }))
       // marker.setStyle(styles.icon)
       setOldLayer(marker)
       map.addLayer(marker)
+
       savePoint()
       setDoStart(false)
     }
@@ -62,12 +65,15 @@ async function getHazardLocations(location) {
   const objectForGetLocation = {
     latitude: location[1],
     longitude: location[0],
-    distance : 15
+    distance : 8
   }
   const response = await getLocations(objectForGetLocation)
   let points = []
+  let description = []
+  console.log(response)
   for (let i = 0; i < response.length; i++) {
    points.push(olProj.transform([response[i].Location[1], response[i].Location[0]], 'EPSG:4326', 'EPSG:3857'))
+   description.push(response[i].Discription)
   }
   console.log("Points", points)
   markerArray = []
@@ -85,14 +91,29 @@ async function getHazardLocations(location) {
           ]
         })
       })
-      marker.setStyle(new olStyle.Style({
-        image: new olStyle.Circle({
-          radius: 5,
-          fill: new olStyle.Fill({color: 'orange'}),
-        })
-      }))
+      marker.setStyle(
+        new olStyle.Style({
+          image: new olStyle.Icon({
+            anchor: [0.5, 1],
+            scale: 0.01,
+            src: 'hazard.png',
+          }),
+          text: new olStyle.Text({
+            text: description[i],
+            fill: new olStyle.Fill({color: 'black'}),
+            stroke: new olStyle.Stroke({color: 'white', width: 2}),
+            offsetX: 10,
+            offsetY: -10,
+          })
+        }),
+      )
+      // Create a new style for the hover effect
       markerArray.push(marker)
       map.addLayer(marker)
+      // Add a pointermove event listener to the map
+
+
+
   }
   }
   setPointsLayer(markerArray)
@@ -124,10 +145,11 @@ useEffect(() => {
 
 async function savePoint() {
   try {
-    // setHazardDescription(prompt("Please enter the description of the hazard. Then click the map where the hazard is located."))
+    const testing = prompt("Please enter the description of the hazard. Then click the map where the hazard is located.")
+    console.log(testing)
     const save = {
       Location: [hazardPointRef[1], hazardPointRef[0]],
-      Description: hazardDescription,
+      Discription: testing,
       LocationType: "Hazard"
     }
     const response = await saveLocation(save)
@@ -155,7 +177,7 @@ const SelectHazardPoint = () => {
 setDoStart(true)
 if(map != null) {
   if(clicked == true) {
-  map.un('click', callback);
+    map.un('click', callback);
   } else {
     map.on('click', callback);
   }
@@ -207,8 +229,9 @@ function hindHazards() {
                   Show a hazard
             </button> :
             <button className="text-gray-900 dark:text-white hover:underline" onClick={hindHazards}>
-                  Hind a hazard
-            </button>}
+                  Hide a hazard
+            </button>
+            }
           </div>
         </div>
       </section>
